@@ -1,0 +1,143 @@
+/* Login.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bellota:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+.company-name {
+  font-size: 124px;
+ 
+  margin-top: 50px;
+  margin-left: 258px;
+  background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
+  
+}
+.login-container {
+  background-color: white;
+
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+
+
+
+.welcome-text {
+  
+  font-size: 64px; /* Adjust the font size as needed */
+  background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 57%;
+  font-family: 'Inter', sans-serif;
+  
+}
+
+
+.login-box {
+  border: 2px solid rgb(182, 117, 32);
+  border-radius: 22px;
+  padding: 20px;
+  height: 600px;
+  width: 1300px;
+  display: flex;
+  margin-left: 20%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Add this to distribute space evenly */
+  position: relative; /* Add this to allow absolute positioning for children */
+}
+.login-title {
+  font-size: 48px; /* Adjust the font size as needed */
+
+  color: rgb(182, 117, 32);
+  font-family: 'Bellota',system-ui;
+}
+.forgot-password {
+  font-size: 18px;
+  margin-top: 5px; /* Space between password field and forgot password link */
+  cursor: pointer;
+  color: black;
+}
+.bottom-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+/*
+.login-box {
+  border-radius: 10px;
+  padding: 20px;
+  height: 700px;
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white; 
+  border: 2px solid transparent; 
+  border-image: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
+  border-image-slice: 1; /* Ensure the border image covers the entire border 
+}
+*/
+
+
+.register-button,
+.login-button,
+.login-enter-button {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border: 2px solid rgb(182, 117, 32); /* Border color */
+  border-radius: 22px;
+  cursor: pointer;
+  color: rgb(182, 117, 32);; /* Text color */
+  background-color: white; /* Background color */
+  display: flex;
+  font-size: 36px;
+  font-family: 'Bellota',system-ui;
+  
+}
+
+.register-button:hover,
+.login-button:hover,
+.login-enter-button:hover {
+  background-color: rgb(182, 117, 32); /* Hover background color */
+  color: white; /* Hover text color */
+  border: white; /* Border color */
+}
+.register-button {
+  position:static;
+  margin-bottom: 1;
+  align-self: flex-start; /* Align the register button to the left */
+  
+}
+.input-container {
+  width: 25%;
+  
+  
+}
+
+
+
+.login-button {
+  align-self: flex-end; /* Align the login button to the right */
+  margin-top: 20px; /* Add some space between login button and username */
+}
+
+input[type='text'],
+input[type='password'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 22px;
+}
+
+
