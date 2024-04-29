@@ -1,16 +1,22 @@
-//import './App.css'
-import { useState } from "react";
-import Alert from "./Components/Alert";
-import Button from "./Components/Button";
+import WelcomePage from "./Welcome-Page";
+import Login from "./Login";
+import ItemGridPage from "./item-grid-page";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Grid from "./Components/item-grid";
 
 function App(){
 
-const [alertVisible,setAlertVisibility] = useState(false)
-
-    return <div>
-      {alertVisible && <Alert onClose={() => setAlertVisibility(false)}>My alert</Alert>}
-      <Button onClick={() => setAlertVisibility(true)}> My button </Button>
-      </div>;
+    return (
+      <Router>
+        <Routes>
+          <Route  path = "/" element={<WelcomePage />} />
+          <Route  path = "*" element={<WelcomePage />} />
+          <Route  path = "/login" element={<Login />} />
+          <Route  path = "/foundItems" element={<ItemGridPage />} />
+        </Routes>
+      </Router>
+    )
+    
 }
 
 export default App;
