@@ -2,6 +2,7 @@ import React from 'react';
 import './Base-page.css'
 import './Welcome-Page.css'
 import Button from "./Components/Button";
+import Navbar from './Components/Navbar';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -11,12 +12,12 @@ const WelcomePage : React.FC = () => {
     
 
     return (
-
+    
     <div className="Page-container">
-      <div className="company-name">RCA</div>
+      <Navbar />
       <div className="welcome-text">Boas Vindas</div>
     <div className="Page-box">
-
+      
         <div className='Text-column'>
         <p>Bem-vindo à ReClaimAuctions, a inovadora plataforma 
         que está revolucionando a maneira como lidamos com objetos 

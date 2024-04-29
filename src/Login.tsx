@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
+import Navbar from './Components/Navbar';
 
 
 function Login() {
@@ -17,7 +18,7 @@ function Login() {
 
     
     <div className="login-container">
-      <div className="company-name">RCA</div>
+      <Navbar />
       <div className="welcome-text">Bem-vindos</div>
       <div className="login-box">
        

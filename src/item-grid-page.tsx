@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from './Components/item-grid'; 
 import './Base-page.css';
+import Navbar from './Components/Navbar';
 
 
 
@@ -24,8 +25,9 @@ const ItemGridPage: React.FC = () => {
 
   return (
 
+
     <div className="Page-container">
-      <div className="Page-company-name">RCA</div>
+      <Navbar />
       <div className="Page-welcome-text">Objetos encontrados</div>
       <div className="Page-box">
     <div className="grid">

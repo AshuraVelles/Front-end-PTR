@@ -28,4 +28,6 @@
 
 .Button-column button {
     margin: 100px;
+    padding: 20px;
+    font-size: larger;
 }

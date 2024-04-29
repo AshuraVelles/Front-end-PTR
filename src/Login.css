@@ -7,18 +7,7 @@ body {
   padding: 0;
   background-color: white;
 }
-.company-name {
-  font-size: 80px;
- 
-  margin-top: 50px;
-  margin-left: 258px;
-  background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 300;
-  font-family: 'Inter', sans-serif;
-  
-}
+
 .login-container {
   background-color: white;
 
@@ -33,11 +22,11 @@ body {
 
 .welcome-text {
   
-  font-size: 64px; /* Adjust the font size as needed */
+  font-size: 50px; /* Adjust the font size as needed */
   background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-left: 57%;
+  margin-left: 67%;
   font-family: 'Inter', sans-serif;
   
 }
