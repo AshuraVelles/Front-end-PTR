@@ -8,25 +8,11 @@ body {
   background-color: white;
 }
 
-.company-name {
-  font-size: 124px;
- 
-  margin-top: 50px;
-  margin-left: 258px;
-  background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 300;
-  font-family: 'Inter', sans-serif;
-  
-}
-
 .login-container {
   background-color: white;
 
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   width: 100%;
 }
 
@@ -35,13 +21,11 @@ body {
 
 .welcome-text {
   
-
-  font-size: 64px; /* Adjust the font size as needed */
+  font-size: 50px; /* Adjust the font size as needed */
   background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-left: 57%;
-
+  margin-left: 48%;
   font-family: 'Inter', sans-serif;
   
 }
@@ -51,7 +35,7 @@ body {
   border: 2px solid rgb(182, 117, 32);
   border-radius: 22px;
   padding: 20px;
-  height: 600px;
+  height: 870px;
   width: 1300px;
   display: flex;
   margin-left: 20%;
@@ -118,8 +102,8 @@ body {
   border: white; /* Border color */
 }
 .register-button {
-  position:static;
-  margin-bottom: 1;
+  display: flex;
+
   align-self: flex-start; /* Align the register button to the left */
   
 }
@@ -130,18 +114,27 @@ body {
 }
 
 
+.left{
+    position: relative;
+    
+}
+
+.right{
+    position: relative;
+}
+
 
 .login-button {
   align-self: flex-end; /* Align the login button to the right */
   margin-top: 20px; /* Add some space between login button and username */
 }
 
+input[type='date'],
 input[type='text'],
 input[type='password'] {
   width: 100%;
   padding: 10px;
+  margin-top: 10px;
   border: 1px solid #ccc;
   border-radius: 22px;
-
 }
-
