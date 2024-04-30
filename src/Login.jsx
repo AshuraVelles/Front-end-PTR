@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import './Login.css';
+import Navbar from './Components/Navbar';
 
 
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     // Your login logic here
@@ -14,13 +15,10 @@ function App() {
   };
 
   return (
-
-    
     <div className="login-container">
       <div className="company-name">RCA</div>
       <div className="welcome-text">Bem-vindos</div>
       <div className="login-box">
-       
         <div className="login-title">Login</div>
         <div className="input-container">
           <input
@@ -43,12 +41,11 @@ function App() {
           Entrar
         </button>
         <div className="bottom-buttons">
-          <button className="register-button">Registar</button>
-
+          <Button onClick={() => navigate("/RegisterPage")}>Register</Button>
         </div>
       </div>
     </div>
   );
 }
 
-export default App;
+export default Login;
