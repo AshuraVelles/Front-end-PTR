@@ -1,0 +1,33 @@
+
+.Page-box {
+    display : flex;
+}
+
+.Text-column {
+    font-family:system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 19px;
+    border: 2px solid rgb(185, 141, 19);
+    background-color: rgb(252, 225, 184);
+    border-radius: 22px;
+    padding: 20px;
+    height: 800px;
+    margin-left: 1px;
+    width: 45%;
+}
+
+.Button-column {
+    border: 2px solid rgb(185, 141, 19);
+    padding: 20px;
+    width: 45%;
+    margin-left: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.Button-column button {
+    margin: 100px;
+    padding: 20px;
+    font-size: larger;
+}

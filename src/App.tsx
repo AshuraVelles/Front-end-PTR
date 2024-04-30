@@ -1,11 +1,11 @@
 import WelcomePage from "./Welcome-Page";
 import Login from "./Login";
 import ItemGridPage from "./item-grid-page";
+
 import Register from "./Register";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
-function App(){
 
     return (
       <Router>
@@ -18,6 +18,7 @@ function App(){
         </Routes>
       </Router>
     )
+
 
 }
 
