@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import './Login.css';
 import Navbar from './Components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   
 
   const handleLogin = () => {
@@ -30,8 +32,8 @@ function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-        </div>
-        <div className="input-container">
+        
+        
           <input
             type="password"
             placeholder="Password"
@@ -44,8 +46,7 @@ function Login() {
           Entrar
         </button>
         <div className="bottom-buttons">
-          <button className="register-button">Registar</button>
-
+          <button className='register-button' onClick={() => navigate("/RegisterPage")}>Registar</button>
         </div>
       </div>
     </div>
