@@ -1,7 +1,8 @@
 import WelcomePage from "./Welcome-Page";
 import Login from "./Login";
-import ItemGridPage from "./item-grid-page";
+import FindItemsPage from "./FindItems";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./Register";
 
 
 function App(){
@@ -12,7 +13,8 @@ function App(){
           <Route  path = "/" element={<WelcomePage />} />
           <Route  path = "*" element={<WelcomePage />} />
           <Route  path = "/login" element={<Login />} />
-          <Route  path = "/foundItems" element={<ItemGridPage />} />
+          <Route  path = "/register" element={<Register />} />
+          <Route  path = "/foundItems" element={<FindItemsPage />} />
         </Routes>
       </Router>
     )

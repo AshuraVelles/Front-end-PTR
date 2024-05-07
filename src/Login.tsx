@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import './Login.css';
-import Navbar from './Components/Navbar';
-
+import Header from './Components/Header';
+import { useNavigate } from 'react-router-dom';
+import Button from './Components/Button';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -14,11 +15,14 @@ function Login() {
     console.log('Password:', password);
   };
 
+
+  let navigate = useNavigate();
+
   return (
 
     
     <div className="login-container">
-      <Navbar />
+      <Header />
       <div className="welcome-text">Bem-vindos</div>
       <div className="login-box">
        
@@ -44,7 +48,7 @@ function Login() {
           Entrar
         </button>
         <div className="bottom-buttons">
-          <button className="register-button">Registar</button>
+          <button className="register-button" onClick={() => {navigate("/register")}}>Registar</button>
 
         </div>
       </div>

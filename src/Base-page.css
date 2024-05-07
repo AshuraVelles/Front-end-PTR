@@ -26,17 +26,7 @@ body {
   
   
   
-  
-  .Page-welcome-text {
-    
-    font-size: 40px; /* Adjust the font size as needed */
-    background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-left: 65%;
-    font-family: 'Inter', sans-serif;
-    
-  }
+
   
   
   .Page-box {
