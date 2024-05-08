@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:4243';
 
-export const fetchItems = async () => {
+export const fetchLostItems = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/items/lost`);
     return response.data;

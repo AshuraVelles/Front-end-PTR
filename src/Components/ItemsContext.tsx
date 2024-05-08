@@ -1,6 +1,6 @@
 // ItemsContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchItems } from '../api'; // Import the API service
+import { fetchLostItems } from '../api'; // Import the API service
 // Types for API items
 interface ApiItem {
   id: number;
@@ -48,7 +48,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
       try {
-        const fetchedItems: ApiItem[] = await fetchItems();
+        const fetchedItems: ApiItem[] = await fetchLostItems();
         setItems(fetchedItems.map(item => ({
           id: item.id,
           title: item.descricao,
