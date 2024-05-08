@@ -1,16 +1,19 @@
+// FindItemsContent.tsx
 import React from 'react';
 import GridItem from './GridItem';
 import { useItems } from './ItemsContext';
-import './Grid.css';  // This will include our CSS for styling
+import './Grid.css';
 import SearchBar from './SearchBar.jsx';
 
-
 const FindItemsContent: React.FC = () => {
-  const { items, searchTerm } = useItems();
+  const { items, searchTerm, isLoading, error } = useItems();
 
   const filteredItems = items.filter(item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className='grid'>
@@ -27,6 +30,4 @@ const FindItemsContent: React.FC = () => {
   );
 };
 
-
 export default FindItemsContent;
-

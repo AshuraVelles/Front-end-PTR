@@ -1,4 +1,19 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+// ItemsContext.tsx
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { fetchItems } from '../api'; // Import the API service
+// Types for API items
+interface ApiItem {
+  id: number;
+  descricao: string;
+  categoria: string;
+  data_perdido: string;
+  localizacao_perdido: {
+    latitude: number;
+    longitude: number;
+  };
+  ativo: boolean;
+  utilizador_id: string;
+}
 
 interface Item {
   id: number;
@@ -10,33 +25,48 @@ interface Item {
 
 interface ItemsContextType {
   items: Item[];
-  setItems: React.Dispatch<React.SetStateAction<Item[]>>;
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
-
-const initialItems: Item[] = [
-  { id: 1, title: 'Bicicleta Azul', isSelected: false, imageUrl:"https://static.sprintercdn.com/products/0370471/bicicleta-fila_0370471_00_4_3829283033.jpg",itemLink: "https://www.youtube.com/watch?v=Tn1FPZb3rmw"},
-  { id: 2, title: 'Iphone 15 Pro Max', isSelected: false , imageUrl: "https://atlas-content-cdn.pixelsquid.com/assets_v2/324/3240250251566651319/jpeg-600/G03.jpg?modifiedAt=1"},
-  { id: 3, title: 'Playstation 2', isSelected: false, imageUrl:'https://www.pngall.com/wp-content/uploads/2016/07/PlayStation-PNG-Download-PNG.png' },
-  { id: 4, title: 'Grinder verde', isSelected: false, imageUrl:'https://m.media-amazon.com/images/I/61FYPm7fZuL.jpg' },
-  { id: 5, title: 'Macbook Pro', isSelected: false , imageUrl:'https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111901_mbp16-gray.png'},
-  { id: 6, title: 'Carteira de couro', isSelected: false, imageUrl:'https://pngfre.com/wp-content/uploads/Wallets-21.png' },
-
-];
 
 interface ProviderProps {
   children: ReactNode;
 }
 
 export const ItemsProvider: React.FC<ProviderProps> = ({ children }) => {
-  const [items, setItems] = useState<Item[]>(initialItems);
+  const [items, setItems] = useState<Item[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadItems = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedItems: ApiItem[] = await fetchItems();
+        setItems(fetchedItems.map(item => ({
+          id: item.id,
+          title: item.descricao,
+          isSelected: false, // Assuming items are not selected by default
+          // Here you can map additional properties as needed
+        })));
+      } catch (err) {
+        setError('Failed to fetch items');
+        console.error(err);
+      }
+      setLoading(false);
+    };
+
+    loadItems();
+  }, []);
 
   return (
-    <ItemsContext.Provider value={{ items, setItems, searchTerm, setSearchTerm }}>
+    <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>
       {children}
     </ItemsContext.Provider>
   );
