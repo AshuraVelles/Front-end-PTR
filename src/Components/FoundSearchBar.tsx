@@ -1,6 +1,6 @@
 import React from 'react';
 import './SearchBar.css'; // Import the CSS for styling
-import { useItems } from './ItemsContext';
+import { useItems } from './FoundItemsContext';
 
 
 const SearchBar: React.FC = () => {
