@@ -1,5 +1,5 @@
 import React from 'react';
-import './Header.css'; // Assuming you will style it using CSS
+import './Header.css';
 
 const Header: React.FC = () => {
   return (
@@ -7,10 +7,12 @@ const Header: React.FC = () => {
       <nav>
         <ul className="nav-links">
           <li><a href='/' className='nav-button'>Home</a></li>
-          <li><a href='/' className='nav-button'>Sobre</a></li>
-          <li><h1>RCA</h1></li>  {/* Logo or title in the center */}
-          <li><a href='/'className='nav-button'>Perfil</a></li>
-          <li><a href='login' className='nav-button'>Logout</a></li>
+          <li><a href='/lostItems' className='nav-button'>Perdidos</a></li>
+          <li><a href='/foundItems' className='nav-button'>Achados</a></li>
+          <li><h1>RCA</h1></li> 
+          <li><a href='/profile'className='nav-button'>Perfil</a></li>
+          <li><a href='/login' className='nav-button'>Login</a></li>
+          <li><a href='/register' className='nav-button'>Register</a></li>
         </ul>
       </nav>
     </header>

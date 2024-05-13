@@ -138,3 +138,23 @@ input[type='password'] {
   border: 1px solid #ccc;
   border-radius: 22px;
 }
+
+
+
+.inputvalue {
+  
+  display:grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+
+  
+}
+
+.inputvalue input {
+  margin-left: 15px;
+}
+
+
+.inputString{
+  margin-top: 15px;
+}
