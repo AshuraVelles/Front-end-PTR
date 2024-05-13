@@ -1,7 +1,6 @@
 import React from 'react';
 import './Base-page.css'
 import './Welcome-Page.css'
-import Button from "./Components/Button";
 import Header from './Components/Header.tsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -55,9 +54,8 @@ const WelcomePage : React.FC = () => {
         
         <div className='Button-column'>
 
-        <Button onClick={() => {navigate("/Login")}}> Go to Login </Button>
-        <Button onClick={() => {navigate("/lostItems")}}> Go to lost Items </Button>
-        <Button onClick={() => {navigate("/foundItems")}}> Go to found Items </Button>
+        <button onClick={() => {navigate("/lostItems")}}> Go to lost Items </button>
+        <button onClick={() => {navigate("/foundItems")}}> Go to found Items </button>
         
         </div>
         
