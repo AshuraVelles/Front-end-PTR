@@ -8,6 +8,7 @@ const FindItemsPage: React.FC = () => {
     <div>
       <Header />,
       <ItemsProvider>
+      <h1 className="title">Objetos Perdidos</h1>
         <SearchBar />
         <FindItemsContent/>
       </ItemsProvider>

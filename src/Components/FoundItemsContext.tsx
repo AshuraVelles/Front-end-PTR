@@ -1,6 +1,6 @@
 // ItemsContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchLostItems } from '../api'; // Import the API service
+import { fetchFoundItems } from '../api'; // Import the API service
 // Types for API items
 interface ApiItem {
   id: number;
@@ -37,7 +37,7 @@ interface ProviderProps {
   children: ReactNode;
 }
 
-export const ItemsProvider: React.FC<ProviderProps> = ({ children }) => {
+export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
       try {
-        const fetchedItems: ApiItem[] = await fetchLostItems();
+        const fetchedItems: ApiItem[] = await fetchFoundItems();
         setItems(fetchedItems.map(item => ({
           id: item.id,
           title: item.descricao,
@@ -75,7 +75,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children }) => {
 export const useItems = () => {
   const context = useContext(ItemsContext);
   if (!context) {
-    throw new Error('useItems must be used within an ItemsProvider');
+    throw new Error('useItems must be used within a FoundItemsProvider');
   }
   return context;
 };
