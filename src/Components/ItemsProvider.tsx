@@ -1,7 +1,6 @@
-// ItemsContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchFoundItems } from '../api'; // Import the API service
-// Types for API items
+import { fetchFoundItems, fetchLostItems } from '../api';
+
 interface ApiItem {
   id: number;
   descricao: string;
@@ -35,9 +34,10 @@ const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 interface ProviderProps {
   children: ReactNode;
+  type: 'found' | 'lost';
 }
 
-export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
+export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -48,12 +48,11 @@ export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
       try {
-        const fetchedItems: ApiItem[] = await fetchFoundItems();
+        const fetchedItems: ApiItem[] = type === 'found' ? await fetchFoundItems() : await fetchLostItems();
         setItems(fetchedItems.map(item => ({
           id: item.id,
           title: item.descricao,
-          isSelected: false, // Assuming items are not selected by default
-          // Here you can map additional properties as needed
+          isSelected: false,
         })));
       } catch (err) {
         setError('Failed to fetch items');
@@ -63,7 +62,7 @@ export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
     };
 
     loadItems();
-  }, []);
+  }, [type]);
 
   return (
     <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>
@@ -75,7 +74,7 @@ export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
 export const useItems = () => {
   const context = useContext(ItemsContext);
   if (!context) {
-    throw new Error('useItems must be used within a FoundItemsProvider');
+    throw new Error('useItems must be used within an ItemsProvider');
   }
   return context;
 };

@@ -1,9 +1,9 @@
 import WelcomePage from "./Welcome-Page";
 import Login from "./Login";
-import FindItemsPage from "./FindItems";
+import FindItemsPage from "./FindItemsPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./Register";
-import FoundItemsPage from "./FoundItems";
+import FoundItemsPage from "./FoundItemsPage";
 import Profile from "./Profile";
 
 

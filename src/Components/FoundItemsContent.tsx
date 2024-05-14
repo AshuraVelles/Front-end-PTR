@@ -1,10 +1,9 @@
-// FindItemsContent.tsx
 import React from 'react';
+import { useItems } from './ItemsProvider';
 import GridItem from './GridItem';
-import { useItems } from './ItemsContext';
 import './Grid.css';
 
-const FindItemsContent: React.FC = () => {
+const FoundItemsContent: React.FC = () => {
   const { items, searchTerm, isLoading, error } = useItems();
 
   const filteredItems = items.filter(item =>
@@ -29,4 +28,4 @@ const FindItemsContent: React.FC = () => {
   );
 };
 
-export default FindItemsContent;
+export default FoundItemsContent;
