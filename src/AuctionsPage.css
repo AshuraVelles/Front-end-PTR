@@ -1,0 +1,47 @@
+.auctions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.auction-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auction-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.auction-details {
+  padding: 15px;
+}
+
+.auction-details h3 {
+  margin-top: 0;
+}
+
+.auction-details p {
+  margin: 5px 0;
+}
+
+.bids-section {
+  margin-top: 15px;
+}
+
+.bids-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.bids-section ul li {
+  background: #f4f4f4;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+}

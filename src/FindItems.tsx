@@ -6,7 +6,7 @@ import { ItemsProvider } from './Components/ItemsContext';
 const FindItemsPage: React.FC = () => {
   return (
     <div>
-      <Header />,
+       ,
       <ItemsProvider>
       <h1 className="title">Objetos Perdidos</h1>
         <SearchBar />

@@ -39,7 +39,7 @@ function Login() {
 
   return (
     <div className="login-container">
-      <Header />
+       
       <div className="welcome-text">Bem-vindos</div>
       <div className="login-box">
         <div className="login-title">Login</div>

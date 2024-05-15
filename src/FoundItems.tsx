@@ -8,7 +8,7 @@ import { FoundItemsProvider } from './Components/FoundItemsContext';
 const FoundItemsPage: React.FC = () => {
   return (
     <div>
-      <Header />,
+       ,
       <FoundItemsProvider>
       <h1 className="title">Objetos achados</h1>
         <SearchBar />

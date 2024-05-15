@@ -13,7 +13,7 @@ const WelcomePage : React.FC = () => {
     return (
     
     <div className="Page-container">
-      <Header />
+       
       <div className="welcome-text">Boas Vindas</div>
     <div className="Page-box">
       
