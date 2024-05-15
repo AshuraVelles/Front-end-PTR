@@ -1,0 +1,43 @@
+.search-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff; /* Adjust background color as needed */
+  }
+  
+  .title {
+    font-size: 24px;
+    color: maroon; /* Set the color to match your theme */
+  }
+  
+  .search-box {
+    display: flex;
+    border: 1px solid maroon;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  
+  .search-box input {
+    border: none;
+    padding: 8px 12px;
+    width: 200px; /* Adjust width as needed */
+    font-size: 16px;
+  }
+  
+  .search-box button {
+    background: maroon; /* Set button color */
+    color: white; /* Set text color */
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .search-box button:hover {
+    background-color: darkred; /* Darker shade for hover effect */
+  }
+  
+  .fa-search { /* Adjust this if you're using a font icon */
+    font-size: 16px;
+  }
+  

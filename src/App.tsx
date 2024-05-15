@@ -1,11 +1,11 @@
 import WelcomePage from "./Welcome-Page";
 import Login from "./Login";
-import ItemGridPage from "./item-grid-page";
-
-import Register from "./Register";
-
+import FindItemsPage from "./FindItems";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Grid from "./Components/item-grid";
+import Register from "./Register";
+import FoundItemsPage from "./FoundItems";
+import Profile from "./Profile";
+
 
 function App(){
 
@@ -15,9 +15,10 @@ function App(){
           <Route  path = "/" element={<WelcomePage />} />
           <Route  path = "*" element={<WelcomePage />} />
           <Route  path = "/login" element={<Login />} />
-          <Route  path = "/foundItems" element={<ItemGridPage />} />
-          <Route  path = "/registerPage" element={<Register />} />
-
+          <Route  path = "/register" element={<Register />} />
+          <Route  path = "/lostItems" element={<FindItemsPage />} />
+          <Route  path = "/foundItems" element={<FoundItemsPage />} />
+          <Route  path = "/profile" element={<Profile />} />
         </Routes>
       </Router>
     )

@@ -1,8 +1,7 @@
 import React from 'react';
 import './Base-page.css'
 import './Welcome-Page.css'
-import Button from "./Components/Button";
-import Navbar from './Components/Navbar';
+import Header from './Components/Header.tsx';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -14,7 +13,7 @@ const WelcomePage : React.FC = () => {
     return (
     
     <div className="Page-container">
-      <Navbar />
+      <Header />
       <div className="welcome-text">Boas Vindas</div>
     <div className="Page-box">
       
@@ -55,8 +54,8 @@ const WelcomePage : React.FC = () => {
         
         <div className='Button-column'>
 
-        <Button onClick={() => {navigate("/Login")}}> Go to Login </Button>
-        <Button onClick={() => {navigate("/FoundItems")}}> Go to Found Items </Button>
+        <button onClick={() => {navigate("/lostItems")}}> Go to lost Items </button>
+        <button onClick={() => {navigate("/foundItems")}}> Go to found Items </button>
         
         </div>
         

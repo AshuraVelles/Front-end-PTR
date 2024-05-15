@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import './Login.css';
-import Navbar from './Components/Navbar';
+import Header from './Components/Header';
 import { useNavigate } from 'react-router-dom';
-
+import Button from './Components/Button';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   
 
   const handleLogin = () => {
@@ -16,11 +15,14 @@ function Login() {
     console.log('Password:', password);
   };
 
+
+  let navigate = useNavigate();
+
   return (
 
     
     <div className="login-container">
-      <Navbar />
+      <Header />
       <div className="welcome-text">Bem-vindos</div>
       <div className="login-box">
        
@@ -32,8 +34,8 @@ function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-        
-        
+        </div>
+        <div className="input-container">
           <input
             type="password"
             placeholder="Password"
@@ -46,7 +48,8 @@ function Login() {
           Entrar
         </button>
         <div className="bottom-buttons">
-          <button className='register-button' onClick={() => navigate("/RegisterPage")}>Registar</button>
+          <button className="register-button" onClick={() => {navigate("/register")}}>Registar</button>
+
         </div>
       </div>
     </div>
