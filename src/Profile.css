@@ -1,0 +1,31 @@
+.Profile-information {
+    font-family:system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 19px;
+    border: 2px solid rgb(185, 141, 19);
+    border-radius: 22px;
+    padding: 10px;
+    height: 800px;
+    width: 45%;
+
+    display:grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(2,200px);
+
+}
+
+.Lost-item-column {
+    margin-left: 100px;
+    font-family:system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 19px;
+    border: 2px solid rgb(185, 141, 19);
+    border-radius: 22px;
+    padding: 10px;
+    height: 800px;
+    width: 45%;
+
+    display:grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(1,auto);
+}
