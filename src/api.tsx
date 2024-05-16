@@ -1,7 +1,7 @@
 // apiService.ts
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3999/v1';
+const BASE_URL = 'http://localhost:3998/v1';
 
 export const fetchLostItems = async () => {
   try {
