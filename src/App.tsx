@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./Register";
 import FoundItemsPage from "./FoundItemsPage";
 import Profile from "./Profile";
-
+import ItemDetailsPage from './ItemDetailsPage';
 
 function App(){
 
@@ -19,6 +19,8 @@ function App(){
           <Route  path = "/lostItems" element={<FindItemsPage />} />
           <Route  path = "/foundItems" element={<FoundItemsPage />} />
           <Route  path = "/profile" element={<Profile />} />
+          <Route path="/lost/:id" element={<ItemDetailsPage />} /> {/* Add route for lost item details */}
+          <Route path="/found/:id" element={<ItemDetailsPage />} /> 
         </Routes>
       </Router>
     )

@@ -12,13 +12,14 @@ interface ApiItem {
   };
   ativo: boolean;
   utilizador_id: string;
+    imageurl?: string;
 }
 
 interface Item {
   id: number;
   title: string;
   isSelected: boolean;
-  imageUrl?: string;
+  imageurl?: string;
   itemLink?: string;
 }
 
@@ -53,6 +54,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
           id: item.id,
           title: item.descricao,
           isSelected: false,
+            imageurl: item.imageurl
         })));
       } catch (err) {
         setError('Failed to fetch items');

@@ -15,13 +15,15 @@ const FoundItemsContent: React.FC = () => {
 
   return (
     <div className='grid'>
-      {filteredItems.map((item, index) => (
+      {filteredItems.map((item) => (
         <GridItem
-          key={index}
+          key={item.id}
+          id={item.id}
           title={item.title}
           isSelected={item.isSelected}
-          imageUrl={item.imageUrl}
+          imageurl={item.imageurl}
           itemLink={item.itemLink}
+          itemType="found"  // Set itemType to "found"
         />
       ))}
     </div>

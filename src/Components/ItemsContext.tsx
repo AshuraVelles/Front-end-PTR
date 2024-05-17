@@ -4,6 +4,7 @@ import { fetchLostItems } from '../api'; // Import the API service
 // Types for API items
 interface ApiItem {
   id: number;
+  descricao_curta: string;
   descricao: string;
   categoria: string;
   data_perdido: string;
@@ -13,13 +14,14 @@ interface ApiItem {
   };
   ativo: boolean;
   utilizador_id: string;
+  imageurl?: string;
 }
 
 interface Item {
   id: number;
   title: string;
   isSelected: boolean;
-  imageUrl?: string;
+  imageurl?: string;
   itemLink?: string;
 }
 
@@ -53,7 +55,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children }) => {
           id: item.id,
           title: item.descricao,
           isSelected: false, // Assuming items are not selected by default
-          // Here you can map additional properties as needed
+          imageurl: item.imageurl
         })));
       } catch (err) {
         setError('Failed to fetch items');
