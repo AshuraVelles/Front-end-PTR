@@ -1,6 +1,5 @@
-// src/hooks/useFetchFoundItems.ts
-import { useState, useEffect, useCallback, useContext } from 'react';
-import useAuthFetch from './useAuthFetch';
+// src/hooks/useFetchFoundItems.tsx
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import config from '../apiconfig';
 
@@ -18,49 +17,44 @@ interface ApiItem {
   imageUrl?: string;
 }
 
-interface Item {
-  id: number;
-  title: string;
-  isSelected: boolean;
-  imageUrl?: string;
-  itemLink?: string;
-}
-
-const useFetchFoundItems = () => {
-  const [items, setItems] = useState<Item[]>([]);
-  const [isLoading, setLoading] = useState(false);
+const useFetchFoundItems = (): { items: ApiItem[], isLoading: boolean, error: string | null } => {
+  const { accessToken } = useContext(AuthContext) ?? {};
+  const [items, setItems] = useState<ApiItem[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasFetched, setHasFetched] = useState(false);
-  const authFetch = useAuthFetch();
-  const authContext = useContext(AuthContext);
-
-  const fetchItems = useCallback(async () => {
-    if (!authContext?.accessToken || hasFetched) return; // Only fetch if access token is available and not already fetched
-
-    setLoading(true);
-    setError(null);
-    setHasFetched(true); // Mark that fetch has been attempted
-
-    try {
-      const fetchedItems: ApiItem[] = await authFetch(`${config.API_BASE_URL}/police/items/found`);
-      setItems(fetchedItems.map(item => ({
-        id: item.id,
-        title: item.descricao,
-        isSelected: false,
-        imageUrl: item.imageUrl,
-        itemLink: `/items/found/${item.id}`
-      })));
-    } catch (err) {
-      setError('Failed to fetch items');
-      console.error(err);
-      setHasFetched(false); // Reset if fetch failed to allow retry
-    }
-    setLoading(false);
-  }, [authFetch, authContext?.accessToken, hasFetched]);
 
   useEffect(() => {
+    const fetchItems = async () => {
+      if (!accessToken) {
+        setError('No access token available');
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch(`${config.API_BASE_URL}/police/items/found`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch items');
+        }
+
+        const data: ApiItem[] = await response.json();
+        setItems(data);
+      } catch (err: unknown) {
+        setError((err as Error).message);
+      }
+
+      setLoading(false);
+    };
+
     fetchItems();
-  }, [fetchItems]);
+  }, [accessToken]);
 
   return { items, isLoading, error };
 };

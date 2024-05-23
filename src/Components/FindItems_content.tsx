@@ -23,6 +23,7 @@ const FindItemsContent: React.FC = () => {
           isSelected={item.isSelected}
           imageUrl={item.imageUrl}
           itemLink={item.itemLink}
+          onClick={() => console.log('Item clicked:', item)}
         />
       ))}
     </div>

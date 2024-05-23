@@ -1,13 +1,31 @@
-// src/Components/FoundItemsContext.tsx
-import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
+// src/components/FoundItemsContext.tsx
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import useFetchFoundItems from '../hooks/useFetchFoundItems';
 
-interface Item {
+interface ApiItem {
+  id: number;
+  descricao: string;
+  categoria: string;
+  data_achado: string;
+  localizacao_achado: {
+    latitude: number;
+    longitude: number;
+  };
+  ativo: boolean;
+  policial_id: number;
+  imageUrl?: string;
+}
+
+export interface Item {
   id: number;
   title: string;
   isSelected: boolean;
   imageUrl?: string;
   itemLink?: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 interface ItemsContextType {
@@ -25,19 +43,20 @@ interface ProviderProps {
 }
 
 export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { items, isLoading, error } = useFetchFoundItems();
-  const [searchTerm, setSearchTerm] = useState('');
+  const { items: apiItems, isLoading, error } = useFetchFoundItems();
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const contextValue = useMemo(() => ({
-    items,
-    searchTerm,
-    setSearchTerm,
-    isLoading,
-    error,
-  }), [items, searchTerm, isLoading, error]);
+  const items = apiItems.map(item => ({
+    id: item.id,
+    title: item.descricao,
+    isSelected: false,
+    imageUrl: item.imageUrl,
+    location: item.localizacao_achado,
+    itemLink: `/items/found/${item.id}`
+  }));
 
   return (
-    <ItemsContext.Provider value={contextValue}>
+    <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>
       {children}
     </ItemsContext.Provider>
   );
