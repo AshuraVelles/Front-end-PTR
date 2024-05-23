@@ -30,6 +30,13 @@ body {
   width: 100%;
 }
 
+.error {
+  color: red;
+  margin-top: 5px;
+  word-wrap: break-word;
+}
+
+
 
 
 
