@@ -42,7 +42,9 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.user, data.accessToken);
+        console.log('Login successful:', data);
+        login(data.user);
+        console.log('User and access token set in context and localStorage');
         navigate('/profile');
       } else {
         console.error('Login failed:', data.message || data);

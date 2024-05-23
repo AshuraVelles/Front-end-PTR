@@ -1,100 +1,121 @@
-import React from 'react';
-import './Base-page.css'
-import "./Profile.css"
-import Header from './Components/Header.tsx';
+// src/Profile.tsx
+import React, { useEffect, useState, useContext } from 'react';
+import './Base-page.css';
+import './Profile.css';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
+import useAuthFetch from './hooks/useAuthFetch';
 
+interface UserProfile {
+  nome: string;
+  genero: string;
+  data_nasc: string;
+  morada: string;
+  email: string;
+  telemovel: string;
+  historico: string | null;
+  ativo: boolean;
+}
 
+interface LostItem {
+  id: number;
+  titulo: string;
+  descricao_curta: string;
+  data_perdido: string;
+}
 
-const Profile : React.FC = () => {
+const Profile: React.FC = () => {
+  const { user } = useContext(AuthContext)!;
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [lostItems, setLostItems] = useState<LostItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingItems, setLoadingItems] = useState(true);
+  const navigate = useNavigate();
+  const authFetch = useAuthFetch();
 
-    let navigate = useNavigate();
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await authFetch('http://localhost:3999/v1/users/me');
+        setProfile(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+        setLoading(false);
+      }
+    };
 
+    const fetchLostItems = async () => {
+      try {
+        const data = await authFetch('http://localhost:3999/v1/users/mylostitems');
+        setLostItems(data);
+        setLoadingItems(false);
+      } catch (error) {
+        console.error('Failed to fetch lost items:', error);
+        setLoadingItems(false);
+      }
+    };
 
-    const Information = [
-        { id: "Username", info: 'Ash'  },
-        { id: "Password", info: '12345'  },
-        { id: "Primeiro-Nome", info: 'Ashura'  },
-        { id: "Ultimo-Nome", info: 'Velles'  },
-        { id: "Email", info: 'Ashvell@blabla.com'  },
-        { id: "Genero", info: 'bastard'  },
-        { id: "Data-nascimento", info: '1/1/1000'  },
-        { id: "Morada", info: 'Nowhere'  },
-        { id: "Codigo-Postal", info: '1111-111'  },
-        { id: "NIF", info: '11111111' },
-        { id: "Cartao-Cidadao", info: '234524324' },
-        { id: "Num-telemovel", info: '123654532' },
-      ];
+    fetchProfile();
+    fetchLostItems();
+  }, [authFetch]);
 
+  if (loading || loadingItems) {
+    return <div>Loading...</div>;
+  }
 
-return (
+  if (!profile) {
+    return <div>Failed to load profile.</div>;
+  }
 
-<div className="Page-container">
-   
-  <div className="welcome-text">Perfil</div>
-<div className="Page-box">
-  
-    <div className='Profile-information'>
-    
-    <div className="Profile-itens">Username</div>
-    <div className="Profile-itens">coisas</div>
+  return (
+    <div className="Page-container">
+      <div className="welcome-text">Perfil</div>
+      <div className="Page-box">
+        <div className="Profile-information">
+          <div className="Profile-item">Username</div>
+          <div className="Profile-item">{user?.email}</div>
 
-    <div className="Profile-itens">Password</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Primeiro Nome</div>
+          <div className="Profile-item">{profile.nome}</div>
 
-    <div className="Profile-itens">Primeiro Nome</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Género</div>
+          <div className="Profile-item">{profile.genero}</div>
 
-    <div className="Profile-itens">Ultimo Nome</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Data Nascimento</div>
+          <div className="Profile-item">{profile.data_nasc}</div>
 
-    <div className="Profile-itens">Email</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Morada</div>
+          <div className="Profile-item">{profile.morada}</div>
 
-    <div className="Profile-itens">Género</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Email</div>
+          <div className="Profile-item">{profile.email}</div>
 
-    <div className="Profile-itens">Data Nascimento</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Nº Telemovel</div>
+          <div className="Profile-item">{profile.telemovel}</div>
 
-    <div className="Profile-itens">Morada</div>
-    <div className="Profile-itens">coisas</div>
+          <div className="Profile-item">Ativo</div>
+          <div className="Profile-item">{profile.ativo ? 'Sim' : 'Não'}</div>
 
-    <div className="Profile-itens">Código Postal</div>
-    <div className="Profile-itens">coisas</div>
+          {profile.historico && (
+            <>
+              <div className="Profile-item">Histórico</div>
+              <div className="Profile-item">{profile.historico}</div>
+            </>
+          )}
+        </div>
 
-    <div className="Profile-itens">NIF</div>
-    <div className="Profile-itens">coisas</div>
-
-    <div className="Profile-itens">Cartão Cidadão</div>
-    <div className="Profile-itens">coisas</div>
-
-    <div className="Profile-itens">Nº Telemovel</div>
-    <div className="Profile-itens">coisas</div>
-
-
-
+        <div className="Lost-item-column">
+          <div className="Profile-item">Itens Perdidos registados</div>
+          {lostItems.map((item) => (
+            <div key={item.id} className="Profile-item">
+              {item.titulo} - {item.descricao_curta} (Perdido em {item.data_perdido})
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-    
-    <div className='Lost-item-column'>
-
-    <div className="Profile-itens">Itens Perdidos registados</div>
-
-    <div className="Profile-itens">coisas</div>
-    <div className="Profile-itens">coisas</div>
-    <div className="Profile-itens">coisas</div>
-    <div className="Profile-itens">coisas</div>
-    <div className="Profile-itens">coisas</div>
-    <div className="Profile-itens">coisas</div>
-    
-
-    
-    </div>
-    
-  </div>
-  </div>
-);
-
+  );
 };
 
 export default Profile;

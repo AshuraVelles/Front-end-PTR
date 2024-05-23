@@ -3,31 +3,26 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 const useAuthFetch = () => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error('useAuthFetch must be used within an AuthProvider');
-  }
-
-  const { accessToken } = context;
+  const { accessToken } = useContext(AuthContext)!;
 
   const authFetch = async (url: string, options: RequestInit = {}) => {
-    if (!options.headers) {
-        options.headers = new Headers();
+    if (!accessToken) {
+      throw new Error('No access token available');
     }
 
-    if (accessToken) {
-        (options.headers as Headers).append('Authorization', `Bearer ${accessToken}`);
-    }
-
-    const response = await fetch(url, options);
-    const data = await response.json();
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     if (!response.ok) {
-        throw new Error(data.message || 'An error occurred');
+      throw new Error(`Failed to fetch: ${response.statusText}`);
     }
 
-    return data;
+    return response.json();
   };
 
   return authFetch;
