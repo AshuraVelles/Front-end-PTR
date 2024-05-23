@@ -25,7 +25,11 @@ function Register() {
     if (!data_nasc) newErrors.data_nasc = 'Data de nascimento é obrigatória';
     if (!morada) newErrors.morada = 'Morada é obrigatória';
     if (!email) newErrors.email = 'E-mail é obrigatório';
-    if (!telemovel) newErrors.telemovel = 'Número de telemóvel é obrigatório';
+    if (!telemovel) {
+      newErrors.telemovel = 'Número de telemóvel é obrigatório';
+    } else if (!/^\d+$/.test(telemovel)) {
+      newErrors.telemovel = 'Introduza apenas dígitos';
+    }
     if (!password) {
       newErrors.password = 'Palavra-passe é obrigatória';
     } else if (password.length < 8) { // Updated minimum length to 8 characters
@@ -59,7 +63,7 @@ function Register() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3998/v1/users/register', {
+      const response = await fetch('http://localhost:3999/v1/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
