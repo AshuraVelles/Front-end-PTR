@@ -52,6 +52,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('accessToken', token);
   };
 
+  //TODO: dizer ao api pelo users/logout
   const logout = () => {
     setUser(null);
     setAccessToken(null);
