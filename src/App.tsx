@@ -2,7 +2,7 @@
 import React from 'react';
 import WelcomePage from './Welcome-Page';
 import Login from './Login';
-import FindItemsPage from './FindItems';
+import LostItemsPage from './LostItems';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './Register';
 import FoundItemsPage from './FoundItems';
@@ -21,7 +21,7 @@ function App() {
           <Route path="*" element={<WelcomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/lostItems" element={<FindItemsPage />} />
+          <Route path="/lostItems" element={<LostItemsPage />} />
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />

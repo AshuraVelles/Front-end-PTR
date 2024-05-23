@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const response = await fetch('http://localhost:3999/v1/users/login', {
+      const response = await fetch('http://localhost:3998/v1/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
-        login(data.user);
+        login(data.user, data.accessToken);
         console.log('User and access token set in context and localStorage');
         navigate('/profile');
       } else {

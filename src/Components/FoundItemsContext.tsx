@@ -1,26 +1,31 @@
-// ItemsContext.tsx
+// src/components/FoundItemsContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchFoundItems } from '../api'; // Import the API service
-// Types for API items
+import useFetchFoundItems from '../hooks/useFetchFoundItems';
+
 interface ApiItem {
   id: number;
   descricao: string;
   categoria: string;
-  data_perdido: string;
-  localizacao_perdido: {
+  data_achado: string;
+  localizacao_achado: {
     latitude: number;
     longitude: number;
   };
   ativo: boolean;
-  utilizador_id: string;
+  policial_id: number;
+  imageUrl?: string;
 }
 
-interface Item {
+export interface Item {
   id: number;
   title: string;
   isSelected: boolean;
   imageUrl?: string;
   itemLink?: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 interface ItemsContextType {
@@ -38,32 +43,20 @@ interface ProviderProps {
 }
 
 export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
+  const { items: fetchedItems, isLoading, error } = useFetchFoundItems();
   const [items, setItems] = useState<Item[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadItems = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const fetchedItems: ApiItem[] = await fetchFoundItems();
-        setItems(fetchedItems.map(item => ({
-          id: item.id,
-          title: item.descricao,
-          isSelected: false, // Assuming items are not selected by default
-          // Here you can map additional properties as needed
-        })));
-      } catch (err) {
-        setError('Failed to fetch items');
-        console.error(err);
-      }
-      setLoading(false);
-    };
-
-    loadItems();
-  }, []);
+    setItems(fetchedItems.map(item => ({
+      id: item.id,
+      title: item.descricao,
+      isSelected: false,
+      imageUrl: item.imageUrl,
+      location: item.localizacao_achado,
+      itemLink: `/items/found/${item.id}`
+    })));
+  }, [fetchedItems]);
 
   return (
     <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>

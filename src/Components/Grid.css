@@ -1,34 +1,37 @@
+/* src/components/Grid.css */
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Creates three columns */
-    gap: 16px; /* Space between items */
-    padding: 16px; /* Padding around the grid */
-  }
-  
-  .grid-item {
-    border: 1px solid black; /* Border around each item */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .content-area {
-    flex-grow: 1; /* Makes the content area flexible */
-    border-bottom: 1px solid black; /* Separates title from content */
-  }
-  
-  .title {
-    padding: 8px; /* Padding inside the title area */
-    text-align: center; /* Center-aligns the text */
-  }
-  
-  .selected {
-    border-color: blue; /* Highlights selected item */
-  }
-  
-  /* Add hover effect for content area */
-  .content-area:hover {
-    background-color: #f0f0f0; /* Change background color on hover */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
-    transform: scale(1.05); /* Scale up on hover */
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Smooth transition */
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.grid-item {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.grid-item:hover {
+  transform: scale(1.05);
+}
+
+.grid-item.selected {
+  border-color: #007bff;
+  background-color: #e7f1ff;
+}
+
+.grid-item .title {
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.content-area img {
+  max-width: 100%;
+  height: auto;
+}
