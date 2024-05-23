@@ -43,17 +43,20 @@ interface ProviderProps {
 }
 
 export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { items: apiItems, isLoading, error } = useFetchFoundItems();
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const { items: fetchedItems, isLoading, error } = useFetchFoundItems();
+  const [items, setItems] = useState<Item[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const items = apiItems.map(item => ({
-    id: item.id,
-    title: item.descricao,
-    isSelected: false,
-    imageUrl: item.imageUrl,
-    location: item.localizacao_achado,
-    itemLink: `/items/found/${item.id}`
-  }));
+  useEffect(() => {
+    setItems(fetchedItems.map(item => ({
+      id: item.id,
+      title: item.descricao,
+      isSelected: false,
+      imageUrl: item.imageUrl,
+      location: item.localizacao_achado,
+      itemLink: `/items/found/${item.id}`
+    })));
+  }, [fetchedItems]);
 
   return (
     <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>

@@ -17,7 +17,7 @@ interface ApiItem {
   imageUrl?: string;
 }
 
-const useFetchFoundItems = (): { items: ApiItem[], isLoading: boolean, error: string | null } => {
+const useFetchFoundItems = () => {
   const { accessToken } = useContext(AuthContext) ?? {};
   const [items, setItems] = useState<ApiItem[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
