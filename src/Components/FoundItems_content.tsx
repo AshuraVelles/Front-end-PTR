@@ -1,4 +1,4 @@
-// FindItemsContent.tsx
+// src/Components/FoundItemsContent.tsx
 import React from 'react';
 import GridItem from './GridItem';
 import { useItems } from './FoundItemsContext';

@@ -1,19 +1,6 @@
-// ItemsContext.tsx
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchFoundItems } from '../api'; // Import the API service
-// Types for API items
-interface ApiItem {
-  id: number;
-  descricao: string;
-  categoria: string;
-  data_perdido: string;
-  localizacao_perdido: {
-    latitude: number;
-    longitude: number;
-  };
-  ativo: boolean;
-  utilizador_id: string;
-}
+// src/Components/FoundItemsContext.tsx
+import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
+import useFetchFoundItems from '../hooks/useFetchFoundItems';
 
 interface Item {
   id: number;
@@ -38,35 +25,19 @@ interface ProviderProps {
 }
 
 export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
-  const [items, setItems] = useState<Item[]>([]);
+  const { items, isLoading, error } = useFetchFoundItems();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadItems = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const fetchedItems: ApiItem[] = await fetchFoundItems();
-        setItems(fetchedItems.map(item => ({
-          id: item.id,
-          title: item.descricao,
-          isSelected: false, // Assuming items are not selected by default
-          // Here you can map additional properties as needed
-        })));
-      } catch (err) {
-        setError('Failed to fetch items');
-        console.error(err);
-      }
-      setLoading(false);
-    };
-
-    loadItems();
-  }, []);
+  const contextValue = useMemo(() => ({
+    items,
+    searchTerm,
+    setSearchTerm,
+    isLoading,
+    error,
+  }), [items, searchTerm, isLoading, error]);
 
   return (
-    <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>
+    <ItemsContext.Provider value={contextValue}>
       {children}
     </ItemsContext.Provider>
   );
