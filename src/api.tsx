@@ -1,11 +1,11 @@
-// apiService.ts
-import axios from 'axios';
-
-const BASE_URL = 'http://localhost:3998/v1';
+// src/apiService.ts
+import useAuthFetch from './hooks/useAuthFetch';
 
 export const fetchLostItems = async () => {
+  const authFetch = useAuthFetch();
+
   try {
-    const response = await axios.get(`${BASE_URL}/items/lost`);
+    const response = await authFetch('http://localhost:3999/v1/items/lost');
     return response.data;
   } catch (error) {
     console.error('Failed to fetch items:', error);
@@ -14,8 +14,10 @@ export const fetchLostItems = async () => {
 }
 
 export const fetchFoundItems = async () => {
+  const authFetch = useAuthFetch();
+
   try {
-    const response = await axios.get(`${BASE_URL}/items/found`);
+    const response = await authFetch('http://localhost:3999/v1/items/found');
     return response.data;
   } catch (error) {
     console.error('Failed to fetch items:', error);
@@ -24,8 +26,10 @@ export const fetchFoundItems = async () => {
 }
 
 export const fetchActiveAuctions = async () => {
+  const authFetch = useAuthFetch();
+
   try {
-    const response = await axios.get(`${BASE_URL}/auctions/auctions?status=active`);
+    const response = await authFetch('http://localhost:3999/v1/auctions/auctions?status=active');
     return response.data;
   } catch (error) {
     console.error('Error fetching auctions:', error);

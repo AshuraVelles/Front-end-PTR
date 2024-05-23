@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+// src/Login.tsx
+import React, { useState, useContext } from 'react';
 import './Login.css';
-import Header from './Components/Header';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
 import Button from './Components/Button';
 
-function Login() {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hasErrors, setHasErrors] = useState(false);
+  const { login } = useContext(AuthContext)!;
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors: { [key: string]: string } = {};
     if (!email) newErrors.email = 'E-mail é obrigatório';
     if (!password) newErrors.password = 'Palavra-passe é obrigatória';
 
@@ -36,10 +38,11 @@ function Login() {
           password: password
         })
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
+        login(data.user, data.accessToken);
         navigate('/profile');
       } else {
         console.error('Login failed:', data.message || data);
