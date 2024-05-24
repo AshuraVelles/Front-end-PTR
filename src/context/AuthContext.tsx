@@ -4,7 +4,7 @@ import React, { createContext, useState, useEffect, ReactNode } from 'react';
 interface AuthContextType {
   user: User | null;
   accessToken: string | null;
-  login: (user: User, token: string) => void;
+  login: (user: User) => void;
   logout: () => void;
 }
 
@@ -33,20 +33,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    const storedAccessToken = localStorage.getItem('accessToken');
-
-    if (storedUser && storedAccessToken) {
-      setUser(JSON.parse(storedUser));
-      setAccessToken(storedAccessToken);
+    if (storedUser) {
+      const parsedUser: User = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setAccessToken(parsedUser.stsTokenManager.accessToken);
     }
   }, []);
 
-  const login = (userData: User, token: string) => {
+  const login = (userData: User) => {
     setUser(userData);
-    setAccessToken(token);
+    setAccessToken(userData.stsTokenManager.accessToken);
 
     localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('accessToken', token);
   };
 
   const logout = () => {
@@ -54,7 +52,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAccessToken(null);
 
     localStorage.removeItem('user');
-    localStorage.removeItem('accessToken');
   };
 
   return (
