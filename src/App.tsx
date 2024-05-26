@@ -2,14 +2,15 @@
 import React from 'react';
 import WelcomePage from './Welcome-Page';
 import Login from './Login';
-import LostItemsPage from './LostItems';
+import LostItemsPage from './LostItemsPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './Register';
-import FoundItemsPage from './FoundItems';
+import FoundItemsPage from './FoundItemsPage';
 import Profile from './Profile';
 import AuctionsPage from './AuctionsPage';
 import Header from './Components/Header';
 import AuthProvider from './context/AuthContext';
+import ItemDetailsPage from './ItemDetailsPage';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
+          <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
+          <Route path="/found/:id" element={<ItemDetailsPage />} /> 
         </Routes>
       </Router>
     </AuthProvider>

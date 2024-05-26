@@ -1,28 +1,29 @@
-// src/components/GridItem.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface GridItemProps {
+  id: number;
   title: string;
   isSelected: boolean;
-  imageUrl?: string;
+  imageurl?: string;
   itemLink?: string;
-  onClick?: () => void;
+  itemType: 'lost' | 'found';  // Add itemType to distinguish between lost and found items
 }
 
-const GridItem: React.FC<GridItemProps> = ({ title, isSelected, imageUrl, itemLink, onClick }) => {
-  const itemStyle = isSelected ? "grid-item selected" : "grid-item";
-
+const GridItem: React.FC<GridItemProps> = ({ id, title, isSelected, imageurl, itemLink, itemType }) => {
+  const itemStyle = isSelected ? 'grid-item selected' : 'grid-item';
+  
   return (
-    <div className={itemStyle} onClick={onClick}>
-      <div className="content-area" style={{ textAlign: "center" }}>
+    <div className={itemStyle}>
+      <div className="content-area" style={{ textAlign: 'center' }}>
         {itemLink ? (
           <a href={itemLink}>
-            <img src={imageUrl} height={110} alt={title} />
+            <img src={imageurl} height={110} alt={title} />
           </a>
         ) : (
-          <a href='www.google.com'>
-            <img src={imageUrl} height={110} alt={title} />
-          </a>
+          <Link to={`/${itemType}/${id}`}>
+            <img src={imageurl} height={110} alt={title} />
+          </Link>
         )}
       </div>
       <div className="title">{title}</div>
