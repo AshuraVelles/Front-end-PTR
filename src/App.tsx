@@ -11,6 +11,8 @@ import AuctionsPage from './AuctionsPage';
 import Header from './Components/Header';
 import AuthProvider from './context/AuthContext';
 import ItemDetailsPage from './ItemDetailsPage';
+import HomePolicia from './homePolicia';
+import HomeUtilizador from './homeUtilizador';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="*" element={<WelcomePage />} />
+          <Route path="/home" element={<HomeUtilizador />} />
+          <Route path="/homePolicia" element={<HomePolicia />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/lostItems" element={<LostItemsPage />} />
