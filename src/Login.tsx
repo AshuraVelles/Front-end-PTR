@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const response = await fetch('http://localhost:3997/v1/users/login', {
+      const response = await fetch('http://localhost:3995/v1/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

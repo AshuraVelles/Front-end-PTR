@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import config from '../apiconfig';
 
 interface ApiItem {
@@ -20,28 +20,28 @@ const useFetchLostItems = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchItems = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  useEffect(() => {
+    const fetchItems = async () => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await fetch(`${config.API_BASE_URL}/items/lost`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch items');
+      try {
+        const response = await fetch(`${config.API_BASE_URL}/items/lost`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch items');
+        }
+
+        const data: ApiItem[] = await response.json();
+        setItems(data);
+      } catch (err: unknown) {
+        setError((err as Error).message);
       }
 
-      const data: ApiItem[] = await response.json();
-      setItems(data);
-    } catch (err: unknown) {
-      setError((err as Error).message);
-    }
+      setLoading(false);
+    };
 
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
     fetchItems();
-  }, [fetchItems]);
+  }, []);
 
   return { items, isLoading, error };
 };

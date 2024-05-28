@@ -1,19 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchFoundItems, fetchLostItems } from '../api';
-
-interface ApiItem {
-  id: number;
-  descricao: string;
-  categoria: string;
-  data_perdido: string;
-  localizacao_perdido: {
-    latitude: number;
-    longitude: number;
-  };
-  ativo: boolean;
-  utilizador_id: string;
-    imageurl?: string;
-}
+// src/context/ItemsContext.tsx
+import React, { createContext, useContext, ReactNode, useState } from 'react';
+import useFetchFoundItems from '../hooks/useFetchFoundItems';
+import useFetchLostItems from '../hooks/useFetchLostItems';
 
 interface Item {
   id: number;
@@ -39,32 +27,19 @@ interface ProviderProps {
 }
 
 export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
-  const [items, setItems] = useState<Item[]>([]);
+  const { items: foundItems, isLoading: isFoundLoading, error: foundError } = useFetchFoundItems();
+  const { items: lostItems, isLoading: isLostLoading, error: lostError } = useFetchLostItems();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadItems = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const fetchedItems: ApiItem[] = type === 'found' ? await fetchFoundItems() : await fetchLostItems();
-        setItems(fetchedItems.map(item => ({
-          id: item.id,
-          title: item.descricao,
-          isSelected: false,
-            imageurl: item.imageurl
-        })));
-      } catch (err) {
-        setError('Failed to fetch items');
-        console.error(err);
-      }
-      setLoading(false);
-    };
+  const items = (type === 'found' ? foundItems : lostItems).map(item => ({
+    id: item.id,
+    title: item.descricao, // Assuming 'descricao' is the title
+    isSelected: false, // Assuming items are not selected by default
+    imageurl: "https://via.placeholder.com/150" //meter imagem
+  }));
 
-    loadItems();
-  }, [type]);
+  const isLoading = type === 'found' ? isFoundLoading : isLostLoading;
+  const error = type === 'found' ? foundError : lostError;
 
   return (
     <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>
