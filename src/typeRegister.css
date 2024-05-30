@@ -1,0 +1,43 @@
+.bottom-buttons {
+    display: flex;
+    justify-content: center; /* Centraliza os botões */
+    align-items: center; /* Alinha os botões verticalmente no centro */
+    width: 100%;
+    gap: 20px; /* Adiciona espaço entre os botões */
+  }
+  
+  .membro-policia-botao,
+  .novo-user-botao {
+    margin: 0 15px;
+    padding: 10px 20px;
+    border: 2px solid rgb(182, 117, 32); /* Cor da borda */
+    border-radius: 22px;
+    cursor: pointer;
+    color: rgb(182, 117, 32); /* Cor do texto */
+    background-color: white; /* Cor de fundo */
+    font-size: 36px;
+    font-family: 'Bellota', system-ui;
+    text-align: center;
+    width: 300px; /* Define uma largura fixa para os botões */
+  }
+  
+  .membro-policia-botao:hover,
+  .novo-user-botao:hover {
+    background-color: rgb(182, 117, 32); /* Cor de fundo ao passar o mouse */
+    color: white; /* Cor do texto ao passar o mouse */
+  }
+  
+  .login-box {
+    border: 2px solid rgb(182, 117, 32);
+    border-radius: 22px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px; /* Altura ajustada */
+    width: 800px; /* Largura ajustada */
+    margin: 0 auto; /* Centraliza a caixa na tela */
+    position: relative;
+  }
+  

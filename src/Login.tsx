@@ -87,7 +87,7 @@ const Login: React.FC = () => {
           Entrar
         </button>
         <div className="bottom-buttons">
-          <button className="register-button" onClick={() => navigate("/register")}>Registar</button>
+          <button className="register-button" onClick={() => navigate("/typeRegister")}>Registar</button>
         </div>
       </div>
     </div>

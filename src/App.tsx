@@ -13,6 +13,8 @@ import AuthProvider from './context/AuthContext';
 import ItemDetailsPage from './ItemDetailsPage';
 import HomePolicia from './homePolicia';
 import HomeUtilizador from './homeUtilizador';
+import TypeRegister from './TypeRegister';
+import RegisterPolicia from './RegisterPolicia';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
           <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
           <Route path="/found/:id" element={<ItemDetailsPage />} /> 
+          <Route path="/RegisterPolicia" element={<RegisterPolicia />} />
+          <Route path="/typeRegister" element={<TypeRegister />} />
         </Routes>
       </Router>
     </AuthProvider>
