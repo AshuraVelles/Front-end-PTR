@@ -13,6 +13,7 @@ import AuthProvider from './context/AuthContext';
 import ItemDetailsPage from './ItemDetailsPage';
 import HomePolicia from './homePolicia';
 import HomeUtilizador from './homeUtilizador';
+import AddAuction from './addAuction';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
+          <Route path="/addAuction" element={<AddAuction />} />
           <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
           <Route path="/found/:id" element={<ItemDetailsPage />} /> 
         </Routes>

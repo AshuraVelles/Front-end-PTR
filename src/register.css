@@ -43,7 +43,7 @@ label {
   flex-direction: column;
   align-items: center;
   margin: 20px auto;
-  transition: height 0.3                                                 s ease; /* Add transition for smooth resizing */
+  transition: height 0.3                                                 
 }
 
 .error-active {
