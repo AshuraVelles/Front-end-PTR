@@ -24,6 +24,36 @@ body {
     margin-bottom: 10%;
   }
   
+
+  /* Base-page.css */
+.Page-container {
+  padding: 20px;
+}
+
+.welcome-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.Page-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Text-column {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.lost-items {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+}
+
   
   
 

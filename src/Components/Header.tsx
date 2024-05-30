@@ -14,7 +14,7 @@ const Header: React.FC = () => {
     <header className="header">
       <nav>
         <ul className="nav-links">
-          <li><a href='/' className='nav-button'>Home</a></li>
+          <li><a href='/homeUtilizador' className='nav-button'>Home</a></li>
           <li><a href='/lostItems' className='nav-button'>Perdidos</a></li>
           <li><a href='/foundItems' className='nav-button'>Achados</a></li>
           <li><h1>RCA</h1></li> 

@@ -9,6 +9,7 @@ interface Item {
   isSelected: boolean;
   imageurl?: string;
   itemLink?: string;
+  descricao: string;
 }
 
 interface ItemsContextType {

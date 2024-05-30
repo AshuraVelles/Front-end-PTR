@@ -26,6 +26,7 @@ function App() {
           <Route path="*" element={<WelcomePage />} />
           <Route path="/home" element={<HomeUtilizador />} />
           <Route path="/homePolicia" element={<HomePolicia />} />
+          <Route path="/homeUtilizador" element={<HomeUtilizador />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/lostItems" element={<LostItemsPage />} />
