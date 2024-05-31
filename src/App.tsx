@@ -14,6 +14,8 @@ import ItemDetailsPage from './ItemDetailsPage';
 import HomePolicia from './homePolicia';
 import HomeUtilizador from './homeUtilizador';
 import AddAuction from './addAuction';
+import TypeRegister from './TypeRegister';
+import RegisterPolicia from './RegisterPolicia';
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           <Route path="*" element={<WelcomePage />} />
           <Route path="/home" element={<HomeUtilizador />} />
           <Route path="/homePolicia" element={<HomePolicia />} />
+          <Route path="/homeUtilizador" element={<HomeUtilizador />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/lostItems" element={<LostItemsPage />} />
@@ -34,6 +37,8 @@ function App() {
           <Route path="/addAuction" element={<AddAuction />} />
           <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
           <Route path="/found/:id" element={<ItemDetailsPage />} /> 
+          <Route path="/RegisterPolicia" element={<RegisterPolicia />} />
+          <Route path="/typeRegister" element={<TypeRegister />} />
         </Routes>
       </Router>
     </AuthProvider>
