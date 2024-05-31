@@ -6,43 +6,40 @@ import UserLostItemsPage from './Components/UserLostItems';
 import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
 
-  
 interface LostItem {
     id: number;
     titulo: string;
     descricao_curta: string;
     data_perdido: string;
+    ativo: boolean;
 }
 
-
 const HomeUtilizador: React.FC = () => {
-    
-
     const [lostItems, setLostItems] = useState<LostItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingItems, setLoadingItems] = useState(true);
     const navigate = useNavigate();
-    const authFetch = useAuthFetch()
-
+    const authFetch = useAuthFetch();
 
     useEffect(() => {
         const fetchLostItems = async () => {
             try {
-              const data = await authFetch('http://localhost:3995/v1/users/mylostitems');
-              setLostItems(data);
-              setLoadingItems(false);
+                const data = await authFetch('http://localhost:3995/v1/users/mylostitems');
+                console.log("Fetched data:", data);
+                setLostItems(data);
+                setLoadingItems(false);
             } catch (error) {
-              console.error('Failed to fetch lost items:', error);
-              setLoadingItems(false);
+                console.error('Failed to fetch lost items:', error);
+                setLoadingItems(false);
             }
-          };
+        };
 
-    
         fetchLostItems();
-    },    [authFetch]);
+    }, [authFetch]);
 
-
-
+    if (loadingItems) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="Page-container">
@@ -84,13 +81,17 @@ const HomeUtilizador: React.FC = () => {
                 </div>
                 
                 <div className="Lost-item-column">
-          <div className="Profile-item">Itens Perdidos registados</div>
-          {lostItems.map((item) => (
-            <div key={item.id} className="Profile-item">
-              {item.titulo} - {item.descricao_curta} (Perdido em {item.data_perdido})
-            </div>
-          ))}
-        </div>
+                    <div className="left-title">Itens perdidos</div>
+                    {lostItems.length === 0 ? (
+                        <div className="home-page-item">Nenhum registo de item perdido encontrado.</div>
+                    ) : (
+                        lostItems.map((item) => (
+                            <div key={item.id} className="home-page-item">
+                                {item.titulo} - {item.descricao_curta} - {item.ativo ? "Não encontrado" : "Objeto Encontrado"}
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
         </div>
     );

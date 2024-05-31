@@ -1,69 +1,91 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: white;
-  }
-  .Page-company-name {
-    font-size: 60px;
-   
-    margin-top: 50px;
-    margin-left: 258px;
-    background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 300;
-    font-family: 'Inter', sans-serif;
-    
-  }
-  .Page-container {
-    background-color: white;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    margin-bottom: 10%;
-  }
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+.Page-company-name {
+  font-size: 60px;
+ 
+  margin-top: 50px;
+  margin-left: 258px;
+  background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 300;
+  font-family: 'Inter', sans-serif;
   
+}
 
-  /* Base-page.css */
+.left-title {
+  font-size: 48px;
+  color: rgb(182, 117, 32);
+  font-family: 'Bellota', system-ui;
+}
+
 .Page-container {
-  padding: 20px;
+  background-color: white;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  margin-bottom: 10%;
+}
+
+
+/* Base-page.css */
+.Page-container {
+padding: 20px;
 }
 
 .welcome-text {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+font-size: 24px;
+font-weight: bold;
+margin-bottom: 20px;
 }
 
 .Page-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
 }
 
 .Text-column {
-  flex: 1;
-  padding-right: 20px;
+flex: 1;
+padding-right: 20px;
 }
 
 .lost-items {
-  flex: 1;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
+flex: 1;
+border: 1px solid #ccc;
+border-radius: 8px;
+padding: 10px;
 }
 
-  
-  
+.home-page-item {
+background-color: #f9f9f9;
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 10px;
+margin-bottom: 5px; /* Diminua a margem inferior para juntar mais os itens */
+font-size: 16px;
+}
 
-  
-  
-  .Page-box {
-    border: 2px solid rgb(182, 117, 32);
-    border-radius: 22px;
-    padding: 50px;
-    height: 900px;
-    width: 1450px;
-    margin-left: 10%;
-  }
+.home-page-item:nth-child(odd) {
+background-color: #f1f1f1;
+}
+
+.home-page-item:nth-child(even) {
+background-color: #e9e9e9;
+}
+
+
+
+
+.Page-box {
+  border: 2px solid rgb(182, 117, 32);
+  border-radius: 22px;
+  padding: 50px;
+  height: 900px;
+  width: 1450px;
+  margin-left: 10%;
+}

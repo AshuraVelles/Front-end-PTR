@@ -11,7 +11,7 @@ const typeRegister: React.FC = () => {
   return (
     <div className="login-container">
       <div className="welcome-text">Bem-vindos</div>
-      <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
+      <div className={`type-box ${hasErrors ? 'error-active' : ''}`}>
         <div className="bottom-buttons">
           <button className="novo-user-botao" onClick={() => navigate("/register")}>
             Novo Utilizador
