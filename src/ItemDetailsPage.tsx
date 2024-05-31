@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { fetchLostItemById, fetchFoundItemById } from './api';
 import './ItemDetailsPage.css';
-import Header from './Components/Header';
+
 interface Location {
   latitude: number;
   longitude: number;
@@ -137,7 +137,6 @@ const ItemDetailsPage: React.FC = () => {
     return (
         console.log(foundItem),
     <div className="main_container">
-        <Header />,
       <div className="container">
         
         <h1 className='details'>{foundItem.titulo}</h1>
@@ -155,6 +154,7 @@ const ItemDetailsPage: React.FC = () => {
               <span><strong>Latitude:</strong> {foundItem.localizacao_achado.latitude} <br></br>
               <strong>Longitude:</strong> {foundItem.localizacao_achado.longitude}</span>
             </div>
+            <br></br>
             <p><strong>Deadline:</strong> {formatDate(foundItem.data_limite)}</p>
             <p className={`status ${foundItem.ativo ? '' : 'inactive'}`}>
               <strong>Status:</strong> {foundItem.ativo ? 'Active' : 'Inactive'}

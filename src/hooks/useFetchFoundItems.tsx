@@ -25,7 +25,7 @@ const useFetchLostItems = () => {
     setError(null);
 
     try {
-      const response = await fetch(`${config.API_BASE_URL}/items/lost`);
+      const response = await fetch(`${config.API_BASE_URL}/items/found`);
       if (!response.ok) {
         throw new Error('Failed to fetch items');
       }
