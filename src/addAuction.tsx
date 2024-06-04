@@ -49,14 +49,6 @@ function AddAuction() {
         <div className="login-title">Adicionar um Leilão</div>
         <div className="input-container">
           <div className='left'>
-            <label>ID do objeto</label>
-            <input
-              type="number"
-              placeholder="ID do objeto"
-              value={IDItem}
-              onChange={(e) => setIDItem(e.target.value)}
-            />
-            {errors.IDItem && <div className="error">{errors.IDItem}</div>}
 
             <label>Preço base</label>
             <input
@@ -78,7 +70,7 @@ function AddAuction() {
 
           </div>
           <div className='right'>
-            <label>Data de Nascimento</label>
+            <label>Data de Inicio</label>
             <input
               type="date"
               placeholder="Data de Nascimento"
@@ -87,7 +79,7 @@ function AddAuction() {
             />
             {errors.data_Inicio && <div className="error">{errors.data_Inicio}</div>}
           
-            <label>Morada</label>
+            <label>Data do Fim</label>
             <input
               type="date"
               placeholder="Morada"
