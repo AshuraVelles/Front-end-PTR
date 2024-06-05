@@ -1,7 +1,6 @@
 import React from 'react';
 import './Base-page.css'
 import './Welcome-Page.css'
-import Header from './Components/Header.tsx';
 import { useNavigate } from 'react-router-dom';
 
 

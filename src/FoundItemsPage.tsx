@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from './Components/Header';
 import FoundItemsContent from './Components/FoundItemsContent';
 import SearchBar from './Components/SearchBar';
 import { ItemsProvider } from './Components/ItemsProvider';

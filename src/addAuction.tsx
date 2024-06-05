@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import './AuctionsPage.css'
-import Header from './Components/Header';
 import { useNavigate } from 'react-router-dom';
 
 function AddAuction() {
-  const [IDItem, setIDItem] = useState('');
   const [Localização, setLocalização] = useState('');
   const [PreçoBase, setPreçoBase] = useState('');
   const [data_Inicio, setDataInicio] = useState('');
@@ -16,7 +14,6 @@ function AddAuction() {
   const validate = () => {
     const newErrors = {};
   
-    if (!IDItem) newErrors.IDItem = 'Username é obrigatório';
     if (!Localização) newErrors.Localização = 'Nome é obrigatório';
     if (!PreçoBase) newErrors.PreçoBase = 'Género é obrigatório';
     if (!data_Inicio) newErrors.data_Inicio = 'Data de nascimento é obrigatória';

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import './register.css';
-import Header from './Components/Header';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {

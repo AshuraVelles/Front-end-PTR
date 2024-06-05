@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import './registerPolicia.css';
-import Header from './Components/Header';
 import { useNavigate } from 'react-router-dom';
 
 function RegisterPolice() {

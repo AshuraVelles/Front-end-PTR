@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Base-page.css';
-import Header from './Components/Header.tsx';
 import { useNavigate } from 'react-router-dom';
-import UserLostItemsPage from './Components/UserLostItems';
-import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
 
 interface LostItem {

@@ -1,5 +1,4 @@
 // src/App.tsx
-import React from 'react';
 import WelcomePage from './Welcome-Page';
 import Login from './Login';
 import LostItemsPage from './LostItemsPage';
