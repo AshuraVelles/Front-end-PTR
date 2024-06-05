@@ -3,6 +3,17 @@ import './register.css';
 import Header from './Components/Header';
 import { useNavigate } from 'react-router-dom';
 
+interface Errors {
+  username?: string;
+  nome?: string;
+  genero?: string;
+  data_nasc?: string;
+  morada?: string;
+  email?: string;
+  telemovel?: string;
+  password?: string;
+}
+
 function Register() {
   const [username, setUsername] = useState('');
   const [nome, setNome] = useState('');
@@ -12,13 +23,13 @@ function Register() {
   const [email, setEmail] = useState('');
   const [telemovel, setTelemovel] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Errors>({});
   const [hasErrors, setHasErrors] = useState(false); 
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
-  
+    const newErrors: Errors = {};
+
     if (!username) newErrors.username = 'Username é obrigatório';
     if (!nome) newErrors.nome = 'Nome é obrigatório';
     if (!genero) newErrors.genero = 'Género é obrigatório';
@@ -32,18 +43,17 @@ function Register() {
     }
     if (!password) {
       newErrors.password = 'Palavra-passe é obrigatória';
-    } else if (password.length < 8) { // Updated minimum length to 8 characters
+    } else if (password.length < 8) {
       newErrors.password = 'Palavra-passe deve ter pelo menos 8 caracteres';
-    } else if (!/[A-Z]/.test(password) || !/\d/.test(password)) { // Ensure at least one uppercase letter and one number
+    } else if (!/[A-Z]/.test(password) || !/\d/.test(password)) {
       newErrors.password = 'Palavra-passe deve conter pelo menos uma letra maiúscula e um número';
     }
-  
+
     setErrors(newErrors);
     const hasErrors = Object.keys(newErrors).length > 0;
     setHasErrors(hasErrors);
     return !hasErrors;
   };
-  
 
   const handleRegister = async () => {
     if (!validate()) return;
@@ -163,10 +173,9 @@ function Register() {
             {errors.password && <div className="error">{errors.password}</div>}
           </div>
           <div className="bottom-buttons">
-          <button className="register-button" onClick={handleRegister}>Criar Conta</button>
+            <button className="register-button" onClick={handleRegister}>Criar Conta</button>
+          </div>
         </div>
-        </div>
-        
       </div>
     </div>
   );
