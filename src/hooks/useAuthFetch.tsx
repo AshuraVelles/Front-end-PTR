@@ -8,13 +8,13 @@ const useAuthFetch = () => {
     throw new Error('useAuthFetch must be used within an AuthProvider');
   }
 
-  const { firebaseToken, auth0Token } = context;
+  const { accessToken, auth0Token } = context;
 
   const authFetch = async (url: string, options: RequestInit = {}) => {
     const headers = new Headers(options.headers || {});
 
-    if (firebaseToken) {
-      headers.set('Authorization', `Bearer ${firebaseToken}`);
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
     if (auth0Token) {

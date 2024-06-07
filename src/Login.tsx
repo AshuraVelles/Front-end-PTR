@@ -41,6 +41,8 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
+        console.log('Received accessToken:', data.user.stsTokenManager.accessToken);
+        console.log('Received auth0Token:', data.accessToken);
         login(data.user, data.accessToken); // Pass both user and accessToken
         console.log('User and access token set in context and localStorage');
         navigate('/profile');

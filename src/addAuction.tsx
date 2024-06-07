@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './AuctionsPage.css';
-
 import { useNavigate, useParams } from 'react-router-dom';
-
+import config from './apiconfig';
+import { AuthContext } from './context/AuthContext';
 
 function AddAuction() {
   const { id } = useParams(); // Get the item ID from the URL
@@ -13,6 +13,7 @@ function AddAuction() {
   const [data_Fim, setDataFim] = useState('');
   const [errors, setErrors] = useState({});
   const [hasErrors, setHasErrors] = useState(false); 
+  const { accessToken, auth0Token } = useContext(AuthContext)!;
   const navigate = useNavigate();
 
   const validate = () => {
@@ -29,27 +30,27 @@ function AddAuction() {
     setHasErrors(hasErrors);
     return !hasErrors;
   };
+
   const handleRegister = async () => {
     if (!validate()) return;
   
     const payload = {
-      IDItem: IDItem,
-      Localização: Localização,
-      PreçoBase: PreçoBase,
-      data_Inicio: data_Inicio,
-      data_Fim: data_Fim,
-      ativo: true
+      objeto_achado_id: IDItem,
+      data_inicio: data_Inicio,
+      data_fim: data_Fim,
+      localizacao: Localização,
+      valor_base: PreçoBase
     };
   
-    const firebaseToken = localStorage.getItem('firebaseToken'); // Get the Firebase token from localStorage
-    const auth0Token = localStorage.getItem('auth0Token'); // Get the Auth0 token from localStorage
-  
+    console.log('Using accessToken:', accessToken); // Log the token being used
+    console.log('Using auth0Token:', auth0Token); // Log the token being used
+
     try {
-      const response = await fetch('/api/auctions', {
+      const response = await fetch(`${config.API_BASE_URL}/auctions/auctions` , {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${firebaseToken}`, // Send Firebase token in Authorization header
+          'Authorization': `Bearer ${accessToken}`, // Send Firebase token in Authorization header
           'x-auth0-token': auth0Token || '' // Send Auth0 token in custom header, default to empty string if null
         },
         body: JSON.stringify(payload)
@@ -64,7 +65,6 @@ function AddAuction() {
       console.error('Error:', error);
     }
   };
-  
 
   return (
     <div className="login-container">
@@ -72,7 +72,6 @@ function AddAuction() {
         <div className="login-title">Adicionar um Leilão</div>
         <div className="input-container">
           <div className='left'>
-
             <label>Preço base</label>
             <input
               type="number"
@@ -81,7 +80,6 @@ function AddAuction() {
               onChange={(e) => setPreçoBase(e.target.value)}
             />
             {errors.PreçoBase && <div className="error">{errors.PreçoBase}</div>}
-
             <label>Localização</label>
             <input
               type="text"
@@ -90,7 +88,6 @@ function AddAuction() {
               onChange={(e) => setLocalização(e.target.value)}
             />
             {errors.Localização && <div className="error">{errors.Localização}</div>}
-
           </div>
           <div className='right'>
             <label>Data de Inicio</label>
@@ -101,7 +98,6 @@ function AddAuction() {
               onChange={(e) => setDataInicio(e.target.value)}
             />
             {errors.data_Inicio && <div className="error">{errors.data_Inicio}</div>}
-          
             <label>Data do Fim</label>
             <input
               type="date"
@@ -110,13 +106,11 @@ function AddAuction() {
               onChange={(e) => setDataFim(e.target.value)}
             />
             {errors.data_Fim && <div className="error">{errors.data_Fim}</div>}
-
           </div>
           <div className="bottom-buttons">
-          <button className="register-button" onClick={handleRegister}>Criar Leilão</button>
+            <button className="register-button" onClick={handleRegister}>Criar Leilão</button>
+          </div>
         </div>
-        </div>
-        
       </div>
     </div>
   );
