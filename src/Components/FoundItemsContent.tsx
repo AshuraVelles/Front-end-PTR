@@ -1,10 +1,10 @@
 import React from 'react';
-import { useItems } from './ItemsProvider';
+import { useFoundItems } from './ItemsContext';
 import GridItem from './GridItem';
 import './Grid.css';
 
 const FoundItemsContent: React.FC = () => {
-  const { items, searchTerm, isLoading, error } = useItems();
+  const { items, searchTerm, isLoading, error } = useFoundItems();
 
   const filteredItems = items.filter(item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -12,7 +12,7 @@ const FoundItemsContent: React.FC = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  
+
   return (
     <div className='grid'>
       {filteredItems.map((item) => (
@@ -23,7 +23,7 @@ const FoundItemsContent: React.FC = () => {
           isSelected={item.isSelected}
           imageurl={item.imageurl}
           itemLink={item.itemLink}
-          itemType="found"  // Set itemType to "found"
+          itemType="found"
         />
       ))}
     </div>

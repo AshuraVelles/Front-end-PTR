@@ -34,32 +34,34 @@ interface FoundItemDetails {
   policial_id: number;
   imageurl?: string;
 }
+
 const googleMapsUrl = (latitude: number, longitude: number) => 
-`https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
+  `https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
 
 const googleMapsLink = (latitude: number, longitude: number) => 
-`https://www.google.com/maps?q=${latitude},${longitude}&z=15`;
+  `https://www.google.com/maps?q=${latitude},${longitude}&z=15`;
+
 const renderMap = (latitude: number, longitude: number) => (
-    <div>
-      <iframe
-        width="600"
-        height="450"
-        style={{ border: 0 }}
-        loading="lazy"
-        allowFullScreen
-        src={googleMapsUrl(latitude, longitude)}
-      ></iframe>
-      <p>
-        <a
-          href={googleMapsLink(latitude, longitude)}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Open in Google Maps
-        </a>
-      </p>
-    </div>
-  );
+  <div>
+    <iframe
+      width="600"
+      height="450"
+      style={{ border: 0 }}
+      loading="lazy"
+      allowFullScreen
+      src={googleMapsUrl(latitude, longitude)}
+    ></iframe>
+    <p>
+      <a
+        href={googleMapsLink(latitude, longitude)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open in Google Maps
+      </a>
+    </p>
+  </div>
+);
 
 const ItemDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -96,81 +98,75 @@ const ItemDetailsPage: React.FC = () => {
   if ('data_perdido' in item) {
     const lostItem = item as LostItemDetails;
     return (
-        
       <div className="main_container">
-     
         <div className="container">
-        
-        <h1 className='details'>{lostItem.titulo}</h1>
-        <div className="item-details">
-        
-          <div className="item-info">
-            <p><strong>Short Description:</strong> {lostItem.descricao_curta}</p>
-            <p><strong>Description:</strong> {lostItem.descricao}</p>
-            <p><strong>Category:</strong> {lostItem.categoria}</p>
-            <p><strong>Date Lost:</strong> {formatDate(lostItem.data_perdido)}</p>
-            <div className="item-location">
-              <span><strong>Latitude:</strong> {lostItem.localizacao_perdido.latitude} <br></br>
-              <strong>Longitude:</strong> {lostItem.localizacao_perdido.longitude}</span>
+          <h1 className='details'>{lostItem.titulo}</h1>
+          <div className="item-details">
+            <div className="item-info">
+              <p><strong>Short Description:</strong> {lostItem.descricao_curta}</p>
+              <p><strong>Description:</strong> {lostItem.descricao}</p>
+              <p><strong>Category:</strong> {lostItem.categoria}</p>
+              <p><strong>Date Lost:</strong> {formatDate(lostItem.data_perdido)}</p>
+              <div className="item-location">
+                <span><strong>Latitude:</strong> {lostItem.localizacao_perdido.latitude} <br></br>
+                <strong>Longitude:</strong> {lostItem.localizacao_perdido.longitude}</span>
+              </div>
+              <br></br>
+              <p className={`status ${lostItem.ativo ? '' : 'inactive'}`}>
+                <strong>Status:</strong> {lostItem.ativo ? 'Active' : 'Inactive'}
+              </p>
+              <p><strong>User ID:</strong> {lostItem.utilizador_id}</p>
             </div>
-            <br></br>
-            <p className={`status ${lostItem.ativo ? '' : 'inactive'}`}>
-              <strong>Status:</strong> {lostItem.ativo ? 'Active' : 'Inactive'}
-            </p>
-            <p><strong>User ID:</strong> {lostItem.utilizador_id}</p>
+            {renderMap(lostItem.localizacao_perdido.latitude, lostItem.localizacao_perdido.longitude)}
           </div>
-          {renderMap(lostItem.localizacao_perdido.latitude, lostItem.localizacao_perdido.longitude)}
-        </div>
-        <div className="officer-section">
-          <img src="https://png.pngtree.com/png-clipart/20230819/original/pngtree-police-man-icon-simple-vector-picture-image_8043780.png" alt="Officer Badge" />
-          <p><strong>Officer ID:</strong> {lostItem.utilizador_id}</p>
-          <div className="button-container">
-            <a href="/action-url" className="button">Take Action</a>
+          <div className="officer-section">
+            <img src="https://png.pngtree.com/png-clipart/20230819/original/pngtree-police-man-icon-simple-vector-picture-image_8043780.png" alt="Officer Badge" />
+            <p><strong>Officer ID:</strong> {lostItem.utilizador_id}</p>
+            <div className="button-container">
+              <a href={`/addAuction/${lostItem.id}`} className="button">Take Action</a>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     );
   } else {
     const foundItem = item as FoundItemDetails;
     const formattedValue = new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(foundItem.valor_monetario);
     return (
-        console.log(foundItem),
-    <div className="main_container">
-      <div className="container">
-        
-        <h1 className='details'>{foundItem.titulo}</h1>
-        <div className="item-details">
-          <img
-            src={foundItem.imageurl || "path/to/found-item-placeholder.jpg"}
-            alt={foundItem.titulo}
-          />
-          <div className="item-info">
-            <p><strong>Short Description:</strong> {foundItem.descricao_curta}</p>
-            <p><strong>Description:</strong> {foundItem.descricao}</p>
-            <p><strong>Category:</strong> {foundItem.categoria}</p>
-            <p><strong>Date Found:</strong> {formatDate(foundItem.data_achado)}</p>
-            <div className="item-location">
-              <span><strong>Latitude:</strong> {foundItem.localizacao_achado.latitude} <br></br>
-              <strong>Longitude:</strong> {foundItem.localizacao_achado.longitude}</span>
+      <div className="main_container">
+        <div className="container">
+          <h1 className='details'>{foundItem.titulo}</h1>
+          <div className="item-details">
+            <img
+              src={foundItem.imageurl || "path/to/found-item-placeholder.jpg"}
+              alt={foundItem.titulo}
+            />
+            <div className="item-info">
+              <p><strong>Short Description:</strong> {foundItem.descricao_curta}</p>
+              <p><strong>Description:</strong> {foundItem.descricao}</p>
+              <p><strong>Category:</strong> {foundItem.categoria}</p>
+              <p><strong>Date Found:</strong> {formatDate(foundItem.data_achado)}</p>
+              <div className="item-location">
+                <span><strong>Latitude:</strong> {foundItem.localizacao_achado.latitude} <br></br>
+                <strong>Longitude:</strong> {foundItem.localizacao_achado.longitude}</span>
+              </div>
+              <br></br>
+              <p><strong>Deadline:</strong> {formatDate(foundItem.data_limite)}</p>
+              <p className={`status ${foundItem.ativo ? '' : 'inactive'}`}>
+                <strong>Status:</strong> {foundItem.ativo ? 'Active' : 'Inactive'}
+              </p>
+              <p><strong>Value:</strong> {formattedValue}</p>
             </div>
-            <br></br>
-            <p><strong>Deadline:</strong> {formatDate(foundItem.data_limite)}</p>
-            <p className={`status ${foundItem.ativo ? '' : 'inactive'}`}>
-              <strong>Status:</strong> {foundItem.ativo ? 'Active' : 'Inactive'}
-            </p>
-            <p><strong>Value:</strong> {formattedValue}</p>
-          </div>
             {renderMap(foundItem.localizacao_achado.latitude, foundItem.localizacao_achado.longitude)}
-        </div>
-        <div className="officer-section">
-          <img src="https://png.pngtree.com/png-clipart/20230819/original/pngtree-police-man-icon-simple-vector-picture-image_8043780.png" alt="Officer Badge" />
-          <p><strong>Officer ID:</strong> {foundItem.policial_id}</p>
-          <div className="button-container">
-            <a href="/action-url" className="button">Take Action</a>
+          </div>
+          <div className="officer-section">
+            <img src="https://png.pngtree.com/png-clipart/20230819/original/pngtree-police-man-icon-simple-vector-picture-image_8043780.png" alt="Officer Badge" />
+            <p><strong>Officer ID:</strong> {foundItem.policial_id}</p>
+            <div className="button-container">
+              <a href={`/addAuction/${foundItem.id}`} className="button">Take Action</a>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     );
   }

@@ -1,9 +1,13 @@
 import React from 'react';
 import './SearchBar.css';
-import { useLostItems } from './ItemsContext';
+import { useLocation } from 'react-router-dom';
+import { useLostItems, useFoundItems } from './ItemsContext';
 
 const SearchBar: React.FC = () => {
-  const { searchTerm, setSearchTerm } = useLostItems();
+  const location = useLocation();
+  const isLostPage = location.pathname.includes('lost');
+  
+  const { searchTerm, setSearchTerm } = isLostPage ? useLostItems() : useFoundItems();
 
   return (
     <div className="search-bar-container">

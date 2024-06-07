@@ -1,10 +1,10 @@
 import React from 'react';
-import { useItems } from './ItemsProvider';
+import { useLostItems } from '../Components/ItemsContext';
 import GridItem from './GridItem';
 import './Grid.css';
 
 const FindItemsContent: React.FC = () => {
-  const { items, searchTerm, isLoading, error } = useItems();
+  const { items, searchTerm, isLoading, error } = useLostItems();
 
   const filteredItems = items.filter(item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -23,7 +23,7 @@ const FindItemsContent: React.FC = () => {
           isSelected={item.isSelected}
           imageurl={item.imageurl}
           itemLink={item.itemLink}
-          itemType="lost"  // Set itemType to "lost"
+          itemType="lost"
         />
       ))}
     </div>
@@ -31,3 +31,4 @@ const FindItemsContent: React.FC = () => {
 };
 
 export default FindItemsContent;
+  

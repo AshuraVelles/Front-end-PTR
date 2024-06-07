@@ -1,49 +1,33 @@
-import { useEffect, useState } from 'react';
-import config from '../apiconfig';
-
-interface ApiItem {
-  id: number;
-  descricao: string;
-  categoria: string;
-  data_perdido: string;
-  localizacao_perdido: {
-    latitude: number;
-    longitude: number;
-  };
-  ativo: boolean;
-  utilizador_id: string;
-  imageurl?: string;
-}
+import { useState, useEffect } from 'react';
+import config from '../apiconfig'; // Ensure this path is correct
 
 const useFetchLostItems = () => {
-  const [items, setItems] = useState<ApiItem[]>([]);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [lostItems, setLostItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      setLoading(true);
-      setError(null);
-
+    const fetchLostItems = async () => {
       try {
         const response = await fetch(`${config.API_BASE_URL}/items/lost`);
         if (!response.ok) {
-          throw new Error('Failed to fetch items');
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
-
-        const data: ApiItem[] = await response.json();
-        setItems(data);
-      } catch (err: unknown) {
+        const data = await response.json();
+        console.log('Fetched lost items:', data); // Debug output
+        setLostItems(data);
+      } catch (err) { // Remove type annotation from catch clause variable
         setError((err as Error).message);
+        console.error('Error fetching lost items:', err); // Debug output
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
-    fetchItems();
+    fetchLostItems();
   }, []);
 
-  return { items, isLoading, error };
+  return { items: lostItems, isLoading: loading, error };
 };
 
 export default useFetchLostItems;

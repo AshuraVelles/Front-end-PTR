@@ -1,17 +1,16 @@
 import React from 'react';
-
 import FindItemsContent from './Components/FindItemsContent';
 import SearchBar from './Components/SearchBar';
-import { ItemsProvider } from './Components/ItemsProvider';
+import { LostItemsProvider } from './Components/ItemsContext';
 
 const LostItemsPage: React.FC = () => {
   return (
     <div>
-      <ItemsProvider type="lost">
+      <LostItemsProvider>
         <h1 className="title">Objetos Perdidos</h1>
         <SearchBar />
         <FindItemsContent />
-      </ItemsProvider>
+      </LostItemsProvider>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-// src/App.tsx
+import React from 'react';
 import WelcomePage from './Welcome-Page';
 import Login from './Login';
 import LostItemsPage from './LostItemsPage';
@@ -33,7 +33,7 @@ function App() {
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
-          <Route path="/addAuction" element={<AddAuction />} />
+          <Route path="/addAuction/:id" element={<AddAuction />} /> {/* Pass the item ID */}
           <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
           <Route path="/found/:id" element={<ItemDetailsPage />} /> 
           <Route path="/RegisterPolicia" element={<RegisterPolicia />} />

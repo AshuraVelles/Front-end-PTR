@@ -8,6 +8,7 @@ interface Item {
   isSelected: boolean;
   imageurl?: string;
   itemLink?: string;
+  descricao: string;
 }
 
 interface ItemsContextType {
@@ -18,39 +19,67 @@ interface ItemsContextType {
   error: string | null;
 }
 
-const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
+// Found Items Context
+const FoundItemsContext = createContext<ItemsContextType | undefined>(undefined);
+
+// Lost Items Context
+const LostItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 interface ProviderProps {
   children: ReactNode;
-  type: 'found' | 'lost';
 }
 
-export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
+// Found Items Provider
+export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
   const { items: foundItems, isLoading: isFoundLoading, error: foundError } = useFetchFoundItems();
-  const { items: lostItems, isLoading: isLostLoading, error: lostError } = useFetchLostItems();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const items = (type === 'found' ? foundItems : lostItems).map(item => ({
+  const items = foundItems.map(item => ({
     id: item.id,
-    title: item.descricao, // Assuming 'descricao' is the title
-    isSelected: false, // Assuming items are not selected by default
-    imageurl:  "https://via.placeholder.com/150"
+    title: item.descricao,
+    isSelected: false,
+    imageurl: "https://via.placeholder.com/150"
   }));
 
-  const isLoading = type === 'found' ? isFoundLoading : isLostLoading;
-  const error = type === 'found' ? foundError : lostError;
-
   return (
-    <ItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading, error }}>
+    <FoundItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading: isFoundLoading, error: foundError }}>
       {children}
-    </ItemsContext.Provider>
+    </FoundItemsContext.Provider>
   );
 };
 
-export const useItems = () => {
-  const context = useContext(ItemsContext);
+// Lost Items Provider
+export const LostItemsProvider: React.FC<ProviderProps> = ({ children }) => {
+  const { items: lostItems, isLoading: isLostLoading, error: lostError } = useFetchLostItems();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const items = lostItems.map(item => ({
+    id: item.id,
+    title: item.descricao,
+    isSelected: false,
+    imageurl: "https://via.placeholder.com/150"
+  }));
+
+  return (
+    <LostItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading: isLostLoading, error: lostError }}>
+      {children}
+    </LostItemsContext.Provider>
+  );
+};
+
+// Hooks to use Found and Lost Items Contexts
+export const useFoundItems = () => {
+  const context = useContext(FoundItemsContext);
   if (!context) {
-    throw new Error('useItems must be used within an ItemsProvider');
+    throw new Error('useFoundItems must be used within a FoundItemsProvider');
+  }
+  return context;
+};
+
+export const useLostItems = () => {
+  const context = useContext(LostItemsContext);
+  if (!context) {
+    throw new Error('useLostItems must be used within a LostItemsProvider');
   }
   return context;
 };

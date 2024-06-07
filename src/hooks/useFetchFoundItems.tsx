@@ -1,49 +1,33 @@
-import { useEffect, useState, useCallback } from 'react';
-import config from '../apiconfig';
+import { useState, useEffect } from 'react';
+import config from '../apiconfig'; // Ensure this path is correct
 
-interface ApiItem {
-  id: number;
-  descricao: string;
-  categoria: string;
-  data_perdido: string;
-  localizacao_perdido: {
-    latitude: number;
-    longitude: number;
-  };
-  ativo: boolean;
-  utilizador_id: string;
-  imageurl?: string;
-}
-
-const useFetchLostItems = () => {
-  const [items, setItems] = useState<ApiItem[]>([]);
-  const [isLoading, setLoading] = useState<boolean>(false);
+const useFetchFoundItems = () => {
+  const [foundItems, setFoundItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchItems = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(`${config.API_BASE_URL}/items/found`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch items');
+  useEffect(() => {
+    const fetchFoundItems = async () => {
+      try {
+        const response = await fetch(`${config.API_BASE_URL}/items/found`);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log('Fetched found items:', data); // Debug output
+        setFoundItems(data);
+      } catch (err) { // Remove the type annotation from 'err'
+        setError((err as Error).message);
+        console.error('Error fetching found items:', err); // Debug output
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data: ApiItem[] = await response.json();
-      setItems(data);
-    } catch (err: unknown) {
-      setError((err as Error).message);
-    }
-
-    setLoading(false);
+    fetchFoundItems();
   }, []);
 
-  useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
-
-  return { items, isLoading, error };
+  return { items: foundItems, isLoading: loading, error };
 };
 
-export default useFetchLostItems;
+export default useFetchFoundItems;

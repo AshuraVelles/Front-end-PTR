@@ -1,8 +1,12 @@
-import  { useState } from 'react';
-import './AuctionsPage.css'
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import './AuctionsPage.css';
+
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 function AddAuction() {
+  const { id } = useParams(); // Get the item ID from the URL
+  const [IDItem, setIDItem] = useState(id || ''); // Initialize with the ID from the URL
   const [Localização, setLocalização] = useState('');
   const [PreçoBase, setPreçoBase] = useState('');
   const [data_Inicio, setDataInicio] = useState('');
@@ -14,31 +18,53 @@ function AddAuction() {
   const validate = () => {
     const newErrors = {};
   
-    if (!Localização) newErrors.Localização = 'Nome é obrigatório';
-    if (!PreçoBase) newErrors.PreçoBase = 'Género é obrigatório';
-    if (!data_Inicio) newErrors.data_Inicio = 'Data de nascimento é obrigatória';
-    if (!data_Fim) newErrors.data_Fim = 'Morada é obrigatória';
+    if (!IDItem) newErrors.IDItem = 'ID do item é obrigatório';
+    if (!Localização) newErrors.Localização = 'Localização é obrigatória';
+    if (!PreçoBase) newErrors.PreçoBase = 'Preço base é obrigatório';
+    if (!data_Inicio) newErrors.data_Inicio = 'Data de início é obrigatória';
+    if (!data_Fim) newErrors.data_Fim = 'Data de fim é obrigatória';
   
     setErrors(newErrors);
     const hasErrors = Object.keys(newErrors).length > 0;
     setHasErrors(hasErrors);
     return !hasErrors;
   };
-  
-
   const handleRegister = async () => {
     if (!validate()) return;
-
+  
     const payload = {
       IDItem: IDItem,
-      nome: Localização,
+      Localização: Localização,
       PreçoBase: PreçoBase,
       data_Inicio: data_Inicio,
       data_Fim: data_Fim,
       ativo: true
     };
-
+  
+    const firebaseToken = localStorage.getItem('firebaseToken'); // Get the Firebase token from localStorage
+    const auth0Token = localStorage.getItem('auth0Token'); // Get the Auth0 token from localStorage
+  
+    try {
+      const response = await fetch('/api/auctions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${firebaseToken}`, // Send Firebase token in Authorization header
+          'x-auth0-token': auth0Token || '' // Send Auth0 token in custom header, default to empty string if null
+        },
+        body: JSON.stringify(payload)
+      });
+  
+      if (response.ok) {
+        navigate('/auctions');
+      } else {
+        console.error('Failed to create auction');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  
 
   return (
     <div className="login-container">
@@ -70,7 +96,7 @@ function AddAuction() {
             <label>Data de Inicio</label>
             <input
               type="date"
-              placeholder="Data de Nascimento"
+              placeholder="Data de Inicio"
               value={data_Inicio}
               onChange={(e) => setDataInicio(e.target.value)}
             />
@@ -79,7 +105,7 @@ function AddAuction() {
             <label>Data do Fim</label>
             <input
               type="date"
-              placeholder="Morada"
+              placeholder="Data do Fim"
               value={data_Fim}
               onChange={(e) => setDataFim(e.target.value)}
             />

@@ -1,4 +1,3 @@
-// src/Login.tsx
 import React, { useState, useContext } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
@@ -42,7 +41,7 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
-        login(data.user); // Note that we now pass only `data.user` to login
+        login(data.user, data.accessToken); // Pass both user and accessToken
         console.log('User and access token set in context and localStorage');
         navigate('/profile');
       } else {
