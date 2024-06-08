@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from './context/AuthContext';
+
 
 const typeRegister: React.FC = () => {
-  const [hasErrors, setHasErrors] = useState(false);
-  const { login } = useContext(AuthContext)!;
+  const [hasErrors] = useState(false);
+
   const navigate = useNavigate();
   
   return (

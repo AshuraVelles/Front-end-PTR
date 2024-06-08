@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './registerPolicia.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,20 +6,28 @@ function RegisterPolice() {
   const [nome, setNome] = useState('');
   const [postoPolicia, setPostoPolicia] = useState('');
   const [historicoPolicia, setHistoricoPolicia] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hasErrors, setHasErrors] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
-  
+    const newErrors: { [key: string]: string } = {};
+
     if (!nome) newErrors.nome = 'Nome é obrigatório';
     if (!postoPolicia) {
       newErrors.postoPolicia = 'Posto de polícia é obrigatório';
     } else if (!/^\d+$/.test(postoPolicia)) {
       newErrors.postoPolicia = 'Introduza apenas dígitos para o posto de polícia';
     }
-  
+
+    if (historicoPolicia) {
+      try {
+        JSON.parse(historicoPolicia);
+      } catch (e) {
+        newErrors.historicoPolicia = 'Histórico de polícia deve ser um JSON válido';
+      }
+    }
+
     setErrors(newErrors);
     const hasErrors = Object.keys(newErrors).length > 0;
     setHasErrors(hasErrors);
@@ -32,7 +40,7 @@ function RegisterPolice() {
     const payload = {
       nome: nome,
       posto_policia: parseInt(postoPolicia, 10),
-      historico_policia: JSON.parse(historicoPolicia || '{}')
+      historico_policia: historicoPolicia ? JSON.parse(historicoPolicia) : {}
     };
 
     console.log('Payload:', JSON.stringify(payload));
@@ -61,7 +69,6 @@ function RegisterPolice() {
 
   return (
     <div className="login-container">
-      
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
         <div className="login-title">Registar Polícia</div>
         <div className="input-container">
@@ -74,11 +81,11 @@ function RegisterPolice() {
               onChange={(e) => setNome(e.target.value)}
             />
             {errors.nome && <div className="error">{errors.nome}</div>}
-            
+
             <label>Posto de Polícia</label>
             <input
               type="text"
-              placeholder="ID"
+              placeholder="Posto de Polícia"
               value={postoPolicia}
               onChange={(e) => setPostoPolicia(e.target.value)}
             />
@@ -91,6 +98,7 @@ function RegisterPolice() {
               value={historicoPolicia}
               onChange={(e) => setHistoricoPolicia(e.target.value)}
             />
+            {errors.historicoPolicia && <div className="error">{errors.historicoPolicia}</div>}
           </div>
           <div className="bottom-buttons">
             <button className="register-button" onClick={handleRegister}>Registrar</button>

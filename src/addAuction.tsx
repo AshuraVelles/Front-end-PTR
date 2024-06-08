@@ -1,5 +1,5 @@
-import  { useState } from 'react';
-import './AuctionsPage.css'
+import { useState } from 'react';
+import './AuctionsPage.css';
 import { useNavigate } from 'react-router-dom';
 
 function AddAuction() {
@@ -7,30 +7,28 @@ function AddAuction() {
   const [PreçoBase, setPreçoBase] = useState('');
   const [data_Inicio, setDataInicio] = useState('');
   const [data_Fim, setDataFim] = useState('');
-  const [errors, setErrors] = useState({});
-  const [hasErrors, setHasErrors] = useState(false); 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [hasErrors, setHasErrors] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
-  
-    if (!Localização) newErrors.Localização = 'Nome é obrigatório';
-    if (!PreçoBase) newErrors.PreçoBase = 'Género é obrigatório';
-    if (!data_Inicio) newErrors.data_Inicio = 'Data de nascimento é obrigatória';
-    if (!data_Fim) newErrors.data_Fim = 'Morada é obrigatória';
-  
+    const newErrors: { [key: string]: string } = {};
+
+    if (!Localização) newErrors.Localização = 'Localização é obrigatória';
+    if (!PreçoBase) newErrors.PreçoBase = 'Preço Base é obrigatório';
+    if (!data_Inicio) newErrors.data_Inicio = 'Data de Início é obrigatória';
+    if (!data_Fim) newErrors.data_Fim = 'Data de Fim é obrigatória';
+
     setErrors(newErrors);
     const hasErrors = Object.keys(newErrors).length > 0;
     setHasErrors(hasErrors);
     return !hasErrors;
   };
-  
 
   const handleRegister = async () => {
     if (!validate()) return;
 
     const payload = {
-      IDItem: IDItem,
       nome: Localização,
       PreçoBase: PreçoBase,
       data_Inicio: data_Inicio,
@@ -38,6 +36,28 @@ function AddAuction() {
       ativo: true
     };
 
+    console.log('Payload:', JSON.stringify(payload));
+
+    try {
+      const response = await fetch('http://localhost:3995/auctions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Leilão criado com sucesso.');
+        navigate('/auctions');
+      } else {
+        console.error('Falha ao criar leilão:', data.message || data);
+      }
+    } catch (error) {
+      console.error('Ocorreu um erro:', error);
+    }
   };
 
   return (
@@ -67,19 +87,19 @@ function AddAuction() {
 
           </div>
           <div className='right'>
-            <label>Data de Inicio</label>
+            <label>Data de Início</label>
             <input
               type="date"
-              placeholder="Data de Nascimento"
+              placeholder="Data de Início"
               value={data_Inicio}
               onChange={(e) => setDataInicio(e.target.value)}
             />
             {errors.data_Inicio && <div className="error">{errors.data_Inicio}</div>}
           
-            <label>Data do Fim</label>
+            <label>Data de Fim</label>
             <input
               type="date"
-              placeholder="Morada"
+              placeholder="Data de Fim"
               value={data_Fim}
               onChange={(e) => setDataFim(e.target.value)}
             />
@@ -87,10 +107,9 @@ function AddAuction() {
 
           </div>
           <div className="bottom-buttons">
-          <button className="register-button" onClick={handleRegister}>Criar Leilão</button>
+            <button className="register-button" onClick={handleRegister}>Criar Leilão</button>
+          </div>
         </div>
-        </div>
-        
       </div>
     </div>
   );
