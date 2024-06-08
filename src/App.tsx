@@ -1,4 +1,3 @@
-// src/App.tsx
 import WelcomePage from './Welcome-Page';
 import Login from './Login';
 import LostItemsPage from './LostItemsPage';
@@ -15,6 +14,10 @@ import HomeUtilizador from './homeUtilizador';
 import AddAuction from './addAuction';
 import TypeRegister from './TypeRegister';
 import RegisterPolicia from './RegisterPolicia';
+import AdminHome from './AdminHome';
+import EditPolice from './EditPolicias';
+import AddPostoPolicia from './AddPostosPolicia';
+import EditPostoPolicia from './EditPostoPolicia';
 
 function App() {
   return (
@@ -33,11 +36,15 @@ function App() {
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
-          <Route path="/addAuction" element={<AddAuction />} />
+          <Route path="/addAuction/:id" element={<AddAuction />} /> {/* Pass the item ID */}
           <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
           <Route path="/found/:id" element={<ItemDetailsPage />} /> 
           <Route path="/RegisterPolicia" element={<RegisterPolicia />} />
           <Route path="/typeRegister" element={<TypeRegister />} />
+          <Route path="/Admin" element={<AdminHome/>} />
+          <Route path="/EditPolicia" element={<EditPolice/>} />
+          <Route path="/AddPostoPolicia" element={<AddPostoPolicia />} />
+          <Route path="/EditPostoPolicia" element = {<EditPostoPolicia />} />
         </Routes>
       </Router>
     </AuthProvider>

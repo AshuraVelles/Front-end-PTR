@@ -34,7 +34,7 @@ const useFetchUserLostItems = () => {
       setError(null);
 
       try {
-        const response = await fetch(`${config.API_BASE_URL}/users/${user.uid}/lostitems`);
+        const response = await fetch(`${config.API_BASE_URL}/users/mylostitems`);
         if (!response.ok) {
           throw new Error('Failed to fetch items');
         }

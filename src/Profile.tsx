@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './Base-page.css';
 import './Profile.css';
-
 import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
 
@@ -30,7 +29,6 @@ const Profile: React.FC = () => {
   const [lostItems, setLostItems] = useState<LostItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingItems, setLoadingItems] = useState(true);
-  
   const authFetch = useAuthFetch();
 
   useEffect(() => {

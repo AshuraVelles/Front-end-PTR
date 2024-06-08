@@ -1,0 +1,56 @@
+.Pagina {
+    padding: 20px;
+  }
+  
+
+.DivHeader-Policias{
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+
+  .grid-Policias {
+    margin: 10px;
+    margin-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  
+
+  .DivHeader-PostosPolicia{
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+  .grid-PostosPolicia {
+    margin: 10px;
+    margin-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .grid-header, .grid-row {
+    display: contents;
+  }
+  
+  .grid-header > div, .grid-row > div {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .grid-header > div {
+    font-weight: bold;
+  }
+  
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }

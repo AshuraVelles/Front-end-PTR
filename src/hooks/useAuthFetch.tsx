@@ -1,25 +1,33 @@
-// src/hooks/useAuthFetch.ts
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 const useAuthFetch = () => {
-  const { accessToken } = useContext(AuthContext)!;
+  const context = useContext(AuthContext);
+  
+  if (!context) {
+    throw new Error('useAuthFetch must be used within an AuthProvider');
+  }
+
+  const { accessToken, auth0Token } = context;
 
   const authFetch = async (url: string, options: RequestInit = {}) => {
-    if (!accessToken) {
-      throw new Error('No access token available');
+    const headers = new Headers(options.headers || {});
+
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`);
+    }
+
+    if (auth0Token) {
+      headers.set('x-auth0-token', auth0Token);
     }
 
     const response = await fetch(url, {
       ...options,
-      headers: {
-        ...options.headers,
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers,
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
+      throw new Error(`Error: ${response.status}`);
     }
 
     return response.json();

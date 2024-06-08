@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './Base-page.css';
-
 import useAuthFetch from './hooks/useAuthFetch';
 
 interface LostItem {
@@ -13,9 +12,7 @@ interface LostItem {
 
 const HomeUtilizador: React.FC = () => {
     const [lostItems, setLostItems] = useState<LostItem[]>([]);
-    
     const [loadingItems, setLoadingItems] = useState(true);
-    
     const authFetch = useAuthFetch();
 
     useEffect(() => {

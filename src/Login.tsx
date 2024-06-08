@@ -1,4 +1,3 @@
-// src/Login.tsx
 import React, { useState, useContext } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +26,7 @@ const Login: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const response = await fetch('http://localhost:3000/v1/users/login', {
+      const response = await fetch('http://localhost:3995/v1/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -42,7 +41,9 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
-        login(data.user); // Note that we now pass only `data.user` to login
+        console.log('Received accessToken:', data.user.stsTokenManager.accessToken);
+        console.log('Received auth0Token:', data.accessToken);
+        login(data.user, data.accessToken); // Pass both user and accessToken
         console.log('User and access token set in context and localStorage');
         navigate('/profile');
       } else {
