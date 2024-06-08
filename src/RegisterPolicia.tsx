@@ -85,7 +85,7 @@ function RegisterPolice() {
             <label>Posto de Polícia</label>
             <input
               type="text"
-              placeholder="Posto de Polícia"
+              placeholder="ID"
               value={postoPolicia}
               onChange={(e) => setPostoPolicia(e.target.value)}
             />
