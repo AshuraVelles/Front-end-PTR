@@ -12,7 +12,6 @@ interface Member {
   morada: string;
   telemovel: string;
   email: string;
-  genero: string;
   data_nasc: string;
   historico_policia: {
     yearsService: number;
@@ -53,13 +52,8 @@ const AdminHome: React.FC = () => {
         console.log("Members Data: ", membersData);
         console.log("Posts Data: ", postsData);
 
-        setMembers(membersData.map((member: any) => ({
-          ...member,
-          historico_policia: {
-            ...member.historico_policia,
-            commendations: Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations : [],
-          }
-        })));
+        setMembers(membersData);
+        setPosts(postsData);
         setPostosPolicia(postsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -83,15 +77,17 @@ const AdminHome: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this item?')) {
       try {
         const response = await authFetch(`${config.API_BASE_URL}/police/${type}/${id}`, { method: 'DELETE' });
+        const result = await response;
         if (response.ok) {
           setSuccessMessage('Successfully deleted');
           if (type === 'members') {
             setMembers(members.filter(member => member.id !== id));
           } else {
+            setPosts(posts.filter(post => post.id !== id));
             setPostosPolicia(postosPolicia.filter(posto => posto.id !== id));
           }
         } else {
-          setError('Failed to delete');
+          setError(result.message || 'Failed to delete');
         }
       } catch (error) {
         console.error("Error deleting data:", error);
@@ -100,24 +96,41 @@ const AdminHome: React.FC = () => {
     }
   };
 
-  const handleSave = async (id: number, type: 'members' | 'posts', data: Member | PostoPolicia) => {
+  const handleSaveMember = async (id: number, data: Member) => {
     try {
-      const response = await authFetch(`${config.API_BASE_URL}/police/${type}/${id}`, {
+      const response = await authFetch(`${config.API_BASE_URL}/police/members/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       if (response.ok) {
         setSuccessMessage('Successfully updated');
-        if (type === 'members') {
-          setMembers(members.map(member => (member.id === id ? data as Member : member)));
-        } else {
-          setPostosPolicia(postosPolicia.map(posto => (posto.id === id ? data as PostoPolicia : posto)));
-        }
+        setMembers(members.map(member => (member.id === id ? data : member)));
         setEditingMemberId(null);
+      } else {
+        const result = await response;
+        setError(result.message || 'Failed to update');
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+      setError('Failed to update');
+    }
+  };
+
+  const handleSavePostoPolicia = async (id: number, data: PostoPolicia) => {
+    try {
+      const response = await authFetch(`${config.API_BASE_URL}/police/posts/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (response.ok) {
+        setSuccessMessage('Successfully updated');
+        setPostosPolicia(postosPolicia.map(posto => (posto.id === id ? data : posto)));
         setEditingPostoId(null);
       } else {
-        setError('Failed to update');
+        const result = await response;
+        setError(result.message || 'Failed to update');
       }
     } catch (error) {
       console.error("Error updating data:", error);
@@ -126,41 +139,28 @@ const AdminHome: React.FC = () => {
   };
 
   const handleAddMember = () => {
-    setNewMember({
-      nome: '',
-      posto_policia: postosPolicia.length > 0 ? postosPolicia[0].id : 0,
-      morada: '',
-      telemovel: '',
-      email: '',
-      genero: '',
-      data_nasc: '',
-      historico_policia: { yearsService: 0, commendations: [] }
-    });
+    setNewMember({});
   };
 
   const handleAddPosto = () => {
-    setNewPosto({ morada: '' });
+    setNewPosto({});
   };
 
-  const handleSaveNew = async (type: 'members' | 'posts', data: Partial<Member> | Partial<PostoPolicia>) => {
+  const handleSaveNewMember = async (data: Partial<Member>) => {
     try {
-      const response = await authFetch(`${config.API_BASE_URL}/police/${type}`, {
+      const response = await authFetch(`${config.API_BASE_URL}/police/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       if (response.ok) {
+        const newData = await response;
         setSuccessMessage('Successfully added');
-        const newData = await response.json();
-        if (type === 'members') {
-          setMembers([...members, newData as Member]);
-        } else {
-          setPostosPolicia([...postosPolicia, newData as PostoPolicia]);
-        }
+        setMembers([...members, newData as Member]);
         setNewMember(null);
-        setNewPosto(null);
       } else {
-        setError('Failed to add');
+        const result = await response;
+        setError(result.message || 'Failed to add');
       }
     } catch (error) {
       console.error("Error adding data:", error);
@@ -168,73 +168,57 @@ const AdminHome: React.FC = () => {
     }
   };
 
-  const handleFieldChange = (field: keyof Member, value: any) => {
-    if (newMember) {
-      setNewMember({
-        ...newMember,
-        [field]: value
+  const handleSaveNewPosto = async (data: Partial<PostoPolicia>) => {
+    try {
+      const response = await authFetch(`${config.API_BASE_URL}/police/posts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
+      const result = await response;
+      if (response.ok) {
+        setSuccessMessage('Successfully added');
+        setPostosPolicia([...postosPolicia, result as PostoPolicia]);
+        setNewPosto(null);
+      } else {
+        setError(result.message || 'Failed to add');
+      }
+    } catch (error) {
+      console.error("Error adding data:", error);
+      setError('Failed to add');
     }
   };
 
-  const renderMemberRow = (member: Member) => {
-    const isEditing = editingMemberId === member.id;
-    const handleMemberFieldChange = (field: keyof Member, value: any) => {
-      setMembers(members.map(m => (m.id === member.id ? { ...m, [field]: value } : m)));
-    };
+  const closeErrorPopup = () => {
+    setError(null);
+  };
 
-    return (
-      <div key={member.id} className="grid-row">
-        {isEditing ? (
-          <>
-            <div><input type="text" defaultValue={member.nome} onChange={(e) => handleMemberFieldChange('nome', e.target.value)} /></div>
-            <div>
-              <select defaultValue={member.posto_policia} onChange={(e) => handleMemberFieldChange('posto_policia', parseInt(e.target.value))}>
-                {postosPolicia.map(post => (
-                  <option key={post.id} value={post.id}>{post.morada}</option>
-                ))}
-              </select>
-            </div>
-            <div><input type="text" defaultValue={member.morada} onChange={(e) => handleMemberFieldChange('morada', e.target.value)} /></div>
-            <div><input type="text" defaultValue={member.telemovel} onChange={(e) => handleMemberFieldChange('telemovel', e.target.value)} /></div>
-            <div><input type="text" defaultValue={member.email} onChange={(e) => handleMemberFieldChange('email', e.target.value)} /></div>
-            <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => handleMemberFieldChange('data_nasc', e.target.value)} /></div>
-            <div><input type="text" defaultValue={member.genero} onChange={(e) => handleMemberFieldChange('genero', e.target.value)} /></div>
-            <div><input type="number" defaultValue={member.historico_policia.yearsService} onChange={(e) => handleMemberFieldChange('historico_policia', { ...member.historico_policia, yearsService: parseInt(e.target.value) })} /></div>
-            <div><input type="text" defaultValue={member.historico_policia.commendations.join(', ')} onChange={(e) => handleMemberFieldChange('historico_policia', { ...member.historico_policia, commendations: e.target.value.split(', ') })} /></div>
-            <div><button onClick={() => handleSave(member.id, 'members', member)}>Apply</button></div>
-            <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
-          </>
-        ) : (
-          <>
-            <div>{member.nome}</div>
-            <div>{member.posto_policia}</div>
-            <div>{member.morada}</div>
-            <div>{member.telemovel}</div>
-            <div>{member.email}</div>
-            <div>{member.data_nasc?.split('T')[0]}</div>
-            <div>{member.genero}</div>
-            <div>{member.historico_policia.yearsService}</div>
-            <div>{Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : ''}</div>
-            <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
-            <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
-          </>
-        )}
-      </div>
-    );
+  const closeSuccessPopup = () => {
+    setSuccessMessage('');
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
     <div className='Pagina'>
-      {successMessage && <div className='SuccessMessage'>{successMessage}</div>}
+      {successMessage && (
+        <div className="popup">
+          <div className="popup-content">
+            <span className="close" onClick={closeSuccessPopup}>&times;</span>
+            <p>{successMessage}</p>
+          </div>
+        </div>
+      )}
+      {error && (
+        <div className="popup">
+          <div className="popup-content">
+            <span className="close" onClick={closeErrorPopup}>&times;</span>
+            <p>{error}</p>
+          </div>
+        </div>
+      )}
 
       <div className='DivHeader-Policias'>
         <h1>Policias</h1>
@@ -249,34 +233,68 @@ const AdminHome: React.FC = () => {
           <div>Telemovel</div>
           <div>Email</div>
           <div>Data Nascimento</div>
-          <div>Genero</div>
-          <div>Years of Service</div>
-          <div>Commendations</div>
+          <div>Historico Anos</div>
+          <div>Historico Comendas</div>
           <div>Editar</div>
           <div>Remover</div>
         </div>
 
-        {members.map(renderMemberRow)}
+        {members.map((member) => (
+          <div key={member.id} className="grid-row">
+            {editingMemberId === member.id ? (
+              <>
+                <div><input type="text" defaultValue={member.nome} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, nome: e.target.value } : m))} /></div>
+                <div>
+                  <select defaultValue={member.posto_policia} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, posto_policia: Number(e.target.value) } : m))}>
+                    {posts.map(post => (
+                      <option key={post.id} value={post.id}>{post.nome}</option>
+                    ))}
+                  </select>
+                </div>
+                <div><input type="text" defaultValue={member.morada} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, morada: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.telemovel} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, telemovel: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.email} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, email: e.target.value } : m))} /></div>
+                <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, data_nasc: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.historico_policia.yearsService} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, yearsService: Number(e.target.value), commendations: m.historico_policia.commendations || [] } } : m))} /></div>
+                <div><input type="text" defaultValue={member.historico_policia.commendations.join(', ')} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, yearsService: m.historico_policia.yearsService || 0, commendations: e.target.value.split(', ') } } : m))} /></div>
+                <div><button onClick={() => { handleSaveMember(member.id, member); setEditingMemberId(null); }}>Apply</button></div>
+                <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
+              </>
+            ) : (
+              <>
+                <div>{member.nome}</div>
+                <div>{posts.find(post => post.id === member.posto_policia)?.nome}</div>
+                <div>{member.morada}</div>
+                <div>{member.telemovel}</div>
+                <div>{member.email}</div>
+                <div>{member.data_nasc?.split('T')[0]}</div>
+                <div>{member.historico_policia.yearsService}</div>
+                <div>{member.historico_policia.commendations.join(', ')}</div>
+                <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
+                <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
+              </>
+            )}
+          </div>
+        ))}
 
         {newMember && (
           <div className="grid-row">
-            <div><input type="text" placeholder="Nome" onChange={(e) => handleFieldChange('nome', e.target.value)} /></div>
+            <div><input type="text" placeholder="Nome" value={newMember.nome || ''} onChange={e => setNewMember({...newMember, nome: e.target.value})} /></div>
             <div>
-              <select onChange={(e) => handleFieldChange('posto_policia', parseInt(e.target.value))}>
+              <select value={newMember.posto_policia || ''} onChange={e => setNewMember({...newMember, posto_policia: Number(e.target.value)})}>
                 <option value="" disabled>Select Posto</option>
-                {postosPolicia.map(post => (
-                  <option key={post.id} value={post.id}>{post.morada}</option>
+                {posts.map(post => (
+                  <option key={post.id} value={post.id}>{post.nome}</option>
                 ))}
               </select>
             </div>
-            <div><input type="text" placeholder="Morada" onChange={(e) => handleFieldChange('morada', e.target.value)} /></div>
-            <div><input type="text" placeholder="Telemovel" onChange={(e) => handleFieldChange('telemovel', e.target.value)} /></div>
-            <div><input type="text" placeholder="Email" onChange={(e) => handleFieldChange('email', e.target.value)} /></div>
-            <div><input type="date" placeholder="Data Nascimento" onChange={(e) => handleFieldChange('data_nasc', e.target.value)} /></div>
-            <div><input type="text" placeholder="Genero" onChange={(e) => handleFieldChange('genero', e.target.value)} /></div>
-            <div><input type="number" placeholder="Years of Service" onChange={(e) => handleFieldChange('historico_policia', { ...newMember?.historico_policia, yearsService: parseInt(e.target.value) })} /></div>
-            <div><input type="text" placeholder="Commendations" onChange={(e) => handleFieldChange('historico_policia', { ...newMember?.historico_policia, commendations: e.target.value.split(', ') })} /></div>
-            <div><button onClick={() => handleSaveNew('members', newMember)}>Apply</button></div>
+            <div><input type="text" placeholder="Morada" value={newMember.morada || ''} onChange={e => setNewMember({...newMember, morada: e.target.value})} /></div>
+            <div><input type="text" placeholder="Telemovel" value={newMember.telemovel || ''} onChange={e => setNewMember({...newMember, telemovel: e.target.value})} /></div>
+            <div><input type="text" placeholder="Email" value={newMember.email || ''} onChange={e => setNewMember({...newMember, email: e.target.value})} /></div>
+            <div><input type="date" placeholder="Data Nascimento" value={newMember.data_nasc || ''} onChange={e => setNewMember({...newMember, data_nasc: e.target.value})} /></div>
+            <div><input type="text" placeholder="Historico Anos" value={newMember.historico_policia?.yearsService || ''} onChange={e => setNewMember({...newMember, historico_policia: {...newMember.historico_policia, yearsService: Number(e.target.value), commendations: newMember.historico_policia?.commendations || []}})} /></div>
+            <div><input type="text" placeholder="Historico Comendas" value={newMember.historico_policia?.commendations.join(', ') || ''} onChange={e => setNewMember({...newMember, historico_policia: {...newMember.historico_policia, yearsService: newMember.historico_policia?.yearsService || 0, commendations: e.target.value.split(', ')}})} /></div>
+            <div><button onClick={() => { handleSaveNewMember(newMember); setNewMember(null); }}>Apply</button></div>
           </div>
         )}
       </div>
@@ -297,8 +315,8 @@ const AdminHome: React.FC = () => {
           <div key={posto.id} className="grid-row">
             {editingPostoId === posto.id ? (
               <>
-                <div><input type="text" defaultValue={posto.morada} /></div>
-                <div><button onClick={() => handleSave(posto.id, 'posts', posto)}>Apply</button></div>
+                <div><input type="text" defaultValue={posto.morada} onChange={(e) => setPostosPolicia(postosPolicia.map(p => p.id === posto.id ? { ...p, morada: e.target.value } : p))} /></div>
+                <div><button onClick={() => { handleSavePostoPolicia(posto.id, posto); setEditingPostoId(null); }}>Apply</button></div>
                 <div><button onClick={() => handleRemove(posto.id, 'posts')}>Remover</button></div>
               </>
             ) : (
@@ -313,8 +331,8 @@ const AdminHome: React.FC = () => {
 
         {newPosto && (
           <div className="grid-row">
-            <div><input type="text" placeholder="Morada" onChange={(e) => setNewPosto({ ...newPosto, morada: e.target.value })} /></div>
-            <div><button onClick={() => handleSaveNew('posts', newPosto)}>Apply</button></div>
+            <div><input type="text" placeholder="Morada" value={newPosto.morada || ''} onChange={e => setNewPosto({...newPosto, morada: e.target.value})} /></div>
+            <div><button onClick={() => { handleSaveNewPosto(newPosto); setNewPosto(null); }}>Apply</button></div>
           </div>
         )}
       </div>
