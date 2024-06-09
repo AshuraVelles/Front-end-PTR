@@ -85,10 +85,7 @@ const members = [
 };
 
 
-const handleEdit = (id: number) => {
-    // Your edit logic here
-    console.log('Edit member with ID:', id);
-  };
+
 
 const handleRemove = (id:number) => {
     console.log("Remove member with ID", id)

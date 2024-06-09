@@ -1,17 +1,17 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './registerPolicia.css';
 import { useNavigate } from 'react-router-dom';
 
 function AddPostoPolicia() {
   const [morada, setMorada] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hasErrors, setHasErrors] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors: { [key: string]: string } = {};
   
-    if (!morada) newErrors.morada = 'morada é obrigatório';
+    if (!morada) newErrors.morada = 'Morada é obrigatória';
   
     setErrors(newErrors);
     const hasErrors = Object.keys(newErrors).length > 0;
@@ -29,7 +29,7 @@ function AddPostoPolicia() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3995/police/members', {
+      const response = await fetch('http://localhost:3995/police/stations', { // Use a URL correta aqui
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ function AddPostoPolicia() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(`Polícia registrado com sucesso. ID: ${data.id}`);
+        alert(`Posto de Polícia registrado com sucesso. ID: ${data.id}`);
         navigate('/login');
       } else {
         console.error('Falha no registro:', data.message || data);
@@ -52,15 +52,14 @@ function AddPostoPolicia() {
 
   return (
     <div className="login-container">
-      
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
-        <div className="login-title">Adicionar Posto de Policia</div>
+        <div className="login-title">Adicionar Posto de Polícia</div>
         <div className="input-container">
           <div className='left'>
-            <label>morada</label>
+            <label>Morada</label>
             <input
               type="text"
-              placeholder="morada"
+              placeholder="Morada"
               value={morada}
               onChange={(e) => setMorada(e.target.value)}
             />

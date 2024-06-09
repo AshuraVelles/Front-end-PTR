@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './registerPolicia.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,18 +6,26 @@ function EditPolice() {
   const [nome, setNome] = useState('');
   const [postoPolicia, setPostoPolicia] = useState('');
   const [historicoPolicia, setHistoricoPolicia] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hasErrors, setHasErrors] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors: { [key: string]: string } = {};
   
     if (!nome) newErrors.nome = 'Nome é obrigatório';
     if (!postoPolicia) {
       newErrors.postoPolicia = 'Posto de polícia é obrigatório';
     } else if (!/^\d+$/.test(postoPolicia)) {
       newErrors.postoPolicia = 'Introduza apenas dígitos para o posto de polícia';
+    }
+
+    if (historicoPolicia) {
+      try {
+        JSON.parse(historicoPolicia);
+      } catch (e) {
+        newErrors.historicoPolicia = 'Histórico de polícia deve ser um JSON válido';
+      }
     }
   
     setErrors(newErrors);
@@ -26,13 +34,13 @@ function EditPolice() {
     return !hasErrors;
   };
 
-  const handleRegister = async () => {
+  const handleEdit = async () => {
     if (!validate()) return;
 
     const payload = {
       nome: nome,
       posto_policia: parseInt(postoPolicia, 10),
-      historico_policia: JSON.parse(historicoPolicia || '{}')
+      historico_policia: historicoPolicia ? JSON.parse(historicoPolicia) : {}
     };
 
     console.log('Payload:', JSON.stringify(payload));
@@ -49,10 +57,10 @@ function EditPolice() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(`Polícia registrado com sucesso. ID: ${data.id}`);
+        alert(`Polícia editado com sucesso. ID: ${data.id}`);
         navigate('/login');
       } else {
-        console.error('Falha no registro:', data.message || data);
+        console.error('Falha na edição:', data.message || data);
       }
     } catch (error) {
       console.error('Ocorreu um erro:', error);
@@ -61,7 +69,6 @@ function EditPolice() {
 
   return (
     <div className="login-container">
-      
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
         <div className="login-title">Editar Polícia</div>
         <div className="input-container">
@@ -78,7 +85,7 @@ function EditPolice() {
             <label>Posto de Polícia</label>
             <input
               type="text"
-              placeholder="ID"
+              placeholder="Posto de Polícia"
               value={postoPolicia}
               onChange={(e) => setPostoPolicia(e.target.value)}
             />
@@ -91,9 +98,10 @@ function EditPolice() {
               value={historicoPolicia}
               onChange={(e) => setHistoricoPolicia(e.target.value)}
             />
+            {errors.historicoPolicia && <div className="error">{errors.historicoPolicia}</div>}
           </div>
           <div className="bottom-buttons">
-            <button className="register-button" onClick={handleRegister}>Registrar</button>
+            <button className="register-button" onClick={handleEdit}>Editar</button>
           </div>
         </div>
       </div>

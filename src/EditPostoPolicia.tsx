@@ -1,49 +1,49 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './registerPolicia.css';
 import { useNavigate } from 'react-router-dom';
 
 function EditPostoPolicia() {
   const [morada, setMorada] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hasErrors, setHasErrors] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
-    const newErrors = {};
-  
-    if (!morada) newErrors.morada = 'morada é obrigatório';
-  
+    const newErrors: { [key: string]: string } = {};
+
+    if (!morada) newErrors.morada = 'Morada é obrigatório';
+
     setErrors(newErrors);
     const hasErrors = Object.keys(newErrors).length > 0;
     setHasErrors(hasErrors);
     return !hasErrors;
   };
 
-  const handleRegister = async () => {
+  const handleEdit = async () => {
     if (!validate()) return;
 
     const payload = {
-      morada: morada
+      morada: morada,
     };
 
     console.log('Payload:', JSON.stringify(payload));
 
     try {
       const response = await fetch('http://localhost:3995/police/members', {
-        method: 'POST',
+        method: 'PUT', // Assuming you're editing, you might want to use PUT or PATCH
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert(`Polícia registrado com sucesso. ID: ${data.id}`);
+        alert(`Posto de Polícia editado com sucesso. ID: ${data.id}`);
         navigate('/login');
       } else {
-        console.error('Falha no registro:', data.message || data);
+        console.error('Falha na edição:', data.message || data);
       }
     } catch (error) {
       console.error('Ocorreu um erro:', error);
@@ -52,22 +52,21 @@ function EditPostoPolicia() {
 
   return (
     <div className="login-container">
-      
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
-        <div className="login-title">Editar Posto de Policia</div>
+        <div className="login-title">Editar Posto de Polícia</div>
         <div className="input-container">
-          <div className='left'>
-            <label>morada</label>
+          <div className="left">
+            <label>Morada</label>
             <input
               type="text"
-              placeholder="morada"
+              placeholder="Morada"
               value={morada}
               onChange={(e) => setMorada(e.target.value)}
             />
             {errors.morada && <div className="error">{errors.morada}</div>}
           </div>
           <div className="bottom-buttons">
-            <button className="register-button" onClick={handleRegister}>Editar</button>
+            <button className="register-button" onClick={handleEdit}>Editar</button>
           </div>
         </div>
       </div>
