@@ -53,7 +53,13 @@ const AdminHome: React.FC = () => {
         console.log("Members Data: ", membersData);
         console.log("Posts Data: ", postsData);
 
-        setMembers(membersData);
+        setMembers(membersData.map((member: any) => ({
+          ...member,
+          historico_policia: {
+            ...member.historico_policia,
+            commendations: Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations : [],
+          }
+        })));
         setPostosPolicia(postsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -122,7 +128,7 @@ const AdminHome: React.FC = () => {
   const handleAddMember = () => {
     setNewMember({
       nome: '',
-      posto_policia: 0,
+      posto_policia: postosPolicia.length > 0 ? postosPolicia[0].id : 0,
       morada: '',
       telemovel: '',
       email: '',
@@ -171,6 +177,53 @@ const AdminHome: React.FC = () => {
     }
   };
 
+  const renderMemberRow = (member: Member) => {
+    const isEditing = editingMemberId === member.id;
+    const handleMemberFieldChange = (field: keyof Member, value: any) => {
+      setMembers(members.map(m => (m.id === member.id ? { ...m, [field]: value } : m)));
+    };
+
+    return (
+      <div key={member.id} className="grid-row">
+        {isEditing ? (
+          <>
+            <div><input type="text" defaultValue={member.nome} onChange={(e) => handleMemberFieldChange('nome', e.target.value)} /></div>
+            <div>
+              <select defaultValue={member.posto_policia} onChange={(e) => handleMemberFieldChange('posto_policia', parseInt(e.target.value))}>
+                {postosPolicia.map(post => (
+                  <option key={post.id} value={post.id}>{post.morada}</option>
+                ))}
+              </select>
+            </div>
+            <div><input type="text" defaultValue={member.morada} onChange={(e) => handleMemberFieldChange('morada', e.target.value)} /></div>
+            <div><input type="text" defaultValue={member.telemovel} onChange={(e) => handleMemberFieldChange('telemovel', e.target.value)} /></div>
+            <div><input type="text" defaultValue={member.email} onChange={(e) => handleMemberFieldChange('email', e.target.value)} /></div>
+            <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => handleMemberFieldChange('data_nasc', e.target.value)} /></div>
+            <div><input type="text" defaultValue={member.genero} onChange={(e) => handleMemberFieldChange('genero', e.target.value)} /></div>
+            <div><input type="number" defaultValue={member.historico_policia.yearsService} onChange={(e) => handleMemberFieldChange('historico_policia', { ...member.historico_policia, yearsService: parseInt(e.target.value) })} /></div>
+            <div><input type="text" defaultValue={member.historico_policia.commendations.join(', ')} onChange={(e) => handleMemberFieldChange('historico_policia', { ...member.historico_policia, commendations: e.target.value.split(', ') })} /></div>
+            <div><button onClick={() => handleSave(member.id, 'members', member)}>Apply</button></div>
+            <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
+          </>
+        ) : (
+          <>
+            <div>{member.nome}</div>
+            <div>{member.posto_policia}</div>
+            <div>{member.morada}</div>
+            <div>{member.telemovel}</div>
+            <div>{member.email}</div>
+            <div>{member.data_nasc?.split('T')[0]}</div>
+            <div>{member.genero}</div>
+            <div>{member.historico_policia.yearsService}</div>
+            <div>{Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : ''}</div>
+            <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
+            <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
+          </>
+        )}
+      </div>
+    );
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -203,51 +256,13 @@ const AdminHome: React.FC = () => {
           <div>Remover</div>
         </div>
 
-        {members.map((member) => (
-          <div key={member.id} className="grid-row">
-            {editingMemberId === member.id ? (
-              <>
-                <div><input type="text" defaultValue={member.nome} /></div>
-                <div>
-                  <select defaultValue={member.posto_policia}>
-                    {postosPolicia.map(post => (
-                      <option key={post.id} value={post.id}>{post.morada}</option>
-                    ))}
-                  </select>
-                </div>
-                <div><input type="text" defaultValue={member.morada} /></div>
-                <div><input type="text" defaultValue={member.telemovel} /></div>
-                <div><input type="text" defaultValue={member.email} /></div>
-                <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} /></div>
-                <div><input type="text" defaultValue={member.genero} /></div>
-                <div><input type="number" defaultValue={member.historico_policia.yearsService} /></div>
-                <div><input type="text" defaultValue={member.historico_policia.commendations.join(', ')} /></div>
-                <div><button onClick={() => handleSave(member.id, 'members', member)}>Apply</button></div>
-                <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
-              </>
-            ) : (
-              <>
-                <div>{member.nome}</div>
-                <div>{postosPolicia.find(post => post.id === member.posto_policia)?.morada}</div>
-                <div>{member.morada}</div>
-                <div>{member.telemovel}</div>
-                <div>{member.email}</div>
-                <div>{member.data_nasc?.split('T')[0]}</div>
-                <div>{member.genero}</div>
-                <div>{member.historico_policia.yearsService}</div>
-                <div>{member.historico_policia.commendations.join(', ')}</div>
-                <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
-                <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
-              </>
-            )}
-          </div>
-        ))}
+        {members.map(renderMemberRow)}
 
         {newMember && (
           <div className="grid-row">
             <div><input type="text" placeholder="Nome" onChange={(e) => handleFieldChange('nome', e.target.value)} /></div>
             <div>
-              <select onChange={(e) => handleFieldChange('posto_policia', e.target.value)}>
+              <select onChange={(e) => handleFieldChange('posto_policia', parseInt(e.target.value))}>
                 <option value="" disabled>Select Posto</option>
                 {postosPolicia.map(post => (
                   <option key={post.id} value={post.id}>{post.morada}</option>
@@ -259,7 +274,7 @@ const AdminHome: React.FC = () => {
             <div><input type="text" placeholder="Email" onChange={(e) => handleFieldChange('email', e.target.value)} /></div>
             <div><input type="date" placeholder="Data Nascimento" onChange={(e) => handleFieldChange('data_nasc', e.target.value)} /></div>
             <div><input type="text" placeholder="Genero" onChange={(e) => handleFieldChange('genero', e.target.value)} /></div>
-            <div><input type="number" placeholder="Years of Service" onChange={(e) => handleFieldChange('historico_policia', { ...newMember?.historico_policia, yearsService: e.target.value })} /></div>
+            <div><input type="number" placeholder="Years of Service" onChange={(e) => handleFieldChange('historico_policia', { ...newMember?.historico_policia, yearsService: parseInt(e.target.value) })} /></div>
             <div><input type="text" placeholder="Commendations" onChange={(e) => handleFieldChange('historico_policia', { ...newMember?.historico_policia, commendations: e.target.value.split(', ') })} /></div>
             <div><button onClick={() => handleSaveNew('members', newMember)}>Apply</button></div>
           </div>
