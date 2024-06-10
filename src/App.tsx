@@ -1,24 +1,24 @@
-import WelcomePage from './Welcome-Page';
-import Login from './Login';
-import LostItemsPage from './LostItemsPage';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './Register';
-import FoundItemsPage from './FoundItemsPage';
-import Profile from './Profile';
-import AuctionsPage from './AuctionsPage';
-import Header from './Components/Header';
-import AuthProvider from './context/AuthContext';
-import ItemDetailsPage from './ItemDetailsPage';
-import HomePolicia from './homePolicia';
-import HomeUtilizador from './homeUtilizador';
-import AddAuction from './addAuction';
-import TypeRegister from './TypeRegister';
-import RegisterPolicia from './RegisterPolicia';
-import AdminHome from './AdminHome';
-import EditPolice from './EditPolicias';
-import AddPostoPolicia from './AddPostosPolicia';
-import EditPostoPolicia from './EditPostoPolicia';
-
+import WelcomePage from "./Welcome-Page";
+import Login from "./Login";
+import LostItemsPage from "./LostItemsPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./Register";
+import FoundItemsPage from "./FoundItemsPage";
+import Profile from "./Profile";
+import AuctionsPage from "./AuctionsPage";
+import Header from "./Components/Header";
+import AuthProvider from "./context/AuthContext";
+import ItemDetailsPage from "./ItemDetailsPage";
+import HomePolicia from "./homePolicia";
+import HomeUtilizador from "./homeUtilizador";
+import AddAuction from "./addAuction";
+import TypeRegister from "./TypeRegister";
+import RegisterPolicia from "./RegisterPolicia";
+import AdminHome from "./AdminHome";
+import EditPolice from "./EditPolicias";
+import AddPostoPolicia from "./AddPostosPolicia";
+import EditPostoPolicia from "./EditPostoPolicia";
+import AddLostItems from "./AddLostItems";
 function App() {
   return (
     <AuthProvider>
@@ -36,15 +36,17 @@ function App() {
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
-          <Route path="/addAuction/:id" element={<AddAuction />} /> {/* Pass the item ID */}
-          <Route path="/lost/:id" element={<ItemDetailsPage />} /> 
-          <Route path="/found/:id" element={<ItemDetailsPage />} /> 
+          <Route path="/addLost" element={<AddLostItems />} />
+          <Route path="/addAuction/:id" element={<AddAuction />} />{" "}
+          {/* Pass the item ID */}
+          <Route path="/lost/:id" element={<ItemDetailsPage />} />
+          <Route path="/found/:id" element={<ItemDetailsPage />} />
           <Route path="/RegisterPolicia" element={<RegisterPolicia />} />
           <Route path="/typeRegister" element={<TypeRegister />} />
-          <Route path="/Admin" element={<AdminHome/>} />
-          <Route path="/EditPolicia" element={<EditPolice/>} />
+          <Route path="/Admin" element={<AdminHome />} />
+          <Route path="/EditPolicia" element={<EditPolice />} />
           <Route path="/AddPostoPolicia" element={<AddPostoPolicia />} />
-          <Route path="/EditPostoPolicia" element = {<EditPostoPolicia />} />
+          <Route path="/EditPostoPolicia" element={<EditPostoPolicia />} />
         </Routes>
       </Router>
     </AuthProvider>
