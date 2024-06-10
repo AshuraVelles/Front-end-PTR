@@ -1,13 +1,13 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AuthProvider from "./context/AuthContext";
 import WelcomePage from "./Welcome-Page";
 import Login from "./Login";
 import LostItemsPage from "./LostItemsPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./Register";
 import FoundItemsPage from "./FoundItemsPage";
 import Profile from "./Profile";
 import AuctionsPage from "./AuctionsPage";
 import Header from "./Components/Header";
-import AuthProvider from "./context/AuthContext";
 import ItemDetailsPage from "./ItemDetailsPage";
 import HomePolicia from "./homePolicia";
 import HomeUtilizador from "./homeUtilizador";
@@ -19,6 +19,10 @@ import EditPolice from "./EditPolicias";
 import AddPostoPolicia from "./AddPostosPolicia";
 import EditPostoPolicia from "./EditPostoPolicia";
 import AddLostItems from "./AddLostItems";
+import Payment from "./Payment";
+import Success from "./Success";
+import Failure from "./Failure";
+
 function App() {
   return (
     <AuthProvider>
@@ -37,8 +41,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/addLost" element={<AddLostItems />} />
-          <Route path="/addAuction/:id" element={<AddAuction />} />{" "}
-          {/* Pass the item ID */}
+          <Route path="/addAuction/:id" element={<AddAuction />} /> {/* Pass the item ID */}
           <Route path="/lost/:id" element={<ItemDetailsPage />} />
           <Route path="/found/:id" element={<ItemDetailsPage />} />
           <Route path="/RegisterPolicia" element={<RegisterPolicia />} />
@@ -47,6 +50,9 @@ function App() {
           <Route path="/EditPolicia" element={<EditPolice />} />
           <Route path="/AddPostoPolicia" element={<AddPostoPolicia />} />
           <Route path="/EditPostoPolicia" element={<EditPostoPolicia />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/failure" element={<Failure />} />
         </Routes>
       </Router>
     </AuthProvider>
