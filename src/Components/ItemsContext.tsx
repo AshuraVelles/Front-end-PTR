@@ -1,6 +1,6 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react';
-import useFetchFoundItems from '../hooks/useFetchFoundItems';
-import useFetchLostItems from '../hooks/useFetchLostItems';
+import React, { createContext, useContext, ReactNode, useState } from "react";
+import useFetchFoundItems from "../hooks/useFetchFoundItems";
+import useFetchLostItems from "../hooks/useFetchLostItems";
 
 interface Item {
   id: number;
@@ -20,7 +20,9 @@ interface ItemsContextType {
 }
 
 // Found Items Context
-const FoundItemsContext = createContext<ItemsContextType | undefined>(undefined);
+const FoundItemsContext = createContext<ItemsContextType | undefined>(
+  undefined
+);
 
 // Lost Items Context
 const LostItemsContext = createContext<ItemsContextType | undefined>(undefined);
@@ -31,18 +33,31 @@ interface ProviderProps {
 
 // Found Items Provider
 export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { items: foundItems, isLoading: isFoundLoading, error: foundError } = useFetchFoundItems();
-  const [searchTerm, setSearchTerm] = useState('');
+  const {
+    items: foundItems,
+    isLoading: isFoundLoading,
+    error: foundError,
+  } = useFetchFoundItems() as { items: Item[]; isLoading: boolean; error: any };
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const items = foundItems.map(item => ({
+  const items = foundItems.map((item) => ({
     id: item.id,
     title: item.descricao,
+    descricao: item.descricao,
     isSelected: false,
-    imageurl: "https://via.placeholder.com/150"
+    imageurl: "https://via.placeholder.com/150",
   }));
 
   return (
-    <FoundItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading: isFoundLoading, error: foundError }}>
+    <FoundItemsContext.Provider
+      value={{
+        items,
+        searchTerm,
+        setSearchTerm,
+        isLoading: isFoundLoading,
+        error: foundError,
+      }}
+    >
       {children}
     </FoundItemsContext.Provider>
   );
@@ -50,18 +65,31 @@ export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
 
 // Lost Items Provider
 export const LostItemsProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { items: lostItems, isLoading: isLostLoading, error: lostError } = useFetchLostItems();
-  const [searchTerm, setSearchTerm] = useState('');
+  const {
+    items: lostItems,
+    isLoading: isLostLoading,
+    error: lostError,
+  } = useFetchLostItems() as { items: Item[]; isLoading: boolean; error: any };
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const items = lostItems.map(item => ({
+  const items = lostItems.map((item) => ({
     id: item.id,
     title: item.descricao,
+    descricao: item.descricao,
     isSelected: false,
-    imageurl: "https://via.placeholder.com/150"
+    imageurl: "https://via.placeholder.com/150",
   }));
 
   return (
-    <LostItemsContext.Provider value={{ items, searchTerm, setSearchTerm, isLoading: isLostLoading, error: lostError }}>
+    <LostItemsContext.Provider
+      value={{
+        items,
+        searchTerm,
+        setSearchTerm,
+        isLoading: isLostLoading,
+        error: lostError,
+      }}
+    >
       {children}
     </LostItemsContext.Provider>
   );
@@ -71,7 +99,7 @@ export const LostItemsProvider: React.FC<ProviderProps> = ({ children }) => {
 export const useFoundItems = () => {
   const context = useContext(FoundItemsContext);
   if (!context) {
-    throw new Error('useFoundItems must be used within a FoundItemsProvider');
+    throw new Error("useFoundItems must be used within a FoundItemsProvider");
   }
   return context;
 };
@@ -79,7 +107,7 @@ export const useFoundItems = () => {
 export const useLostItems = () => {
   const context = useContext(LostItemsContext);
   if (!context) {
-    throw new Error('useLostItems must be used within a LostItemsProvider');
+    throw new Error("useLostItems must be used within a LostItemsProvider");
   }
   return context;
 };
