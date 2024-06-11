@@ -39,7 +39,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
   } = useFetchLostItems() as { items: Item[]; isLoading: boolean; error: any };
   const [searchTerm, setSearchTerm] = useState("");
 
-  console.log("Found items:", foundItems); // Debug output
+  console.log("Foun git d items:", foundItems); // Debug output
   console.log("Lost items:", lostItems); // Debug output
 
   const items = (type === "found" ? foundItems : lostItems).map((item) => ({

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -32,6 +33,8 @@ const AddLostItems = () => {
   const [longitude, setLongitude] = useState(-0.09); // Default longitude
   const [errors, setErrors] = useState<Errors>({});
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleItemNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemName(e.target.value);
@@ -74,7 +77,8 @@ const AddLostItems = () => {
 
     try {
       console.log("Sending data to server:", {
-        descricao: itemName,
+        title: itemName,
+        descricao: itemDescription,
         categoria: itemCategory,
         data_perdido: itemDate,
         localizacao_perdido: {
@@ -85,7 +89,8 @@ const AddLostItems = () => {
       });
 
       const response = await axios.post("/lost", {
-        descricao: itemName,
+        title: itemName,
+        descricao: itemDescription,
         categoria: itemCategory,
         data_perdido: itemDate,
         localizacao_perdido: {
@@ -98,14 +103,19 @@ const AddLostItems = () => {
       const itemId = response.data.itemId;
       console.log("Lost item registered successfully with ID:", itemId);
       setSuccessMessage("Item added successfully");
+      setErrorMessage("");
       setItemName("");
       setItemDescription("");
       setItemDate("");
       setItemCategory("Lost");
       setLatitude(51.505);
       setLongitude(-0.09);
+
+      // Redirect to the LostItemsPage
+      navigate(`/LostItemsPage/${itemId}`);
     } catch (error) {
       console.error("Error registering lost item:", error);
+      setErrorMessage("Failed to add item. Please try again.");
     }
   };
 
@@ -148,6 +158,7 @@ const AddLostItems = () => {
         <label>Longitude: {longitude}</label>
         <button type="submit">Add Item</button>
         {successMessage && <p className="success-message">{successMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
       <MapContainer
         center={[latitude, longitude]}
