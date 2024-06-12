@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -10,6 +9,8 @@ import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 
+import useAuthFetch from "./hooks/useAuthFetch";
+import config from "./apiconfig";
 import "./Items.css"; // Ensure to import your styles
 
 L.Icon.Default.mergeOptions({
@@ -19,48 +20,53 @@ L.Icon.Default.mergeOptions({
 });
 
 interface Errors {
-  itemName?: string;
-  itemDescription?: string;
-  itemDate?: string;
+  titulo?: string;
+  descricao_curta?: string;
+  descricao?: string;
+  data_perdido?: string;
 }
 
 const AddLostItems = () => {
-  const [itemName, setItemName] = useState("");
-  const [itemDescription, setItemDescription] = useState("");
-  const [itemDate, setItemDate] = useState("");
-  const [itemCategory, setItemCategory] = useState("Lost");
+  const [titulo, setTitulo] = useState("");
+  const [descricaoCurta, setDescricaoCurta] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [dataPerdido, setDataPerdido] = useState("");
+  const [categoria, setCategoria] = useState("Personal Items");
   const [latitude, setLatitude] = useState(51.505); // Default latitude
   const [longitude, setLongitude] = useState(-0.09); // Default longitude
   const [errors, setErrors] = useState<Errors>({});
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const authFetch = useAuthFetch();
 
-  const handleItemNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setItemName(e.target.value);
+  const handleTituloChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitulo(e.target.value);
   };
 
-  const handleItemDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setItemDescription(e.target.value);
+  const handleDescricaoCurtaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescricaoCurta(e.target.value);
   };
 
-  const handleItemDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setItemDate(e.target.value);
+  const handleDescricaoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescricao(e.target.value);
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemCategory(e.target.value);
+  const handleDataPerdidoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDataPerdido(e.target.value);
+  };
+
+  const handleCategoriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategoria(e.target.value);
   };
 
   const validateForm = () => {
     const newErrors: Errors = {};
 
-    if (!itemName) newErrors.itemName = "This field can't be empty";
-    if (!itemDescription)
-      newErrors.itemDescription = "This field can't be empty";
-    if (!itemDate) newErrors.itemDate = "This field can't be empty";
+    if (!titulo) newErrors.titulo = "This field can't be empty";
+    if (!descricaoCurta) newErrors.descricao_curta = "This field can't be empty";
+    if (!descricao) newErrors.descricao = "This field can't be empty";
+    if (!dataPerdido) newErrors.data_perdido = "This field can't be empty";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -76,43 +82,41 @@ const AddLostItems = () => {
     }
 
     try {
-      console.log("Sending data to server:", {
-        title: itemName,
-        descricao: itemDescription,
-        categoria: itemCategory,
-        data_perdido: itemDate,
+      const payload = {
+        titulo,
+        descricao_curta: descricaoCurta,
+        descricao,
+        categoria,
+        data_perdido: dataPerdido,
         localizacao_perdido: {
           latitude: parseFloat(latitude.toString()),
           longitude: parseFloat(longitude.toString()),
         },
         ativo: true,
+      };
+
+      console.log("Sending data to server:", payload);
+
+      const response = await authFetch(`${config.API_BASE_URL}/items/lost`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      const response = await axios.post("/lost", {
-        title: itemName,
-        descricao: itemDescription,
-        categoria: itemCategory,
-        data_perdido: itemDate,
-        localizacao_perdido: {
-          latitude: parseFloat(latitude.toString()),
-          longitude: parseFloat(longitude.toString()),
-        },
-        ativo: true,
-      });
-
-      const itemId = response.data.itemId;
+      const itemId = response.itemId;
       console.log("Lost item registered successfully with ID:", itemId);
       setSuccessMessage("Item added successfully");
       setErrorMessage("");
-      setItemName("");
-      setItemDescription("");
-      setItemDate("");
-      setItemCategory("Lost");
+      setTitulo("");
+      setDescricaoCurta("");
+      setDescricao("");
+      setDataPerdido("");
+      setCategoria("Personal Items");
       setLatitude(51.505);
       setLongitude(-0.09);
 
       // Redirect to the LostItemsPage
-      navigate(`/LostItemsPage/${itemId}`);
+      navigate(`/lost/${itemId}`);
     } catch (error) {
       console.error("Error registering lost item:", error);
       setErrorMessage("Failed to add item. Please try again.");
@@ -124,28 +128,30 @@ const AddLostItems = () => {
       <h1>Add Item</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Item Name:
-          <input type="text" value={itemName} onChange={handleItemNameChange} />
-          {errors.itemName && <span className="error">{errors.itemName}</span>}
+          Titulo:
+          <input type="text" value={titulo} onChange={handleTituloChange} />
+          {errors.titulo && <span className="error">{errors.titulo}</span>}
         </label>
         <label>
-          Item Description:
-          <textarea
-            value={itemDescription}
-            onChange={handleItemDescriptionChange}
-          />
-          {errors.itemDescription && (
-            <span className="error">{errors.itemDescription}</span>
+          Descricao Curta:
+          <input type="text" value={descricaoCurta} onChange={handleDescricaoCurtaChange} />
+          {errors.descricao_curta && <span className="error">{errors.descricao_curta}</span>}
+        </label>
+        <label>
+          Descricao:
+          <textarea value={descricao} onChange={handleDescricaoChange} />
+          {errors.descricao && (
+            <span className="error">{errors.descricao}</span>
           )}
         </label>
         <label>
-          Item Date:
-          <input type="date" value={itemDate} onChange={handleItemDateChange} />
-          {errors.itemDate && <span className="error">{errors.itemDate}</span>}
+          Data Perdido:
+          <input type="date" value={dataPerdido} onChange={handleDataPerdidoChange} />
+          {errors.data_perdido && <span className="error">{errors.data_perdido}</span>}
         </label>
         <label>
-          Item Category:
-          <select value={itemCategory} onChange={handleCategoryChange}>
+          Categoria:
+          <select value={categoria} onChange={handleCategoriaChange}>
             <option value="Personal Items">Personal Items</option>
             <option value="Bags">Bags</option>
             <option value="Electronics">Electronics</option>
@@ -170,10 +176,7 @@ const AddLostItems = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <Marker position={[latitude, longitude]} />
-        <MapClickHandler
-          setLatitude={setLatitude}
-          setLongitude={setLongitude}
-        />
+        <MapClickHandler setLatitude={setLatitude} setLongitude={setLongitude} />
       </MapContainer>
     </div>
   );
