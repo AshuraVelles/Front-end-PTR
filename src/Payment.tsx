@@ -16,7 +16,7 @@ const Payment: React.FC = () => {
       const {
         data: { id },
       } = await axios.post('http://localhost:3995/v1/stripe/create-checkout-session', {
-        pagamento_id: 1, // example ID, you should get this ID from somewhere
+        pagamento_id: 2, // example ID, you should get this ID from somewhere
       });
 
       // Redirect to Stripe Checkout
