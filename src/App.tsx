@@ -19,9 +19,11 @@ import EditPolice from "./EditPolicias";
 import AddPostoPolicia from "./AddPostosPolicia";
 import EditPostoPolicia from "./EditPostoPolicia";
 import AddLostItems from "./AddLostItems";
+import AddFoundItems from "./AddFoundItems";
 import Payment from "./Payment";
 import Success from "./Success";
 import Failure from "./Failure";
+import ClaimItemPage from "./ClaimItemPage";
 
 function App() {
   return (
@@ -41,7 +43,10 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/addLost" element={<AddLostItems />} />
-          <Route path="/addAuction/:id" element={<AddAuction />} /> {/* Pass the item ID */}
+          <Route path="/addFound" element={<AddFoundItems />} />
+          <Route path="/addAuction/:id" element={<AddAuction />} />{" "}
+          {/* Pass the item ID */}
+          <Route path="/claim/:itemId" element={<ClaimItemPage />} />
           <Route path="/lost/:id" element={<ItemDetailsPage />} />
           <Route path="/found/:id" element={<ItemDetailsPage />} />
           <Route path="/RegisterPolicia" element={<RegisterPolicia />} />

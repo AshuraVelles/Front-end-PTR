@@ -1,8 +1,8 @@
-import React from 'react';
-import FoundItemsContent from './Components/FoundItemsContent';
-import SearchBar from './Components/SearchFoundItems';
-import { FoundItemsProvider } from './Components/ItemsContext';
-
+import React from "react";
+import FoundItemsContent from "./Components/FoundItemsContent";
+import SearchBar from "./Components/SearchFoundItems";
+import { FoundItemsProvider } from "./Components/ItemsContext";
+import { Link } from "react-router-dom";
 const FoundItemsPage: React.FC = () => {
   return (
     <div>
@@ -11,6 +11,9 @@ const FoundItemsPage: React.FC = () => {
         <SearchBar />
         <FoundItemsContent />
       </FoundItemsProvider>
+      <Link to="/addFound" className="add-button">
+        Add Found Item
+      </Link>
     </div>
   );
 };
