@@ -22,7 +22,10 @@ import AddLostItems from "./AddLostItems";
 import Payment from "./Payment";
 import Success from "./Success";
 import Failure from "./Failure";
-import ResetPassword from './ResetPassword';
+import ResetPassword from './ResetPasswordEmail';
+import ResetPasswordEmail from "./ResetPasswordEmail";
+import ResetPasswordCode from "./ResetPasswordCode";
+import NewPassword from "./NewPassword";
 
 
 function App() {
@@ -55,7 +58,9 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/success" element={<Success />} />
           <Route path="/failure" element={<Failure />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password-email" element={<ResetPasswordEmail />} />
+          <Route path="/reset-password-code" element={<ResetPasswordCode />} />
+          <Route path="/new-password" element={<NewPassword />} />
         </Routes>
       </Router>
     </AuthProvider>

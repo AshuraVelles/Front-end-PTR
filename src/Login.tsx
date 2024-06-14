@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   const { login } = useContext(AuthContext)!;
   const navigate = useNavigate();
   const handleForgotPassword = () => {
-    navigate('/reset-password');
+    navigate('/reset-password-email');
   };
 
   const validate = () => {
