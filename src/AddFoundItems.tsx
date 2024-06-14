@@ -49,7 +49,9 @@ const AddFoundItems = () => {
     console.log("Titulo:", e.target.value);
   };
 
-  const handleDescricaoCurtaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDescricaoCurtaChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setDescricaoCurta(e.target.value);
     console.log("Descricao Curta:", e.target.value);
   };
@@ -83,7 +85,8 @@ const AddFoundItems = () => {
     const newErrors: Errors = {};
 
     if (!titulo) newErrors.titulo = "This field can't be empty";
-    if (!descricaoCurta) newErrors.descricao_curta = "This field can't be empty";
+    if (!descricaoCurta)
+      newErrors.descricao_curta = "This field can't be empty";
     if (!descricao) newErrors.descricao = "This field can't be empty";
     if (!dataAchado) newErrors.data_achado = "This field can't be empty";
     if (!pictureLink) newErrors.picture_link = "This field can't be empty";
@@ -121,11 +124,14 @@ const AddFoundItems = () => {
 
       console.log("Sending data to server:", payload);
 
-      const response = await authFetch(`${config.API_BASE_URL}/police/items/found/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await authFetch(
+        `${config.API_BASE_URL}/police/items/found/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
 
       console.log("Response received from server:", response);
 

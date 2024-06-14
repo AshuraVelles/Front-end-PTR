@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ClaimItemPage.css";
-
+import config from "./apiconfig";
+import authFetch from "./hooks/useAuthFetch";
 interface Location {
   latitude: number;
   longitude: number;
@@ -37,7 +38,9 @@ const ClaimItemPage: React.FC = () => {
   useEffect(() => {
     const fetchItemDetails = async () => {
       try {
-        const response = await axios.get(`/found/${itemId}`);
+        const response = await axios.get(
+          `${config.API_BASE_URL}/items/found/${itemId}`
+        );
         setItem(response.data);
       } catch (err) {
         setError("Failed to fetch item details");
@@ -46,8 +49,14 @@ const ClaimItemPage: React.FC = () => {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/users");
-        setUsers(response.data);
+        const response = await axios.get(`${config.API_BASE_URL}/police/users`); // Adjusted endpoint
+        console.log("Users response:", response.data); // Debug output
+        const usersData = response.data;
+        if (Array.isArray(usersData)) {
+          setUsers(usersData);
+        } else {
+          setError("Failed to fetch users");
+        }
       } catch (err) {
         setError("Failed to fetch users");
       }
@@ -99,10 +108,16 @@ const ClaimItemPage: React.FC = () => {
           <strong>Date Found:</strong>{" "}
           {new Date(item.data_achado).toLocaleDateString()}
         </p>
-        <p>
-          <strong>Location:</strong> {item.localizacao_achado.latitude},{" "}
-          {item.localizacao_achado.longitude}
-        </p>
+        {item.localizacao_achado ? (
+          <p>
+            <strong>Location:</strong> {item.localizacao_achado.latitude},{" "}
+            {item.localizacao_achado.longitude}
+          </p>
+        ) : (
+          <p>
+            <strong>Location:</strong> Not available
+          </p>
+        )}
         <p className={`status ${item.ativo ? "" : "inactive"}`}>
           <strong>Status:</strong> {item.ativo ? "Active" : "Inactive"}
         </p>
