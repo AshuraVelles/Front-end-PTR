@@ -37,8 +37,11 @@ body {
   word-wrap: break-word;
 }
 
-
-
+.forgot-password-button {
+  margin-top: 0.5cm;
+  font-size: 1em;
+  padding: 0.5em 1em;
+}
 
 
 .welcome-text {

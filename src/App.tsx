@@ -22,6 +22,8 @@ import AddLostItems from "./AddLostItems";
 import Payment from "./Payment";
 import Success from "./Success";
 import Failure from "./Failure";
+import ResetPassword from './ResetPassword';
+
 
 function App() {
   return (
@@ -53,6 +55,7 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/success" element={<Success />} />
           <Route path="/failure" element={<Failure />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </Router>
     </AuthProvider>
