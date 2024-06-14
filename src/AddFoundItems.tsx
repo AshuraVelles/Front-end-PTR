@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import axios from "axios"; // Import axios
 
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
@@ -38,6 +44,7 @@ const AddFoundItems = () => {
   const [longitude, setLongitude] = useState(-0.09); // Default longitude
   const [pictureLink, setPictureLink] = useState("");
   const [cost, setCost] = useState("");
+  const [address, setAddress] = useState(""); // New address state
   const [errors, setErrors] = useState<Errors>({});
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,39 +53,60 @@ const AddFoundItems = () => {
 
   const handleTituloChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitulo(e.target.value);
-    console.log("Titulo:", e.target.value);
   };
 
   const handleDescricaoCurtaChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDescricaoCurta(e.target.value);
-    console.log("Descricao Curta:", e.target.value);
   };
 
   const handleDescricaoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescricao(e.target.value);
-    console.log("Descricao:", e.target.value);
   };
 
   const handleDataAchadoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataAchado(e.target.value);
-    console.log("Data Achado:", e.target.value);
   };
 
   const handleCategoriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategoria(e.target.value);
-    console.log("Categoria:", e.target.value);
   };
 
   const handlePictureLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPictureLink(e.target.value);
-    console.log("Picture Link:", e.target.value);
   };
 
   const handleCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCost(e.target.value);
-    console.log("Cost:", e.target.value);
+  };
+
+  const handleAddressChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAddress(e.target.value);
+
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search`,
+        {
+          params: {
+            q: e.target.value,
+            format: "json",
+            addressdetails: 1,
+            limit: 1,
+          },
+        }
+      );
+
+      if (response.data && response.data.length > 0) {
+        const location = response.data[0];
+        setLatitude(parseFloat(location.lat));
+        setLongitude(parseFloat(location.lon));
+      }
+    } catch (error) {
+      console.error("Error fetching geocode data:", error);
+    }
   };
 
   const validateForm = () => {
@@ -98,10 +126,8 @@ const AddFoundItems = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted");
 
     if (!validateForm()) {
-      console.log("Form validation failed", errors);
       return;
     }
 
@@ -122,8 +148,6 @@ const AddFoundItems = () => {
         ativo: true,
       };
 
-      console.log("Sending data to server:", payload);
-
       const response = await authFetch(
         `${config.API_BASE_URL}/police/items/found/register`,
         {
@@ -133,11 +157,8 @@ const AddFoundItems = () => {
         }
       );
 
-      console.log("Response received from server:", response);
-
       if (response && response.id) {
         const itemId = response.id;
-        console.log("Found item registered successfully with ID:", itemId);
         setSuccessMessage("Item added successfully");
         setErrorMessage("");
         setTitulo("");
@@ -149,15 +170,13 @@ const AddFoundItems = () => {
         setLongitude(-0.09);
         setPictureLink("");
         setCost("");
+        setAddress(""); // Reset address
 
-        // Redirect to the FoundItemsPage
         navigate(`/found/${itemId}`);
       } else {
-        console.error("Failed to add item:", response);
         setErrorMessage("Failed to add item. Please try again.");
       }
     } catch (error) {
-      console.error("Error registering found item:", error);
       setErrorMessage("Failed to add item. Please try again.");
     }
   };
@@ -227,6 +246,10 @@ const AddFoundItems = () => {
           <input type="text" value={cost} onChange={handleCostChange} />
           {errors.cost && <span className="error">{errors.cost}</span>}
         </label>
+        <label>
+          Endereço:
+          <input type="text" value={address} onChange={handleAddressChange} />
+        </label>
         <label>Latitude: {latitude}</label>
         <label>Longitude: {longitude}</label>
         <button type="submit">Add Item</button>
@@ -234,6 +257,7 @@ const AddFoundItems = () => {
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
       <MapContainer
+        key={`${latitude}-${longitude}`} // Use a key to force re-render when coordinates change
         center={[latitude, longitude]}
         zoom={13}
         style={{ height: "400px", width: "100%", marginTop: "20px" }}
@@ -263,7 +287,6 @@ const MapClickHandler: React.FC<MapClickHandlerProps> = ({
 }) => {
   useMapEvents({
     click(e) {
-      console.log("Map clicked", e.latlng);
       setLatitude(e.latlng.lat);
       setLongitude(e.latlng.lng);
     },
