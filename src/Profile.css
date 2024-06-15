@@ -29,3 +29,10 @@
     justify-content: center;
     grid-template-columns: repeat(1,auto);
 }
+
+
+button{
+    padding: 10px;
+    margin:30px;
+    font-size: x-large;
+}

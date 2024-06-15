@@ -26,7 +26,7 @@ const Header: React.FC = () => {
           ) : (
             <>
               <li><a href='/login' className='nav-button'>Login</a></li>
-              <li><a href='/typeRegister' className='nav-button'>Register</a></li>
+              <li><a href='/Register' className='nav-button'>Register</a></li>
             </>
           )}
           <li><a href='/auctions' className='nav-button'>Leilões</a></li>

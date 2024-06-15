@@ -24,6 +24,7 @@ import Payment from "./Payment";
 import Success from "./Success";
 import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
+import EditProfile from "./ProfileEdit";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/lostItems" element={<LostItemsPage />} />
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profileEdit" element={<EditProfile />} />
           <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/addLost" element={<AddLostItems />} />
           <Route path="/addFound" element={<AddFoundItems />} />

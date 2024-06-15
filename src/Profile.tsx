@@ -3,6 +3,7 @@ import './Base-page.css';
 import './Profile.css';
 import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
+import { useNavigate } from 'react-router-dom';
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 interface UserProfile {
@@ -30,6 +31,20 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [loadingItems, setLoadingItems] = useState(true);
   const authFetch = useAuthFetch();
+  const navigate = useNavigate();
+
+  function RemoveAccount() {
+
+    const confirmation = confirm("This action is PERMANENT.\nAre you sure?");
+    
+    if (confirmation) {
+      console.log("Yes"); //colocar aqui a função de dar delete da conta
+    }
+    else {
+      console.log("No"); //podemos eliminar se nao fizer nada quando cancelado
+    }
+    
+ };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -94,6 +109,9 @@ const Profile: React.FC = () => {
 
           <div className="Profile-item">Ativo</div>
           <div className="Profile-item">{profile.ativo ? 'Sim' : 'Não'}</div>
+
+          <div className="Profile-item"><button onClick={() => {navigate("/profileEdit")}}>Editar Perfil</button></div>
+          <div className="Profile-item"><button onClick={RemoveAccount}>Remover Perfil</button></div>
 
           {profile.historico && (
             <>
