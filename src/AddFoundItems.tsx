@@ -4,7 +4,6 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  useMap,
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";

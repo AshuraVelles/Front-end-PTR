@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe('pk_test_51PK5IeFruPD66GZIuJ552Q38kHb6VILa0iyWHTPLaD1IgFLR9yBXuEx3LxDCW4vQKCVw08jQjcjTs6d6hzur0ce600sR7zPHzH');
 
 const Payment: React.FC = () => {
-  const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const handleCheckout = async () => {

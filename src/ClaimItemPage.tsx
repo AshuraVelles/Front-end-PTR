@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ClaimItemPage.css";
 import config from "./apiconfig";
-import authFetch from "./hooks/useAuthFetch";
 interface Location {
   latitude: number;
   longitude: number;
