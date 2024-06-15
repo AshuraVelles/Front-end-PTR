@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,9 +25,9 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     if (!validate()) return;
-
+    console.log('apiURL:', apiUrl);
     try {
-      const response = await fetch('http://localhost:3001/v1/users/login', {
+      const response = await fetch(`${apiUrl}/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Base-page.css';
 import useAuthFetch from './hooks/useAuthFetch';
-
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 interface LostItem {
     id: number;
     titulo: string;

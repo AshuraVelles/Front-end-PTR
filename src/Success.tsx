@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 const Success: React.FC = () => {
   const location = useLocation();
@@ -10,7 +11,7 @@ const Success: React.FC = () => {
     const pagamento_id = params.get('pagamento_id');
 
     if (pagamento_id) {
-      axios.post('http://localhost:3001/v1/stripe/update-pagamento', { pagamento_id })
+      axios.post(`${apiUrl}/stripe/update-pagamento`, { pagamento_id })
         .then(response => {
           console.log('Payment status updated:', response.data);
         })

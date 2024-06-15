@@ -1,9 +1,9 @@
-// src/Profile.tsx
 import React, { useEffect, useState, useContext } from 'react';
 import './Base-page.css';
 import './Profile.css';
 import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 interface UserProfile {
   nome: string;
@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const data = await authFetch('http://localhost:3001/v1/users/me');
+        const data = await authFetch(`${apiUrl}/users/me`);
         setProfile(data);
         setLoading(false);
       } catch (error) {
@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
 
     const fetchLostItems = async () => {
       try {
-        const data = await authFetch('http://localhost:3001/v1/users/mylostitems');
+        const data = await authFetch(`${apiUrl}/users/mylostitems`);
         setLostItems(data);
         setLoadingItems(false);
       } catch (error) {
@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
 
     fetchProfile();
     fetchLostItems();
-  }, [authFetch]);
+  }, []); // <- empty dependency array to run only once on mount
 
   if (loading || loadingItems) {
     return <div>Loading...</div>;

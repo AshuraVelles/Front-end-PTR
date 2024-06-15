@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 import './register.css';
 import { useNavigate } from 'react-router-dom';
-
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 interface Errors {
   username?: string;
   nome?: string;
@@ -72,7 +72,7 @@ function Register() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3001/v1/users/register', {
+      const response = await fetch(`${apiUrl}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

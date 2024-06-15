@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './AuctionsPage.css';
 import { useNavigate } from 'react-router-dom';
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 function AddAuction() {
   const [Localização, setLocalização] = useState('');
@@ -39,7 +40,7 @@ function AddAuction() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3001/auctions', {
+      const response = await fetch(`${apiUrl}/auctions/auctions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './registerPolicia.css';
 import { useNavigate } from 'react-router-dom';
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 function EditPostoPolicia() {
   const [morada, setMorada] = useState('');
@@ -29,7 +30,7 @@ function EditPostoPolicia() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3001/police/members', {
+      const response = await fetch(`${apiUrl}/police/members`, {
         method: 'PUT', // Assuming you're editing, you might want to use PUT or PATCH
         headers: {
           'Content-Type': 'application/json',

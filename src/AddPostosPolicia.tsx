@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './registerPolicia.css';
 import { useNavigate } from 'react-router-dom';
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 function AddPostoPolicia() {
   const [morada, setMorada] = useState('');
@@ -29,7 +30,7 @@ function AddPostoPolicia() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3001/police/stations', { // Use a URL correta aqui
+      const response = await fetch(`${apiUrl}/police/stations`, { // Use a URL correta aqui
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
