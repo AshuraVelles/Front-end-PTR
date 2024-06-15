@@ -18,7 +18,7 @@ const HomeUtilizador: React.FC = () => {
     useEffect(() => {
         const fetchLostItems = async () => {
             try {
-                const data = await authFetch('http://localhost:3000/v1/users/mylostitems');
+                const data = await authFetch(`${apiUrl}/v1/users/mylostitems`);
                 console.log("Fetched data:", data);
                 setLostItems(data);
                 setLoadingItems(false);
