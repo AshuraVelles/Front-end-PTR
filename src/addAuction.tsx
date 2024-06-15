@@ -39,7 +39,7 @@ function AddAuction() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3995/auctions', {
+      const response = await fetch('http://localhost:3001/auctions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

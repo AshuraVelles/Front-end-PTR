@@ -13,7 +13,7 @@ const Payment: React.FC = () => {
     try {
       const {
         data: { id },
-      } = await axios.post('http://localhost:3995/v1/stripe/create-checkout-session', {
+      } = await axios.post('http://localhost:3001/v1/stripe/create-checkout-session', {
         pagamento_id: 2, // example ID, you should get this ID from somewhere
       });
 

@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const data = await authFetch('http://localhost:3995/v1/users/me');
+        const data = await authFetch('http://localhost:3001/v1/users/me');
         setProfile(data);
         setLoading(false);
       } catch (error) {
@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
 
     const fetchLostItems = async () => {
       try {
-        const data = await authFetch('http://localhost:3995/v1/users/mylostitems');
+        const data = await authFetch('http://localhost:3001/v1/users/mylostitems');
         setLostItems(data);
         setLoadingItems(false);
       } catch (error) {

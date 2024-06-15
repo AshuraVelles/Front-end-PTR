@@ -72,7 +72,7 @@ function Register() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3995/v1/users/register', {
+      const response = await fetch('http://localhost:3001/v1/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

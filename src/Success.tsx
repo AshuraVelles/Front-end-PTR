@@ -10,7 +10,7 @@ const Success: React.FC = () => {
     const pagamento_id = params.get('pagamento_id');
 
     if (pagamento_id) {
-      axios.post('http://localhost:3995/v1/stripe/update-pagamento', { pagamento_id })
+      axios.post('http://localhost:3001/v1/stripe/update-pagamento', { pagamento_id })
         .then(response => {
           console.log('Payment status updated:', response.data);
         })

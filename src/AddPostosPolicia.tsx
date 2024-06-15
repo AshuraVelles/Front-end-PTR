@@ -29,7 +29,7 @@ function AddPostoPolicia() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3995/police/stations', { // Use a URL correta aqui
+      const response = await fetch('http://localhost:3001/police/stations', { // Use a URL correta aqui
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -46,7 +46,7 @@ function EditPolice() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3995/police/members', {
+      const response = await fetch('http://localhost:3001/police/members', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -29,7 +29,7 @@ function EditPostoPolicia() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch('http://localhost:3995/police/members', {
+      const response = await fetch('http://localhost:3001/police/members', {
         method: 'PUT', // Assuming you're editing, you might want to use PUT or PATCH
         headers: {
           'Content-Type': 'application/json',
