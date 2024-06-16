@@ -26,6 +26,7 @@ import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
 import EditProfile from "./ProfileEdit";
 
+
 function App() {
   return (
     <AuthProvider>
@@ -47,6 +48,7 @@ function App() {
           <Route path="/addLost" element={<AddLostItems />} />
           <Route path="/addFound" element={<AddFoundItems />} />
           <Route path="/addAuction/:id" element={<AddAuction />} />{" "}
+          <Route path="/hello" element={<Hello />} />
           {/* Pass the item ID */}
           <Route path="/claim/:itemId" element={<ClaimItemPage />} />
           <Route path="/lost/:id" element={<ItemDetailsPage />} />

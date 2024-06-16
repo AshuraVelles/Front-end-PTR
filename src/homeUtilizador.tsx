@@ -18,15 +18,15 @@ const HomeUtilizador: React.FC = () => {
     useEffect(() => {
         const fetchLostItems = async () => {
             try {
-                const data = await authFetch(`${apiUrl}/v1/users/mylostitems`);
-                console.log("Fetched data:", data);
-                setLostItems(data);
-                setLoadingItems(false);
+              const data = await authFetch(`${apiUrl}/users/mylostitems`);
+              setLostItems(data);
+              setLoadingItems(false);
             } catch (error) {
-                console.error('Failed to fetch lost items:', error);
-                setLoadingItems(false);
+              console.error('Failed to fetch lost items:', error);
+              setLoadingItems(false);
             }
-        };
+          };
+        
 
         fetchLostItems();
     }, [authFetch]);
