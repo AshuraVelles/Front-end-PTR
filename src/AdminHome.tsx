@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './AdminHome.css';
-
-
 import config from './apiconfig';
 import useAuthFetch from './hooks/useAuthFetch';
 
@@ -13,10 +11,12 @@ interface Member {
   telemovel: string;
   email: string;
   data_nasc: string;
+  genero: string; // Added genero field
   historico_policia: {
     yearsService: number;
-    commendations: string[];
+    commendations: string | string[]; // Allow commendations to be either string or array of strings
   };
+  password?: string; // Adding password field
 }
 
 interface PostoPolicia {
@@ -26,13 +26,13 @@ interface PostoPolicia {
 
 interface Posto {
   id: number;
-  nome: string;
+  morada: string; // Changed from 'nome' to 'morada'
 }
 
 const AdminHome: React.FC = () => {
   const [members, setMembers] = useState<Member[]>([]);
   const [postosPolicia, setPostosPolicia] = useState<PostoPolicia[]>([]);
-  const [posts, setPosts] = useState<Posto[]>([]);
+  const [policeStations, setPoliceStations] = useState<Posto[]>([]);
   const [editingMemberId, setEditingMemberId] = useState<number | null>(null);
   const [editingPostoId, setEditingPostoId] = useState<number | null>(null);
   const [newMember, setNewMember] = useState<Partial<Member> | null>(null);
@@ -46,14 +46,16 @@ const AdminHome: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("Fetching members data...");
         const membersData = await authFetch(`${config.API_BASE_URL}/police/members`);
-        const postsData = await authFetch(`${config.API_BASE_URL}/police/posts`);
-
         console.log("Members Data: ", membersData);
+        
+        console.log("Fetching posts data...");
+        const postsData = await authFetch(`${config.API_BASE_URL}/police/posts`);
         console.log("Posts Data: ", postsData);
 
         setMembers(membersData);
-        setPosts(postsData);
+        setPoliceStations(postsData);
         setPostosPolicia(postsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -83,7 +85,7 @@ const AdminHome: React.FC = () => {
           if (type === 'members') {
             setMembers(members.filter(member => member.id !== id));
           } else {
-            setPosts(posts.filter(post => post.id !== id));
+            setPoliceStations(policeStations.filter(post => post.id !== id));
             setPostosPolicia(postosPolicia.filter(posto => posto.id !== id));
           }
         } else {
@@ -96,26 +98,7 @@ const AdminHome: React.FC = () => {
     }
   };
 
-  const handleSaveMember = async (id: number, data: Member) => {
-    try {
-      const response = await authFetch(`${config.API_BASE_URL}/police/members/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (response.ok) {
-        setSuccessMessage('Successfully updated');
-        setMembers(members.map(member => (member.id === id ? data : member)));
-        setEditingMemberId(null);
-      } else {
-        const result = await response;
-        setError(result.message || 'Failed to update');
-      }
-    } catch (error) {
-      console.error("Error updating data:", error);
-      setError('Failed to update');
-    }
-  };
+
 
   const handleSavePostoPolicia = async (id: number, data: PostoPolicia) => {
     try {
@@ -146,17 +129,60 @@ const AdminHome: React.FC = () => {
     setNewPosto({});
   };
 
+  const handleSaveMember = async (id: number, data: Member) => {
+    try {
+      // Ensure commendations is an array
+      const updatedData = {
+        ...data,
+        historico_policia: {
+          ...data.historico_policia,
+          commendations: Array.isArray(data.historico_policia.commendations)
+            ? data.historico_policia.commendations
+            : Object.values(data.historico_policia.commendations)
+        }
+      };
+  
+      const response = await authFetch(`${config.API_BASE_URL}/police/members/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+      if (response.ok) {
+        setSuccessMessage('Successfully updated');
+        setMembers(members.map(member => (member.id === id ? updatedData : member)));
+        setEditingMemberId(null);
+      } else {
+        const result = await response;
+        setError(result.message || 'Failed to update');
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+      setError('Failed to update');
+    }
+  };
+  
   const handleSaveNewMember = async (data: Partial<Member>) => {
     try {
+      // Ensure commendations is an array
+      const updatedData = {
+        ...data,
+        historico_policia: {
+          ...data.historico_policia,
+          commendations: Array.isArray(data.historico_policia?.commendations)
+            ? data.historico_policia.commendations
+            : Object.values(data.historico_policia?.commendations || [])
+        }
+      };
+  
       const response = await authFetch(`${config.API_BASE_URL}/police/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(updatedData)
       });
       if (response.ok) {
         const newData = await response;
         setSuccessMessage('Successfully added');
-        setMembers([...members, newData as Member]);
+        setMembers([...members, newData]);
         setNewMember(null);
       } else {
         const result = await response;
@@ -167,7 +193,8 @@ const AdminHome: React.FC = () => {
       setError('Failed to add');
     }
   };
-
+  
+  
   const handleSaveNewPosto = async (data: Partial<PostoPolicia>) => {
     try {
       const response = await authFetch(`${config.API_BASE_URL}/police/posts`, {
@@ -178,7 +205,7 @@ const AdminHome: React.FC = () => {
       const result = await response;
       if (response.ok) {
         setSuccessMessage('Successfully added');
-        setPostosPolicia([...postosPolicia, result as PostoPolicia]);
+        setPostosPolicia([...postosPolicia, result]);
         setNewPosto(null);
       } else {
         setError(result.message || 'Failed to add');
@@ -200,6 +227,10 @@ const AdminHome: React.FC = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  console.log("Members state: ", members);
+  console.log("Police stations state: ", policeStations);
+  console.log("Postos Policia state: ", postosPolicia);
 
   return (
     <div className='Pagina'>
@@ -233,6 +264,7 @@ const AdminHome: React.FC = () => {
           <div>Telemovel</div>
           <div>Email</div>
           <div>Data Nascimento</div>
+          <div>Genero</div> {/* Added header for Genero */}
           <div>Historico Anos</div>
           <div>Historico Comendas</div>
           <div>Editar</div>
@@ -246,8 +278,9 @@ const AdminHome: React.FC = () => {
                 <div><input type="text" defaultValue={member.nome} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, nome: e.target.value } : m))} /></div>
                 <div>
                   <select defaultValue={member.posto_policia} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, posto_policia: Number(e.target.value) } : m))}>
-                    {posts.map(post => (
-                      <option key={post.id} value={post.id}>{post.nome}</option>
+                    <option value="" disabled>Select Posto</option>
+                    {policeStations.map(post => (
+                      <option key={post.id} value={post.id}>{post.morada}</option>
                     ))}
                   </select>
                 </div>
@@ -255,21 +288,32 @@ const AdminHome: React.FC = () => {
                 <div><input type="text" defaultValue={member.telemovel} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, telemovel: e.target.value } : m))} /></div>
                 <div><input type="text" defaultValue={member.email} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, email: e.target.value } : m))} /></div>
                 <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, data_nasc: e.target.value } : m))} /></div>
+                <div>
+                  <select defaultValue={member.genero} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, genero: e.target.value } : m))}>
+                    <option value="" disabled>Select Genero</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
                 <div><input type="text" defaultValue={member.historico_policia.yearsService} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, yearsService: Number(e.target.value), commendations: m.historico_policia.commendations || [] } } : m))} /></div>
-                <div><input type="text" defaultValue={member.historico_policia.commendations.join(', ')} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, yearsService: m.historico_policia.yearsService || 0, commendations: e.target.value.split(', ') } } : m))} /></div>
+                <div><input type="text" defaultValue={Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : String(member.historico_policia.commendations)} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, commendations: e.target.value.split(', ') } } : m))} /></div>
                 <div><button onClick={() => { handleSaveMember(member.id, member); setEditingMemberId(null); }}>Apply</button></div>
                 <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
               </>
             ) : (
               <>
                 <div>{member.nome}</div>
-                <div>{posts.find(post => post.id === member.posto_policia)?.nome}</div>
+                {console.log('Finding post for member:', member)}
+                {console.log('Police Stations:', policeStations)}
+                <div>{policeStations.find(post => post.id === member.posto_policia)?.morada || 'N/A'}</div>
                 <div>{member.morada}</div>
                 <div>{member.telemovel}</div>
                 <div>{member.email}</div>
                 <div>{member.data_nasc?.split('T')[0]}</div>
+                <div>{member.genero}</div> {/* Displaying genero */}
                 <div>{member.historico_policia.yearsService}</div>
-                <div>{member.historico_policia.commendations.join(', ')}</div>
+                <div>{Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : String(member.historico_policia.commendations)}</div> {/* Displaying commendations */}
                 <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
                 <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
               </>
@@ -283,8 +327,8 @@ const AdminHome: React.FC = () => {
             <div>
               <select value={newMember.posto_policia || ''} onChange={e => setNewMember({...newMember, posto_policia: Number(e.target.value)})}>
                 <option value="" disabled>Select Posto</option>
-                {posts.map(post => (
-                  <option key={post.id} value={post.id}>{post.nome}</option>
+                {policeStations.map(post => (
+                  <option key={post.id} value={post.id}>{post.morada}</option>
                 ))}
               </select>
             </div>
@@ -292,8 +336,18 @@ const AdminHome: React.FC = () => {
             <div><input type="text" placeholder="Telemovel" value={newMember.telemovel || ''} onChange={e => setNewMember({...newMember, telemovel: e.target.value})} /></div>
             <div><input type="text" placeholder="Email" value={newMember.email || ''} onChange={e => setNewMember({...newMember, email: e.target.value})} /></div>
             <div><input type="date" placeholder="Data Nascimento" value={newMember.data_nasc || ''} onChange={e => setNewMember({...newMember, data_nasc: e.target.value})} /></div>
+            <div>
+              <select value={newMember.genero || ''} onChange={e => setNewMember({...newMember, genero: e.target.value})}>
+                <option value="" disabled>Select Genero</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
             <div><input type="text" placeholder="Historico Anos" value={newMember.historico_policia?.yearsService || ''} onChange={e => setNewMember({...newMember, historico_policia: {...newMember.historico_policia, yearsService: Number(e.target.value), commendations: newMember.historico_policia?.commendations || []}})} /></div>
-            <div><input type="text" placeholder="Historico Comendas" value={newMember.historico_policia?.commendations.join(', ') || ''} onChange={e => setNewMember({...newMember, historico_policia: {...newMember.historico_policia, yearsService: newMember.historico_policia?.yearsService || 0, commendations: e.target.value.split(', ')}})} /></div>
+            <div><input type="text" placeholder="Historico Comendas" value={Array.isArray(newMember.historico_policia?.commendations) ? newMember.historico_policia?.commendations.join(', ') : newMember.historico_policia?.commendations || ''} onChange={e => setNewMember({...newMember, historico_policia: {...newMember.historico_policia, yearsService: newMember.historico_policia?.yearsService || 0, commendations: e.target.value.split(', ')}})} /></div>
+
+            <div><input type="password" placeholder="Password" value={newMember.password || ''} onChange={e => setNewMember({...newMember, password: e.target.value})} /></div>
             <div><button onClick={() => { handleSaveNewMember(newMember); setNewMember(null); }}>Apply</button></div>
           </div>
         )}

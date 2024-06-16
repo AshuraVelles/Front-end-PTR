@@ -6,7 +6,7 @@
   margin: 10px;
   margin-top: 50px;
   display: grid;
-  grid-template-columns: repeat(10, 1fr); /* Update to 10 columns */
+  grid-template-columns: repeat(11, 1fr); /* Update to 10 columns */
   gap: 10px;
 }
 
@@ -14,7 +14,7 @@
   margin: 10px;
   margin-bottom: 50px;
   display: grid;
-  grid-template-columns: repeat(10, 1fr); /* Update to 10 columns */
+  grid-template-columns: repeat(11, 1fr); /* Update to 10 columns */
   gap: 10px;
 }
 
