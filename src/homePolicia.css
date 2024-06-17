@@ -1,0 +1,31 @@
+.Text-column{
+    background-color: white;
+}
+
+
+.Auction-title {
+  font-size: 48px;
+  color: rgb(182, 117, 32);
+  font-family: 'Bellota', system-ui;
+  margin-left: 145px;
+  margin-top: 30px;
+
+}
+
+.Found-Item-title {
+    font-size: 48px;
+    color: rgb(182, 117, 32);
+    font-family: 'Bellota', system-ui;
+    margin-left: 105px;
+    margin-top: 15px;
+}
+
+.Auction-Button {
+    margin-left: 330px;
+}
+
+
+.Found-Item-Button {
+    margin-left: 310px;
+    
+}
