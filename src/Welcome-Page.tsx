@@ -49,7 +49,7 @@ const WelcomePage : React.FC = () => {
                 <div className='Button-column'>
                     <button onClick={() => {navigate("/lostItems")}}>Go to lost Items</button>
                     <button onClick={() => {navigate("/foundItems")}}>Go to found Items</button>
-                    <button onClick={() => {navigate("/hello")}}>Olá</button>
+
                 </div>
             </div>
         </div>
