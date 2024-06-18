@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Base-page.css';
 import useAuthFetch from './hooks/useAuthFetch';
+import { useNavigate } from 'react-router-dom';
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 interface LostItem {
     id: number;
@@ -14,6 +15,7 @@ const HomeUtilizador: React.FC = () => {
     const [lostItems, setLostItems] = useState<LostItem[]>([]);
     const [loadingItems, setLoadingItems] = useState(true);
     const authFetch = useAuthFetch();
+    let navigate = useNavigate();
 
     useEffect(() => {
         const fetchLostItems = async () => {
@@ -38,8 +40,8 @@ const HomeUtilizador: React.FC = () => {
     return (
         <div className="Page-container">
             <div className="welcome-text">Boas Vindas</div>
-            <div className="Page-box">
-                <div className='Text-column'>
+            <div className="Page-box row m-0 w-100 h-auto">
+                <div className='Text-column col-6 w-50 h-auto me-3'>
                     <p>Bem-vindo à ReClaimAuctions, a inovadora plataforma 
                     que está revolucionando a maneira como lidamos com objetos 
                     perdidos e achados.</p>
@@ -74,8 +76,9 @@ const HomeUtilizador: React.FC = () => {
                     perdidos e achados. Para saber mais clique aqui.</p>
                 </div>
                 
-                <div className="Lost-item-column">
-                    <div className="left-title">Itens perdidos</div>
+                <div className="Lost-item-column col-6 w-50 h-auto m-0">
+                    <div className="left-title text-center">Itens perdidos</div>
+                    <div className="Found-Item-Button m-0 text-center"><button onClick={() => {navigate("/addLost")}}>Adicionar Objeto Perdido</button></div>
                     {lostItems.length === 0 ? (
                         <div className="home-page-item">Nenhum registo de item perdido encontrado.</div>
                     ) : (
