@@ -26,6 +26,25 @@
   gap: 10px;
 }
 
+
+.DivHeader-Utilizadores {
+  margin: 10px;
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Update to 3 columns */
+  gap: 10px;
+}
+
+.grid-Utilizadores {
+  margin: 10px;
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Update to 3 columns */
+  gap: 10px;
+}
+
+
+
 .grid-PostosPolicia {
   margin: 10px;
   margin-bottom: 50px;
