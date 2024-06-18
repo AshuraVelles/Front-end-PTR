@@ -25,7 +25,6 @@ import Success from "./Success";
 import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
 import EditProfile from "./ProfileEdit";
-import ResetPassword from './ResetPasswordEmail';
 import ResetPasswordEmail from "./ResetPasswordEmail";
 import ResetPasswordCode from "./ResetPasswordCode";
 import NewPassword from "./NewPassword";

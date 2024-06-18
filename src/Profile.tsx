@@ -3,7 +3,6 @@ import './Base-page.css';
 import './Profile.css';
 import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
-import { useNavigate } from 'react-router-dom';
 
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
@@ -36,7 +35,6 @@ const Profile: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch();
-  const navigate = useNavigate();
 
   function RemoveAccount() {
     const confirmation = confirm("This action is PERMANENT.\nAre you sure?");
