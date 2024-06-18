@@ -268,6 +268,7 @@ const AdminHome: React.FC = () => {
           <div>Historico Anos</div>
           <div>Historico Comendas</div>
           <div>Editar</div>
+          <div>Ativar/Desativar</div>
           <div>Remover</div>
         </div>
 
@@ -315,6 +316,7 @@ const AdminHome: React.FC = () => {
                 <div>{member.historico_policia.yearsService}</div>
                 <div>{Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : String(member.historico_policia.commendations)}</div> {/* Displaying commendations */}
                 <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
+                <div><button>Ativar/Desativar</button></div>
                 <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
               </>
             )}
@@ -390,11 +392,49 @@ const AdminHome: React.FC = () => {
           </div>
         )}
       </div>
+
+      <div className='DivHeader-Utilizadores'>
+        <h1>Utilizadores</h1>
+        <button>Adicionar</button>
+      </div>
+
+      <div className="grid-Utilizadores">
+        <div className="grid-header">
+          <div>ID</div>
+          <div>Email</div>
+          <div>Username</div>
+          <div>Ativo</div>
+          <div>Ativar/Desativar</div>
+        </div>
+
+          <div  className="grid-row">
+            
+              <>
+                <div>1</div>
+                <div>smth@smth.com</div>
+                <div>Username</div>
+                <div>True</div>
+                <div><button>Ativar/Desativar</button></div>
+              </>
+ 
+          </div>
+
+        {newPosto && (
+          <div className="grid-row">
+            <div><input type="text" placeholder="Morada" value={newPosto.morada || ''} onChange={e => setNewPosto({...newPosto, morada: e.target.value})} /></div>
+            <div><button onClick={() => { handleSaveNewPosto(newPosto); setNewPosto(null); }}>Apply</button></div>
+          </div>
+        )}
       </div>
 
 
 
 
+
+
+
+
+    </div>
   );
 };
 

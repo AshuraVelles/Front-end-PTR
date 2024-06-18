@@ -144,10 +144,10 @@ const Profile: React.FC = () => {
       <div className="welcome-text">Perfil</div>
       <div className="Page-box">
         <div className="Profile-information">
-          <div className="Profile-item">Username</div>
+          <div className="Profile-item-Description">Username</div>
           <div className="Profile-item">{user?.email}</div>
 
-          <div className="Profile-item">Nome</div>
+          <div className="Profile-item-Description">Nome</div>
           <div className="Profile-item">
             {editingProfile ? (
               <input
@@ -160,7 +160,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          <div className="Profile-item">Género</div>
+          <div className="Profile-item-Description">Género</div>
           <div className="Profile-item">
             {editingProfile ? (
               <select
@@ -177,7 +177,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          <div className="Profile-item">Data Nascimento</div>
+          <div className="Profile-item-Description">Data Nascimento</div>
           <div className="Profile-item">
             {editingProfile ? (
               <input
@@ -190,7 +190,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          <div className="Profile-item">Morada</div>
+          <div className="Profile-item-Description">Morada</div>
           <div className="Profile-item">
             {editingProfile ? (
               <input
@@ -203,7 +203,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          <div className="Profile-item">Email</div>
+          <div className="Profile-item-Description">Email</div>
           <div className="Profile-item">
             {editingProfile ? (
               <input
@@ -216,7 +216,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          <div className="Profile-item">Nº Telemovel</div>
+          <div className="Profile-item-Description">Nº Telemovel</div>
           <div className="Profile-item">
             {editingProfile ? (
               <input
@@ -229,7 +229,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
-          <div className="Profile-item">Ativo</div>
+          <div className="Profile-item-Description">Ativo</div>
           <div className="Profile-item">
             {editingProfile ? (
               <select
@@ -244,6 +244,7 @@ const Profile: React.FC = () => {
             )}
           </div>
 
+        <div className="Profile-Buttons">
           <div className="Profile-item">
             {editingProfile ? (
               <button onClick={handleSaveProfile}>Salvar</button>
@@ -253,8 +254,13 @@ const Profile: React.FC = () => {
           </div>
 
           <div className="Profile-item">
+            <button>Desativar Perfil</button>
+          </div>
+
+          <div className="Profile-item">
             <button onClick={RemoveAccount}>Remover Perfil</button>
           </div>
+        </div>
 
           {profile.historico && (
             <>

@@ -36,3 +36,14 @@ button{
     margin:30px;
     font-size: x-large;
 }
+
+.Profile-Buttons {
+    margin-left: 200px;
+    display:grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(3,200px);
+
+}
+
+
