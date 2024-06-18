@@ -11,6 +11,9 @@ const Login: React.FC = () => {
   const [hasErrors, setHasErrors] = useState(false);
   const { login } = useContext(AuthContext)!;
   const navigate = useNavigate();
+  const handleForgotPassword = () => {
+    navigate('/reset-password-email');
+  };
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
@@ -81,7 +84,9 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {errors.password && <div className="error">{errors.password}</div>}
-          <div className="forgot-password">Esqueci-me da palavra-passe</div>
+          <button type="button" onClick={handleForgotPassword} className="forgot-password-button">
+          Esqueci-me da palavra-passe
+          </button>
         </div>
         {errors.general && <div className="error">{errors.general}</div>}
         <button className="login-enter-button" onClick={handleLogin}>

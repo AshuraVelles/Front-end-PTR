@@ -37,8 +37,11 @@ body {
   word-wrap: break-word;
 }
 
-
-
+.forgot-password-button {
+  margin-top: 0.5cm;
+  font-size: 1em;
+  padding: 0.5em 1em;
+}
 
 
 .welcome-text {
@@ -48,7 +51,7 @@ body {
   background: linear-gradient(to bottom, rgb(0, 15, 64), rgb(251, 139, 36) 47.5%, rgb(154, 3, 30) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-left: 57%;
+  margin-left: -380px;
 
   font-family: 'Inter', sans-serif;
   
