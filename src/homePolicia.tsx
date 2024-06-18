@@ -10,10 +10,10 @@ interface FoundItem {
     descricao_curta: string;
     data_achado: string;
     ativo: boolean;
-    policialId: number; // Adicionamos policialId aqui
+    policialId: number;
 }
 
-const HomePolicia: React.FC<{ authenticatedPolicialId: number }> = ({ authenticatedPolicialId }) => {
+const HomePolicia: React.FC = () => {
     const [foundItems, setFoundItems] = useState<FoundItem[]>([]);
     const [loadingItems, setLoadingItems] = useState(true);
     const authFetch = useAuthFetch();
@@ -37,27 +37,22 @@ const HomePolicia: React.FC<{ authenticatedPolicialId: number }> = ({ authentica
         return <div>Loading...</div>;
     }
 
-    const filteredItems = foundItems.filter(item => item.policialId === authenticatedPolicialId);
-
     return (
         <div className="Page-container">
             <div className="welcome-text">Boas Vindas</div>
             <div className="Page-box">
                 <div className='Text-column'>
-
-                <div className="Auction-title">Leiloes ativos</div>
-                <div className="Auction-Button"><button>Adicionar Leilão</button></div>
-
-
+                    <div className="Auction-title">Leiloes ativos</div>
+                    <div className="Auction-Button"><button>Adicionar Leilão</button></div>
                 </div>
                 
                 <div className="Lost-item-column">
                     <div className="Found-Item-title">Itens encontrados</div>
                     <div className="Found-Item-Button"><button>Adicionar Objeto</button></div>
-                    {filteredItems.length === 0 ? (
+                    {foundItems.length === 0 ? (
                         <div className="home-page-item">Nenhum registo de item encontrado encontrado.</div>
                     ) : (
-                        filteredItems.map((item) => (
+                        foundItems.map((item) => (
                             <div key={item.id} className="home-page-item">
                                 {item.titulo} - {item.descricao_curta} - {item.ativo ? "Não reclamado" : "Objeto Reclamado"}
                             </div>
