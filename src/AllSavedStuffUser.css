@@ -1,0 +1,85 @@
+.SavedInfoPage {
+    padding: 20px;
+}
+
+
+.ActiveLostItemTable {
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 100px;
+    
+}
+
+.InactiveLostItemTable {
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 100px;
+    
+}
+
+.ActiveFoundItemTable {
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
+    margin-bottom: 100px;
+    
+}
+
+.InactiveFoundItemTable {
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 100px;
+    
+}
+
+
+.ActiveAuctionTable {
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 10px;
+    margin-bottom: 100px;
+}
+
+
+.InactiveAuctionTable {
+    margin: 10px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 100px;
+}
+
+.grid-header,
+.grid-row {
+  display: contents;
+}
+
+.grid-header > div,
+.grid-row > div {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+
+.grid-header > div {
+    font-weight: bold;
+  }
+  
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }

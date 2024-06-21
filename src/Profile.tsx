@@ -3,6 +3,7 @@ import './Base-page.css';
 import './Profile.css';
 import { AuthContext } from './context/AuthContext';
 import useAuthFetch from './hooks/useAuthFetch';
+import { useNavigate } from 'react-router-dom';
 
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
@@ -35,6 +36,7 @@ const Profile: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const authFetch = useAuthFetch();
+  let navigate = useNavigate();
 
   function RemoveAccount() {
     const confirmation = confirm("This action is PERMANENT.\nAre you sure?");
@@ -272,10 +274,12 @@ const Profile: React.FC = () => {
 
         <div className="Lost-item-column">
           <div className="left-title">Itens Perdidos registados</div>
+          <button onClick={() => {navigate("/SavedInfo")}}>Ver Registo dos seus Objetos/Leilões</button>
           {lostItems.map((item) => (
-            <div key={item.id} className="home-page-item">
+            <div key={item.id} className="home-page-item"> 
               {item.titulo} - {item.descricao_curta} (Perdido em {item.data_perdido})
             </div>
+            
           ))}
         </div>
       </div>

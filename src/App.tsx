@@ -24,10 +24,10 @@ import Payment from "./Payment";
 import Success from "./Success";
 import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
-import EditProfile from "./ProfileEdit";
 import ResetPasswordEmail from "./ResetPasswordEmail";
 import ResetPasswordCode from "./ResetPasswordCode";
 import NewPassword from "./NewPassword";
+import SavedInfo from "./AllSavedStuffUser";
 
 
 
@@ -47,7 +47,7 @@ function App() {
           <Route path="/lostItems" element={<LostItemsPage />} />
           <Route path="/foundItems" element={<FoundItemsPage />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profileEdit" element={<EditProfile />} />
+          <Route path="/SavedInfo" element={<SavedInfo />} />
           <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/addLost" element={<AddLostItems />} />
           <Route path="/addFound" element={<AddFoundItems />} />

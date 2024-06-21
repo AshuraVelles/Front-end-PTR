@@ -48,14 +48,13 @@ const HomePolicia: React.FC = () => {
                 <div className='Text-column col-6 w-50 h-auto me-3'>
 
                 <div className="Auction-title m-0 text-center">Leiloes ativos</div>
-                <div className="Auction-Button m-0 text-center"><button>Adicionar Leilão</button></div>
 
 
                 </div>
                 
                 <div className="Lost-item-column col-6 w-50 h-auto m-0">
                     <div className="Found-Item-title m-0 text-center">Itens</div>
-                    <div className="Found-Item-Button m-0 text-center"><button>Adicionar Objeto Encontrado</button></div>
+                    <div className="Found-Item-Button m-0 text-center"><button onClick={() => {navigate("/addFound")}}>Adicionar Objeto Encontrado</button></div>
                     {foundItems.length === 0 ? (
                         <div className="home-page-item">Nenhum registo de item encontrado encontrado.</div>
                     ) : (

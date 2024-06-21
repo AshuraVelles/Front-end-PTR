@@ -18,6 +18,7 @@ const Header: React.FC = () => {
           <li><a href='/lostItems' className='nav-button'>Perdidos</a></li>
           <li><a href='/foundItems' className='nav-button'>Achados</a></li>
           <li><h1>RCA</h1></li> 
+          <li><a href='/auctions' className='nav-button'>Leilões</a></li>
           {user ? (
             <>
               <li><a href='/profile' className='nav-button'>Perfil</a></li>
@@ -29,7 +30,6 @@ const Header: React.FC = () => {
               <li><a href='/Register' className='nav-button'>Register</a></li>
             </>
           )}
-          <li><a href='/auctions' className='nav-button'>Leilões</a></li>
         </ul>
       </nav>
     </header>
