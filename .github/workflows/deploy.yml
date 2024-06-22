@@ -21,7 +21,6 @@ jobs:
 
     - name: Install dependencies and build
       run: |
-        cd ./Front-end-PTR
         npm install
         npm run build
 
