@@ -13,6 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Print current directory
+      run: pwd
+
+    - name: List files
+      run: ls -al
+
     - name: Install dependencies and build
       run: |
         cd ./Front-end-PTR
