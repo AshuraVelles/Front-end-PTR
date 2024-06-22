@@ -1,0 +1,34 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies and build
+      run: |
+        npm install
+        npm run build
+
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: |
+        sudo apt-get install -y rsync
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY" dist/* $SERVER_USER@$SERVER_IP:/var/www/html/
+        ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP "sudo systemctl restart nginx"
