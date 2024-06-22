@@ -27,7 +27,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           sudo rm -rf /var/www/html/*
-          sudo cp -r Front-end-PTR/dist/* /var/www/html/
+          sudo cp -r /home/${{ secrets.SERVER_USER }}/Front-end-PTR/dist/* /var/www/html/
           sudo systemctl restart nginx
           pm2 restart all
       env:
@@ -41,7 +41,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           sudo rm -rf /var/www/html/*
-          sudo cp -r Front-end-PTR/dist/* /var/www/html/
+          sudo cp -r /home/${{ secrets.SERVER_USER }}/Front-end-PTR/dist/* /var/www/html/
           sudo systemctl restart nginx
           pm2 restart all
       env:
