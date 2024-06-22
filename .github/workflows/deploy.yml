@@ -30,9 +30,10 @@ jobs:
         host: ${{ secrets.SERVER_IP_PRIMARY }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
         script: |
           sudo rm -rf /var/www/html/*
-          sudo cp -r /home/${{ secrets.SERVER_USER }}/Front-end-PTR/dist/* /var/www/html/
+          sudo cp -r /home/reclaim4242/Front-end-PTR/dist/* /var/www/html/
           sudo systemctl restart nginx
           pm2 restart all
 
@@ -42,8 +43,9 @@ jobs:
         host: ${{ secrets.SERVER_IP_SECONDARY }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
         script: |
           sudo rm -rf /var/www/html/*
-          sudo cp -r /home/${{ secrets.SERVER_USER }}/Front-end-PTR/dist/* /var/www/html/
+          sudo cp -r /home/reclaim4242/Front-end-PTR/dist/* /var/www/html/
           sudo systemctl restart nginx
           pm2 restart all
