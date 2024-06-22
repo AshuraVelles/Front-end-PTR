@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './AuctionsPage.css';
 import { useNavigate } from 'react-router-dom';
+import useAuthFetch from './hooks/useAuthFetch';
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 function AddAuction() {
@@ -36,11 +37,11 @@ function AddAuction() {
       data_Fim: data_Fim,
       ativo: true
     };
-
+    const authFetch = useAuthFetch();
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch(`${apiUrl}/auctions/auctions`, {
+      const response = await authFetch(`${apiUrl}/auctions/auctions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
