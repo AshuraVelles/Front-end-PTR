@@ -15,9 +15,9 @@ jobs:
 
     - name: Install dependencies and build
       run: |
+        cd ./Front-end-PTR
         npm install
         npm run build
-      working-directory: ./Front-end-PTR
 
     - name: Deploy to primary server
       uses: appleboy/ssh-action@master
@@ -30,7 +30,6 @@ jobs:
           sudo cp -r /home/${{ secrets.SERVER_USER }}/Front-end-PTR/dist/* /var/www/html/
           sudo systemctl restart nginx
           pm2 restart all
-      working-directory: ./Front-end-PTR
 
     - name: Deploy to secondary server
       uses: appleboy/ssh-action@master
@@ -43,4 +42,3 @@ jobs:
           sudo cp -r /home/${{ secrets.SERVER_USER }}/Front-end-PTR/dist/* /var/www/html/
           sudo systemctl restart nginx
           pm2 restart all
-      working-directory: ./Front-end-PTR
