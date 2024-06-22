@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios"; // Import axios
@@ -143,7 +138,7 @@ const AddFoundItems = () => {
         }),
         data_limite: dataAchado, // assuming you want to use the same date as `data_achado`
         valor_monetario: parseFloat(cost),
-        imageURL: pictureLink,
+        imageurl: pictureLink,
         ativo: true,
       };
 

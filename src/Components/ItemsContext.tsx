@@ -45,7 +45,7 @@ export const FoundItemsProvider: React.FC<ProviderProps> = ({ children }) => {
     title: item.descricao,
     descricao: item.descricao,
     isSelected: false,
-    imageurl: "https://via.placeholder.com/150",
+    imageurl: item.imageurl,
   }));
 
   return (
@@ -77,7 +77,8 @@ export const LostItemsProvider: React.FC<ProviderProps> = ({ children }) => {
     title: item.descricao,
     descricao: item.descricao,
     isSelected: false,
-    imageurl: "https://via.placeholder.com/150",
+    imageurl:
+      "https://png.pngtree.com/png-vector/20220520/ourmid/pngtree-lost-and-found-items-in-a-shopping-mall-section-png-image_4652739.png",
   }));
 
   return (
