@@ -62,7 +62,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
-      <div className="welcome-text">Bem-Vindos!</div>
+      <div className="welcome-text">Bem-Vindos</div>
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
         <div className="login-title">Login</div>
         <div className="input-container">
