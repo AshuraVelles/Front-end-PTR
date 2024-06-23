@@ -1,9 +1,9 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './register.css';
 import { useNavigate } from 'react-router-dom';
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
+
 interface Errors {
-  username?: string;
   nome?: string;
   genero?: string;
   data_nasc?: string;
@@ -14,7 +14,6 @@ interface Errors {
 }
 
 function Register() {
-  const [username, setUsername] = useState('');
   const [nome, setNome] = useState('');
   const [genero, setGenero] = useState('');
   const [data_nasc, setDataNasc] = useState('');
@@ -23,15 +22,15 @@ function Register() {
   const [telemovel, setTelemovel] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>({});
-  const [hasErrors, setHasErrors] = useState(false); 
+  const [hasErrors, setHasErrors] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   const validate = () => {
     const newErrors: Errors = {};
 
-    if (!username) newErrors.username = 'Username é obrigatório';
     if (!nome) newErrors.nome = 'Nome é obrigatório';
-    if (!genero) newErrors.genero = 'Género é obrigatório';
+    if (!genero || !['Masculino', 'Feminino', 'Outro'].includes(genero)) newErrors.genero = 'Género é obrigatório e deve ser Masculino, Feminino ou Outro';
     if (!data_nasc) newErrors.data_nasc = 'Data de nascimento é obrigatória';
     if (!morada) newErrors.morada = 'Morada é obrigatória';
     if (!email) newErrors.email = 'E-mail é obrigatório';
@@ -58,7 +57,6 @@ function Register() {
     if (!validate()) return;
 
     const payload = {
-      username: username,
       nome: nome,
       genero: genero,
       data_nasc: data_nasc,
@@ -83,11 +81,15 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        navigate('/login');
+        setSuccessMessage('Registration successful! Redirecting to login...');
+        setTimeout(() => navigate('/login'), 1500);
       } else {
-        console.error('Registration failed:', data.message || data);
+        const errorMessage = data.errors ? data.errors.map((err: any) => err.msg).join('\n') : data.message || 'Registration failed';
+        alert(errorMessage); // Display error in an alert
+        console.error('Registration failed:', errorMessage);
       }
     } catch (error) {
+      alert('An error occurred during registration');
       console.error('Error occurred:', error);
     }
   };
@@ -98,15 +100,6 @@ function Register() {
         <div className="login-title">Registar</div>
         <div className="input-container">
           <div className='left'>
-            <label>Escolhe um Username</label>
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            {errors.username && <div className="error">{errors.username}</div>}
-
             <label>Nome</label>
             <input
               type="text"
@@ -117,12 +110,15 @@ function Register() {
             {errors.nome && <div className="error">{errors.nome}</div>}
 
             <label>Género</label>
-            <input
-              type="text"
-              placeholder="Género"
+            <select
               value={genero}
               onChange={(e) => setGenero(e.target.value)}
-            />
+            >
+              <option value="">Selecione</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+              <option value="Outro">Outro</option>
+            </select>
             {errors.genero && <div className="error">{errors.genero}</div>}
 
             <label>E-mail</label>
@@ -143,7 +139,7 @@ function Register() {
               onChange={(e) => setDataNasc(e.target.value)}
             />
             {errors.data_nasc && <div className="error">{errors.data_nasc}</div>}
-          
+
             <label>Morada</label>
             <input
               type="text"
@@ -175,6 +171,7 @@ function Register() {
             <button className="register-button" onClick={handleRegister}>Criar Conta</button>
           </div>
         </div>
+        {successMessage && <div className="success-message">{successMessage}</div>}
       </div>
     </div>
   );

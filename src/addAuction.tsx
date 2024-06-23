@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './AuctionsPage.css';
-import { useNavigate } from 'react-router-dom';
+import useAuthFetch from './hooks/useAuthFetch';
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
 function AddAuction() {
+  const { id } = useParams<{ id: string }>();
   const [Localização, setLocalização] = useState('');
   const [PreçoBase, setPreçoBase] = useState('');
   const [data_Inicio, setDataInicio] = useState('');
@@ -11,6 +13,7 @@ function AddAuction() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hasErrors, setHasErrors] = useState(false);
   const navigate = useNavigate();
+  const authFetch = useAuthFetch(); // Move this to the top level of the component
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
@@ -30,6 +33,7 @@ function AddAuction() {
     if (!validate()) return;
 
     const payload = {
+      objeto_achado_id: id, // Include the ID from the URL
       nome: Localização,
       PreçoBase: PreçoBase,
       data_Inicio: data_Inicio,
@@ -40,7 +44,7 @@ function AddAuction() {
     console.log('Payload:', JSON.stringify(payload));
 
     try {
-      const response = await fetch(`${apiUrl}/auctions/auctions`, {
+      const response = await authFetch(`${apiUrl}/auctions/auctions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
