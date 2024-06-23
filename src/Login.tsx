@@ -84,10 +84,11 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {errors.password && <div className="error">{errors.password}</div>}
-          <button type="button" onClick={handleForgotPassword} className="forgot-password-button">
+          
+        </div>
+        <button type="button" onClick={handleForgotPassword} className="forgot-password-button">
           Esqueci-me da palavra-passe
           </button>
-        </div>
         {errors.general && <div className="error">{errors.general}</div>}
         <button className="login-enter-button" onClick={handleLogin}>
           Entrar

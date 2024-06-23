@@ -41,7 +41,7 @@ const AuctionsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="auctions-container">
+    <div className="auctions-container text-center">
       {auctions.map(auction => (
         <div key={auction.id} className="auction-card">
           <img src={auction.imagem} alt={auction.descricao} className="auction-image" />

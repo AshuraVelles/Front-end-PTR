@@ -5,14 +5,16 @@ import { FoundItemsProvider } from "./Components/ItemsContext";
 import { Link } from "react-router-dom";
 const FoundItemsPage: React.FC = () => {
   return (
-    <div>
+    <div className="text-center">
       <FoundItemsProvider>
-        <h1 className="title">Objetos Achados</h1>
+        <h1 className="title mt-5">Objetos Achados</h1>
         <FoundItemsContent />
       </FoundItemsProvider>
-      <Link to="/addFound" className="add-button">
+      <button>
+      <Link to="/addFound" className="">
         Add Found Item
       </Link>
+      </button>
     </div>
   );
 };
