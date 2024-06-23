@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import './ClaimItemPage.css';
 import config from './apiconfig';
 import useAuthFetch from './hooks/useAuthFetch';
