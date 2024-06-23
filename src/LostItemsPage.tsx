@@ -1,6 +1,5 @@
 import React from "react";
 import FindItemsContent from "./Components/FindItemsContent";
-import SearchBar from "./Components/SearchBar";
 import { LostItemsProvider } from "./Components/ItemsContext";
 import { Link } from "react-router-dom";
 import "./Items.css";

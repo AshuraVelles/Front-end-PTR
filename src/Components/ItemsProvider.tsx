@@ -3,7 +3,6 @@ import React, {
   useContext,
   ReactNode,
   useState,
-  useEffect,
 } from "react";
 import useFetchFoundItems from "../hooks/useFetchFoundItems";
 import useFetchLostItems from "../hooks/useFetchLostItems";
@@ -14,7 +13,7 @@ interface Item {
   isSelected: boolean;
   imageurl?: string;
   itemLink?: string;
-  descricao: string;
+  descricao: string; // Ensure descricao is included in the interface
 }
 
 interface ItemsContextType {
@@ -50,6 +49,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
     title: item.descricao, // Assuming 'descricao' is the title
     isSelected: false, // Assuming items are not selected by default
     imageurl: item.imageurl, // Placeholder image
+    descricao: item.descricao, // Include descricao to match Item interface
   }));
 
   const isLoading = type === "found" ? isFoundLoading : isLostLoading;
