@@ -9,7 +9,6 @@ const LostItemsPage: React.FC = () => {
     <div className="lost-items-page">
       <LostItemsProvider>
         <h1 className="title">Objetos Perdidos</h1>
-        <SearchBar />
         <FindItemsContent />
         <Link to="/addLost" className="add-button">
           Add Lost Item

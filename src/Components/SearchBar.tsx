@@ -1,20 +1,31 @@
-import React from 'react';
-import './SearchBar.css';
-import { useLostItems } from './ItemsContext';
+import React, { useState, useEffect } from "react";
+import { useItems } from "./ItemsProvider";
 
 const SearchBar: React.FC = () => {
-  const { searchTerm, setSearchTerm } = useLostItems();
+  const [query, setQuery] = useState("");
+  const { setSearchTerm } = useItems();
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setSearchTerm(query);
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [query, setSearchTerm]);
+
+  const handleSearchClick = () => {
+    setSearchTerm(query);
+  };
 
   return (
-    <div className="search-bar-container">
-      <div className="search-box">
-        <input
-          type="text"
-          placeholder="Search items...          🔎"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+    <div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search for items..."
+      />
+      <button onClick={handleSearchClick}>Search</button>
     </div>
   );
 };

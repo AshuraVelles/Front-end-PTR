@@ -8,7 +8,6 @@ const FoundItemsPage: React.FC = () => {
     <div>
       <FoundItemsProvider>
         <h1 className="title">Objetos Achados</h1>
-        <SearchBar />
         <FoundItemsContent />
       </FoundItemsProvider>
       <Link to="/addFound" className="add-button">

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, ReactNode, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from "react";
 import useFetchFoundItems from "../hooks/useFetchFoundItems";
 import useFetchLostItems from "../hooks/useFetchLostItems";
 
@@ -39,32 +45,24 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
   } = useFetchLostItems() as { items: Item[]; isLoading: boolean; error: any };
   const [searchTerm, setSearchTerm] = useState("");
 
-  console.log("Foun git d items:", foundItems); // Debug output
-  console.log("Lost items:", lostItems); // Debug output
-
   const items = (type === "found" ? foundItems : lostItems).map((item) => ({
     id: item.id,
     title: item.descricao, // Assuming 'descricao' is the title
     isSelected: false, // Assuming items are not selected by default
-    imageurl: "https://via.placeholder.com/150", // Placeholder image
+    imageurl: item.imageurl, // Placeholder image
   }));
 
   const isLoading = type === "found" ? isFoundLoading : isLostLoading;
   const error = type === "found" ? foundError : lostError;
 
-  console.log("ItemsProvider items:", items); // Debug output
-  console.log("ItemsProvider isLoading:", isLoading); // Debug output
-  console.log("ItemsProvider error:", error); // Debug output
-
-  const modifiedItems = items.map((item) => ({
-    ...item,
-    descricao: item.title, // Assuming 'descricao' is the same as 'title'
-  }));
+  const filteredItems = items.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <ItemsContext.Provider
       value={{
-        items: modifiedItems,
+        items: filteredItems,
         searchTerm,
         setSearchTerm,
         isLoading,

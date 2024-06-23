@@ -1,18 +1,21 @@
-/* src/components/Grid.css */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  justify-content: center; /* Center the items */
 }
 
 .grid-item {
+  flex: 1 1 calc(33.333% - 20px); /* Ensure three items per row with spacing */
+  box-sizing: border-box;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.2s;
+  margin-bottom: 20px; /* Space between rows */
 }
 
 .grid-item:hover {
@@ -26,7 +29,7 @@
 
 .grid-item .title {
   margin-top: 10px;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bold;
   text-align: center;
 }
@@ -34,4 +37,9 @@
 .content-area img {
   max-width: 100%;
   height: auto;
+}
+
+.centered-headline {
+  text-align: center;
+  margin-bottom: 20px;
 }

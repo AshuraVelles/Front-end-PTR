@@ -1,33 +1,40 @@
-import React from 'react';
-import { useFoundItems } from './ItemsContext';
-import GridItem from './GridItem';
-import './Grid.css';
+import React from "react";
+import ItemsProviderWrapper from "./ItemsProviderWrapper";
+import { useItems } from "./ItemsProvider";
+import SearchBar from "./SearchBar";
+import GridItem from "./GridItem";
+import "./Grid.css"; // Import the CSS file
 
 const FoundItemsContent: React.FC = () => {
-  const { items, searchTerm, isLoading, error } = useFoundItems();
-
-  const filteredItems = items.filter(item =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const { items, isLoading, error } = useItems();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className='grid'>
-      {filteredItems.map((item) => (
-        <GridItem
-          key={item.id}
-          id={item.id}
-          title={item.title}
-          isSelected={item.isSelected}
-          imageurl={item.imageurl}
-          itemLink={item.itemLink}
-          itemType="found"
-        />
-      ))}
+    <div>
+      <SearchBar />
+      <h1 className="centered-headline">Found Items</h1>
+      <div className="grid">
+        {items.map((item) => (
+          <GridItem
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            isSelected={item.isSelected}
+            imageurl={item.imageurl}
+            itemType="found"
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default FoundItemsContent;
+const FoundItemsContentWrapper: React.FC = () => (
+  <ItemsProviderWrapper type="found">
+    <FoundItemsContent />
+  </ItemsProviderWrapper>
+);
+
+export default FoundItemsContentWrapper;
