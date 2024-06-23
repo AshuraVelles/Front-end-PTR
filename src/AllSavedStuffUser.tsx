@@ -112,6 +112,7 @@ const SavedInfo: React.FC = () => {
 
         </div>
         </div>
+        <h1>Leilões Inativos</h1>
         <div className='InactiveAuctionTable'>
         <div className='grid-header'>
             <div>Nome do Objeto</div> 
