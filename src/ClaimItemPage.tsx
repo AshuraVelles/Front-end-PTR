@@ -29,7 +29,6 @@ interface User {
 
 const ClaimItemPage: React.FC = () => {
   const { itemId } = useParams<{ itemId: string }>();
-  const navigate = useNavigate();
   const [item, setItem] = useState<ItemDetails | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<string>("");
