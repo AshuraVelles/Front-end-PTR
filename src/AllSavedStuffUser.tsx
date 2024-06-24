@@ -15,20 +15,19 @@ interface FoundItem {
     id: number;
     titulo: string;
     descricao_curta: string;
-    data_encontrado: string;
+    data_achado: string;
     ativo: boolean;
-    deadline: string;
-    valor: string;
+    data_limite: string;
+    valor_monetario: string;
 }
 
 interface AuctionItem {
     id: number;
-    nome_objeto: string;
+    objeto_achado_id: string;
     localizacao: string;
     data_inicio: string;
     data_fim: string;
-    valor_inicial: string;
-    valor_atual: string;
+    valor_base: string;
     ativo: boolean;
 }
 
@@ -55,7 +54,7 @@ const SavedInfo: React.FC = () => {
 
         const fetchFoundItems = async () => {
             try {
-                const data = await authFetch(`${apiUrl}/users/myfounditems`);
+                const data = await authFetch(`${apiUrl}/items/found`);
                 setFoundItems(data);
                 setLoadingFoundItems(false);
             } catch (error) {
@@ -66,7 +65,7 @@ const SavedInfo: React.FC = () => {
 
         const fetchAuctionItems = async () => {
             try {
-                const data = await authFetch(`${apiUrl}/users/myauctions`);
+                const data = await authFetch(`${apiUrl}/auctions/auctions`);
                 setAuctionItems(data);
                 setLoadingAuctionItems(false);
             } catch (error) {
@@ -130,9 +129,9 @@ const SavedInfo: React.FC = () => {
                         <div key={item.id} className='grid-row'>
                             <div>{item.titulo}</div>
                             <div>{item.descricao_curta}</div>
-                            <div>{item.data_encontrado}</div>
-                            <div>{item.deadline}</div>
-                            <div>{item.valor}</div>
+                            <div>{item.data_achado}</div>
+                            <div>{item.data_limite}</div>
+                            <div>{item.valor_monetario}</div>
                             <div><button>Detalhes</button></div>
                             <div><button>Editar</button></div>
                             <div><button>Remover</button></div>
@@ -148,7 +147,6 @@ const SavedInfo: React.FC = () => {
                     <div>Data de inicio</div>
                     <div>Data de fim</div>
                     <div>Valor inicial</div>
-                    <div>Valor no momento</div>
                     <div>Detalhes</div>
                     <div>Editar</div>
                     <div>Remover</div>
@@ -158,12 +156,11 @@ const SavedInfo: React.FC = () => {
                 ) : (
                     auctionItems.filter(item => item.ativo).map(item => (
                         <div key={item.id} className='grid-row'>
-                            <div>{item.nome_objeto}</div>
+                            <div>{item.objeto_achado_id}</div>
                             <div>{item.localizacao}</div>
                             <div>{item.data_inicio}</div>
                             <div>{item.data_fim}</div>
-                            <div>{item.valor_inicial}</div>
-                            <div>{item.valor_atual}</div>
+                            <div>{item.valor_base}</div>
                             <div><button>Detalhes</button></div>
                             <div><button>Editar</button></div>
                             <div><button>Remover</button></div>
@@ -210,9 +207,9 @@ const SavedInfo: React.FC = () => {
                         <div key={item.id} className='grid-row'>
                             <div>{item.titulo}</div>
                             <div>{item.descricao_curta}</div>
-                            <div>{item.data_encontrado}</div>
-                            <div>{item.deadline}</div>
-                            <div>{item.valor}</div>
+                            <div>{item.data_achado}</div>
+                            <div>{item.data_limite}</div>
+                            <div>{item.valor_monetario}</div>
                             <div><button>Detalhes</button></div>
                         </div>
                     ))
@@ -221,12 +218,11 @@ const SavedInfo: React.FC = () => {
             <h1>Leilões Inativos</h1>
             <div className='InactiveAuctionTable'>
                 <div className='grid-header'>
-                    <div>Nome do Objeto</div>
+                    <div>ID do objeto em leilão</div>
                     <div>Localização</div>
                     <div>Data de inicio</div>
                     <div>Data de fim</div>
                     <div>Valor inicial</div>
-                    <div>Valor no momento</div>
                     <div>Detalhes</div>
                 </div>
                 {auctionItems.filter(item => !item.ativo).length === 0 ? (
@@ -234,12 +230,11 @@ const SavedInfo: React.FC = () => {
                 ) : (
                     auctionItems.filter(item => !item.ativo).map(item => (
                         <div key={item.id} className='grid-row'>
-                            <div>{item.nome_objeto}</div>
+                            <div>{item.objeto_achado_id}</div>
                             <div>{item.localizacao}</div>
                             <div>{item.data_inicio}</div>
                             <div>{item.data_fim}</div>
-                            <div>{item.valor_inicial}</div>
-                            <div>{item.valor_atual}</div>
+                            <div>{item.valor_base}</div>
                             <div><button>Detalhes</button></div>
                         </div>
                     ))
