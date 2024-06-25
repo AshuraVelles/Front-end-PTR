@@ -125,7 +125,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="Page-container">
+    <div className="Page-container mt-3 overflow-auto">
       {successMessage && (
         <div className="popup">
           <div className="popup-content">

@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="header">
+    <header className="header overflow-auto">
       <nav>
         <ul className="nav-links">
           <li> <a href={user ? '/homeUtilizador' : '/'} className='nav-button'>Home</a></li>

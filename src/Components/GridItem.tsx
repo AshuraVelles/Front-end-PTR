@@ -22,7 +22,9 @@ const GridItem: React.FC<GridItemProps> = ({ id, title, isSelected, imageurl, it
             <img src={imageurl} height={110} alt={title} />
           </a>
           ) : (
-            <a href={itemLink}></a>
+            <a href={itemLink}>
+              Ir para Objeto
+            </a>
           )
         ) : (
           imageurl ? (
@@ -31,6 +33,7 @@ const GridItem: React.FC<GridItemProps> = ({ id, title, isSelected, imageurl, it
           </Link>
             ) : (
               <Link to={`/${itemType}/${id}`}>
+                Ir para Objeto
               </Link>
             )
           
