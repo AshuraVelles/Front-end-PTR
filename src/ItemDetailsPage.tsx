@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { fetchLostItemById, fetchFoundItemById } from "./api";
 import "./ItemDetailsPage.css";
 
@@ -155,23 +156,15 @@ const ItemDetailsPage: React.FC = () => {
               <strong>ID Policia:</strong> {lostItem.utilizador_id}
             </p>
             <div className="button-container">
-            <div className="dropdown">
-              <button className="dropdown-action dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Ação
-              </button>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href={`/addAuction/${lostItem.id}`}>Adicionar Leilão</a></li>
-                <li><a className="dropdown-item" href={`/claim/${lostItem.id}`}>Reivindicar</a></li>
-              </ul>
-            </div>
-              {/* <DropdownButton id="dropdown-basic-button" title="Ação" className="dropdown-action">
+            
+              <DropdownButton id="dropdown-basic-button" title="Ação">
                 <Dropdown.Item href={`/addAuction/${lostItem.id}`}>
                   Adicionar Leilão
                 </Dropdown.Item>
                 <Dropdown.Item href={`/claim/${lostItem.id}`}>
                   Reivindicar
                 </Dropdown.Item>
-              </DropdownButton> */}
+              </DropdownButton>
             </div>
           </div>
         </div>
@@ -240,23 +233,14 @@ const ItemDetailsPage: React.FC = () => {
             </p>
             <div className="button-container">
             
-            <div className="dropdown">
-              <button className="dropdown-action dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Ação
-              </button>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href={`/addAuction/${foundItem.id}`}>Adicionar Leilão</a></li>
-                <li><a className="dropdown-item" href={`/claim/${foundItem.id}`}>Reivindicar</a></li>
-              </ul>
-            </div>
-              {/* <DropdownButton id="dropdown-basic-button" title="Ação" className="dropdown-action">
+              <DropdownButton id="dropdown-basic-button" title="Ação">
                 <Dropdown.Item href={`/addAuction/${foundItem.id}`}>
                   Adicionar Leilão
                 </Dropdown.Item>
                 <Dropdown.Item href={`/claim/${foundItem.id}`}>
                   Reivindicar
                 </Dropdown.Item>
-              </DropdownButton> */}
+              </DropdownButton>
             </div>
           </div>
         </div>
