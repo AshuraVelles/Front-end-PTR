@@ -106,13 +106,13 @@ const AddFoundItems = () => {
   const validateForm = () => {
     const newErrors: Errors = {};
 
-    if (!titulo) newErrors.titulo = "This field can't be empty";
+    if (!titulo) newErrors.titulo = "Este campo não pode ser vazio";
     if (!descricaoCurta)
-      newErrors.descricao_curta = "This field can't be empty";
-    if (!descricao) newErrors.descricao = "This field can't be empty";
-    if (!dataAchado) newErrors.data_achado = "This field can't be empty";
-    if (!pictureLink) newErrors.picture_link = "This field can't be empty";
-    if (!cost) newErrors.cost = "This field can't be empty";
+      newErrors.descricao_curta = "Este campo não pode ser vazio";
+    if (!descricao) newErrors.descricao = "Este campo não pode ser vazio";
+    if (!dataAchado) newErrors.data_achado = "Este campo não pode ser vazio";
+    if (!pictureLink) newErrors.picture_link = "Este campo não pode ser vazio";
+    if (!cost) newErrors.cost = "Este campo não pode ser vazio";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -153,7 +153,7 @@ const AddFoundItems = () => {
 
       if (response && response.id) {
         const itemId = response.id;
-        setSuccessMessage("Item added successfully");
+        setSuccessMessage("Objeto adicionado com sucesso");
         setErrorMessage("");
         setTitulo("");
         setDescricaoCurta("");
@@ -168,16 +168,16 @@ const AddFoundItems = () => {
 
         navigate(`/found/${itemId}`);
       } else {
-        setErrorMessage("Failed to add item. Please try again.");
+        setErrorMessage("Falha ao adicionar objeto. Tente novamente.");
       }
     } catch (error) {
-      setErrorMessage("Failed to add item. Please try again.");
+      setErrorMessage("Falha ao adicionar objeto. Tente novamente.");
     }
   };
 
   return (
     <div className="add-item-page mt-3">
-      <h1>Add Found Item</h1>
+      <h1>Adicionar Objeto Achado</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Titulo:
@@ -216,12 +216,12 @@ const AddFoundItems = () => {
         <label>
           Categoria:
           <select value={categoria} onChange={handleCategoriaChange}>
-            <option value="Personal Items">Personal Items</option>
-            <option value="Bags">Bags</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Others">Others</option>
+            <option value="Personal Items">Objetos Pessoais</option>
+            <option value="Bags">Malas</option>
+            <option value="Electronics">Eletronica</option>
+            <option value="Clothing">Roupa</option>
+            <option value="Accessories">Acessorios</option>
+            <option value="Others">Outros</option>
           </select>
         </label>
         <label>
@@ -246,7 +246,7 @@ const AddFoundItems = () => {
         </label>
         <label>Latitude: {latitude}</label>
         <label>Longitude: {longitude}</label>
-        <button type="submit">Add Item</button>
+        <button type="submit">Adicionar Objeto</button>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>

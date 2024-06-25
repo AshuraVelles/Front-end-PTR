@@ -14,7 +14,7 @@ const GridItem: React.FC<GridItemProps> = ({ id, title, isSelected, imageurl, it
   const itemStyle = isSelected ? 'grid-item selected' : 'grid-item';
   
   return (
-    <div className={itemStyle+' m-3'}>
+    <div className={itemStyle+' m-1'}>
       <div className="content-area mx-auto d-block" style={{ maxWidth: '300px' }}>
       {itemLink ? (
           imageurl ? (

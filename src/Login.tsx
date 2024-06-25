@@ -52,11 +52,11 @@ const Login: React.FC = () => {
         navigate('/profile');
       } else {
         console.error('Login failed:', data.message || data);
-        setErrors({ general: data.message || 'Login failed, please check your credentials.' });
+        setErrors({ general: data.message || 'Login falhou, verifique as suas credenciais.' });
       }
     } catch (error) {
       console.error('Error occurred:', error);
-      setErrors({ general: 'An error occurred during login. Please try again.' });
+      setErrors({ general: 'Ocorreu um erro durante o login. Tente novamente.' });
     }
   };
 
@@ -74,6 +74,7 @@ const Login: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           {errors.email && <div className="error">{errors.email}</div>}
+          
         </div>
         <div className="input-container">
           <label>Palavra-Passe</label>
@@ -89,7 +90,7 @@ const Login: React.FC = () => {
         <button type="button" onClick={handleForgotPassword} className="forgot-password-button">
           Esqueci-me da palavra-passe
           </button>
-        {errors.general && <div className="error">{errors.general}</div>}
+        {errors.general && <div className="error h5 text-center">{errors.general}</div>}
         <button className="login-enter-button" onClick={handleLogin}>
           Entrar
         </button>

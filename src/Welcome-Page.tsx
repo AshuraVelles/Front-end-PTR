@@ -25,10 +25,7 @@ const WelcomePage : React.FC = () => {
                         <div className='col-2'></div>
                     </div>
                 
-                    {/* <Carousel.Caption>
-                    <h5>First slide label</h5>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                    </Carousel.Caption> */}
+                   
                 </Carousel.Item>
                 <Carousel.Item>
                 <div className='row' style={{marginTop:'-30px'}}>
@@ -102,43 +99,10 @@ const WelcomePage : React.FC = () => {
             <div className="row w-100 h-auto m-0">
                 <div className='col-6 text-center'>
                 <button onClick={() => {navigate("/foundItems")}}>Ir para Objetos Achados</button>
-                    {/* <p>Bem-vindo à ReClaimAuctions, a inovadora plataforma 
-                    que está revolucionando a maneira como lidamos com objetos 
-                    perdidos e achados.</p>
-                    
-                    <p>Com a nossa intuitiva e abrangente aplicação, 
-                    oferecemos uma gama de serviços essenciais para ajudar você 
-                    a recuperar seus pertences de forma eficiente e segura:</p>
-
-                    <ul>
-                        <li> <strong>Registo e Pesquisa Simplificados:</strong> Cadastre-se 
-                        facilmente e encontre rapidamente os objetos perdidos.</li>
-                        
-                        <li> <strong>Recuperação Segura de Objetos Achados:</strong> Garantimos 
-                        a segurança e a integridade dos seus pertences durante todo o 
-                        processo de recuperação.</li>
-                        
-                        <li> <strong>Leilões de Objetos Não Reclamados:</strong>  Explore 
-                        nossos leilões de objetos não reclamados e encontre tesouros incríveis 
-                        a preços acessíveis.</li>
-                        
-                        <li> <strong>Priorização da Localização:</strong> Utilizamos tecnologia avançada 
-                        para ajudar na localização rápida e precisa dos seus itens perdidos.</li>
-                        
-                        <li> <strong>Segurança e Integridade dos Dados</strong>  Protegemos suas informações 
-                        pessoais e garantimos a privacidade dos seus dados.</li>
-                    </ul>
-                   
-                    <p>Descubra como a nossa aplicação pode simplificar e 
-                    agilizar o processo de recuperação de objetos perdidos.
-                    Junte-se a nós e torne-se parte da comunidade que 
-                    está a transformar a forma como lidamos com os objetos
-                    perdidos e achados. Para saber mais clique aqui.</p> */}
                 </div>
                 
                 <div className='col-6 text-center'>
                     <button onClick={() => {navigate("/lostItems")}}>Ir para Objetos Perdidos</button>
-                    {/* <button onClick={() => {navigate("/foundItems")}}>Go to found Items</button> */}
 
                 </div>
             </div>

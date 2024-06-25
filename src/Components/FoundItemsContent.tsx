@@ -8,13 +8,13 @@ import "./Grid.css"; // Import the CSS file
 const FoundItemsContent: React.FC = () => {
   const { items, isLoading, error } = useItems();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>A carregar...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
       <SearchBar />
-      <h1 className="centered-headline">Found Items</h1>
+      <h1 className="centered-headline">Objetos encontrados</h1>
       <div className="grid">
         {items.map((item) => (
           <GridItem
