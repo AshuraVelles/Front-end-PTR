@@ -2,66 +2,25 @@
     padding: 20px;
 }
 
-
-.ActiveLostItemTable {
-    margin: 10px;
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    margin-bottom: 100px;
-    
-}
-
-.InactiveLostItemTable {
-    margin: 10px;
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 100px;
-    
-}
-
-.ActiveFoundItemTable {
-    margin: 10px;
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 10px;
-    margin-bottom: 100px;
-    
-}
-
-.InactiveFoundItemTable {
-    margin: 10px;
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    margin-bottom: 100px;
-    
-}
-
-
-.ActiveAuctionTable {
-    margin: 10px;
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 10px;
-    margin-bottom: 100px;
-}
-
-
+.ActiveLostItemTable,
+.InactiveLostItemTable,
+.ActiveFoundItemTable,
+.InactiveFoundItemTable,
+.ActiveAuctionTable,
 .InactiveAuctionTable {
     margin: 10px;
     margin-top: 50px;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     margin-bottom: 100px;
 }
+
+.ActiveLostItemTable { grid-template-columns: repeat(9, 1fr); }
+.InactiveLostItemTable { grid-template-columns: repeat(9, 1fr); }
+.ActiveFoundItemTable { grid-template-columns: repeat(12, 1fr); }
+.InactiveFoundItemTable { grid-template-columns: repeat(6, 1fr); }
+.ActiveAuctionTable { grid-template-columns: repeat(8, 1fr); }
+.InactiveAuctionTable { grid-template-columns: repeat(6, 1fr); }
 
 .grid-header,
 .grid-row {
@@ -74,12 +33,12 @@
   border: 1px solid #ccc;
 }
 
-
 .grid-header > div {
     font-weight: bold;
-  }
-  
-  button {
+}
+
+button {
     padding: 5px 10px;
-    cursor: pointer;
+}
+
   }
