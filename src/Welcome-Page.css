@@ -45,7 +45,7 @@ button {
   
 }
 
-button:hover {
+button:hover, button > a:hover {
   background-color: rgb(182, 117, 32); /* Hover background color */
   color: white; /* Hover text color */
   border: white; /* Border color */

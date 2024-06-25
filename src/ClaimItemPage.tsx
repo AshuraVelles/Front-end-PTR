@@ -123,6 +123,7 @@ const ClaimItemPage: React.FC = () => {
         <div>Loading...</div>
       )}
       {error && <div className="error-message">{error}</div>}
+      {item ? (
       <div className="claim-section">
         <label htmlFor="user-select">Escolha o Utilizador para Reivindicar Objeto:</label>
         <select id="user-select" value={selectedUser} onChange={handleUserChange}>
@@ -139,6 +140,7 @@ const ClaimItemPage: React.FC = () => {
         </div>
         {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
+    ) : null }
     </div>
   );
 };

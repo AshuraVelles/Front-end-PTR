@@ -34,7 +34,7 @@ const Payment: React.FC = () => {
   return (
     <div className='text-center mt-5 pb-5'>
       <button onClick={handleCheckout} disabled={isProcessing}>
-        {isProcessing ? 'Processing...' : 'Pay'}
+        {isProcessing ? 'A processar...' : 'Pagar'}
       </button>
     </div>
   );
