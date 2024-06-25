@@ -71,10 +71,10 @@ const AuctionsPage: React.FC = () => {
       );
 
       console.log("Bid response:", response);
-      setSuccessMessage("Bid placed successfully");
+      setSuccessMessage("Licitação com sucesso");
     } catch (error) {
       console.error("Failed to place bid:", error);
-      setError("Failed to place bid");
+      setError("Falha na Licitação");
     }
   };
 
@@ -102,45 +102,49 @@ const AuctionsPage: React.FC = () => {
       )}
       {auctions.map((auction) => (
         <div key={auction.id} className="auction-card">
+          {auction.imagem ? 
           <img
-            src={auction.imagem}
-            alt={auction.descricao}
-            className="auction-image"
-          />
+          src={auction.imagem}
+          alt={auction.descricao}
+          className="auction-image"
+        /> : null}
+          
           <div className="auction-details">
             <h3>{auction.titulo}</h3>
             <p>{auction.descricao}</p>
             <p>
-              Start Date: {new Date(auction.data_inicio).toLocaleDateString()}
+              Data Inicial: {new Date(auction.data_inicio).toLocaleDateString()}
             </p>
-            <p>End Date: {new Date(auction.data_fim).toLocaleDateString()}</p>
-            <p>Location: {auction.localizacao}</p>
-            <p>Starting Value: ${auction.valor_base}</p>
-            <p>Status: {auction.ativo ? "Active" : "Inactive"}</p>
+            <p>Data Final: {new Date(auction.data_fim).toLocaleDateString()}</p>
+            <p>Localização: {auction.localizacao}</p>
+            <p>Valor Inicial: ${auction.valor_base}</p>
+            <p>Estado: {auction.ativo ? "Ativo" : "Desativo"}</p>
             <div className="bids-section">
-              <h4>Past Bids:</h4>
+              <h4>Licitações Passadas:</h4>
               {auction.bids.length > 0 ? (
                 <ul>
                   {auction.bids.map((bid) => (
-                    <li key={bid.id}>Bid: ${bid.valor_licitacao}</li>
+                    <li key={bid.id}>Licitação: ${bid.valor_licitacao}</li>
                   ))}
                 </ul>
               ) : (
-                <p>No bids yet.</p>
+                <p>Não há licitações.</p>
               )}
             </div>
             {auction.ativo && (
               <div className="bid-section">
                 <input
                   type="number"
-                  placeholder="Enter your bid"
+                  placeholder="Introduza a sua licitação"
                   value={selectedAuctionId === auction.id ? bidValue || "" : ""}
                   onChange={(e) => {
                     setSelectedAuctionId(auction.id);
                     setBidValue(parseFloat(e.target.value));
                   }}
+                  className="w-50"
                 />
-                <button onClick={() => handleBid(auction.id)}>Place Bid</button>
+                <br />
+                <button onClick={() => handleBid(auction.id)}>Licitar</button>
               </div>
             )}
           </div>
