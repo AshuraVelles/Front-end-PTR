@@ -26,6 +26,7 @@ import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
 import ResetPasswordEmail from "./ResetPasswordEmail";
 import SavedInfo from "./AllSavedStuffUser";
+import Reports from "./Reports";
 
 
 
@@ -64,6 +65,7 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/reset-password-email" element={<ResetPasswordEmail />} />
+          <Route path="/reports" element={<Reports />} />
         </Routes>
       </Router>
     </AuthProvider>
