@@ -11,7 +11,7 @@ const FoundItemsPage: React.FC = () => {
       </FoundItemsProvider>
       <button>
       <Link to="/addFound" className="">
-        Add Found Item
+        Adicionar Objeto Achado
       </Link>
       </button>
     </div>

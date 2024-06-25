@@ -101,7 +101,7 @@ const WelcomePage : React.FC = () => {
             
             <div className="row w-100 h-auto m-0">
                 <div className='col-6 text-center'>
-                <button onClick={() => {navigate("/foundItems")}}>Go to found Items</button>
+                <button onClick={() => {navigate("/foundItems")}}>Ir para Objetos Achados</button>
                     {/* <p>Bem-vindo à ReClaimAuctions, a inovadora plataforma 
                     que está revolucionando a maneira como lidamos com objetos 
                     perdidos e achados.</p>
@@ -137,7 +137,7 @@ const WelcomePage : React.FC = () => {
                 </div>
                 
                 <div className='col-6 text-center'>
-                    <button onClick={() => {navigate("/lostItems")}}>Go to lost Items</button>
+                    <button onClick={() => {navigate("/lostItems")}}>Ir para Objetos Perdidos</button>
                     {/* <button onClick={() => {navigate("/foundItems")}}>Go to found Items</button> */}
 
                 </div>

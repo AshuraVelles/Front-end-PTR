@@ -22,7 +22,7 @@ const Success: React.FC = () => {
   }, [location]);
 
   return (
-    <div>
+    <div className='text-center mt-5 pt-5'>
       <h1>Payment Successful!</h1>
       <p>Your payment has been processed successfully.</p>
     </div>

@@ -161,7 +161,7 @@ const AddLostItems = () => {
   };
 
   return (
-    <div className="add-item-page">
+    <div className="add-item-page mt-3">
       <h1>Add Item</h1>
       <form onSubmit={handleSubmit}>
         <label>

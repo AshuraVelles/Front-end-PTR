@@ -252,7 +252,7 @@ const AdminHome: React.FC = () => {
       )}
 
       <div className='DivHeader-Policias'>
-        <h1>Policias</h1>
+        <h1 className='mt-5'>Policias</h1>
         <button onClick={handleAddMember}>Adicionar</button>
       </div>
 
@@ -356,7 +356,7 @@ const AdminHome: React.FC = () => {
       </div>
 
       <div className='DivHeader-PostosPolicia'>
-        <h1>Postos de Policia</h1>
+        <h1 className='mt-5'>Postos de Policia</h1>
         <button onClick={handleAddPosto}>Adicionar</button>
       </div>
 
@@ -394,7 +394,7 @@ const AdminHome: React.FC = () => {
       </div>
 
       <div className='DivHeader-Utilizadores'>
-        <h1>Utilizadores</h1>
+        <h1 className='mt-5'>Utilizadores</h1>
         <button>Adicionar</button>
       </div>
 

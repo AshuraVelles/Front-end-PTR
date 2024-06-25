@@ -69,7 +69,7 @@ function AddAuction() {
     <div className="login-container">
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
         <div className="login-title">Adicionar um Leilão</div>
-        <div className="input-container">
+        <div className="input-container mb-5 pb-5">
           <div className='left'>
 
             <label>Preço base</label>

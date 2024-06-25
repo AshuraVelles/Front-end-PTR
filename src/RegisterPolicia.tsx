@@ -72,7 +72,7 @@ function RegisterPolice() {
     <div className="login-container">
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
         <div className="login-title">Registar Polícia</div>
-        <div className="input-container">
+        <div className="input-container mb-5 pb-5">
           <div className='left'>
             <label>Nome</label>
             <input

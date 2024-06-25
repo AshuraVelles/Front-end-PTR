@@ -103,38 +103,40 @@ const ClaimItemPage: React.FC = () => {
 
   return (
     <div className="claim-item-page">
-      <h1>Claim Item</h1>
+      <h1 className="text-center">Reivindicar Objeto</h1>
       {item ? (
         <div className="item-details">
           <h2>{item.titulo}</h2>
-          <p><strong>Short Description:</strong> {item.descricao_curta}</p>
-          <p><strong>Description:</strong> {item.descricao}</p>
-          <p><strong>Category:</strong> {item.categoria}</p>
-          <p><strong>Date Found:</strong> {new Date(item.data_achado).toLocaleDateString()}</p>
+          <p><strong>Pequena Descrição:</strong> {item.descricao_curta}</p>
+          <p><strong>Descrição:</strong> {item.descricao}</p>
+          <p><strong>Categoria:</strong> {item.categoria}</p>
+          <p><strong>Data Encontrado:</strong> {new Date(item.data_achado).toLocaleDateString()}</p>
           {item.localizacao_achado ? (
-            <p><strong>Location:</strong> {item.localizacao_achado.latitude}, {item.localizacao_achado.longitude}</p>
+            <p><strong>Localização:</strong> {item.localizacao_achado.latitude}, {item.localizacao_achado.longitude}</p>
           ) : (
-            <p><strong>Location:</strong> Not available</p>
+            <p><strong>Localização:</strong> Indisponivel </p>
           )}
-          <p className={`status ${item.ativo ? "" : "inactive"}`}><strong>Status:</strong> {item.ativo ? "Active" : "Inactive"}</p>
-          <p><strong>Current Owner:</strong> {item.claimant_id ? users.find(user => user.firebase_uid === item.claimant_id)?.nome || "Unknown" : "No owner"}</p>
+          <p className={`status ${item.ativo ? "" : "inactive"}`}><strong>Estado:</strong> {item.ativo ? "Ativo" : "Desativo"}</p>
+          <p><strong>Dono Atual:</strong> {item.claimant_id ? users.find(user => user.firebase_uid === item.claimant_id)?.nome || "Desconhecido" : "Não tem dono"}</p>
         </div>
       ) : (
         <div>Loading...</div>
       )}
       {error && <div className="error-message">{error}</div>}
       <div className="claim-section">
-        <label htmlFor="user-select">Select User to Claim Item:</label>
+        <label htmlFor="user-select">Escolha o Utilizador para Reivindicar Objeto:</label>
         <select id="user-select" value={selectedUser} onChange={handleUserChange}>
-          <option value="">Please select a user</option>
-          <option value="0">No owner</option>
+          <option value="">Escolher Utilizador</option>
+          <option value="0">Não tem dono</option>
           {users.map((user) => (
             <option key={user.firebase_uid} value={user.firebase_uid}>
               {user.nome} ({user.email})
             </option>
           ))}
         </select>
-        <button onClick={handleClaimItem}>Claim Item</button>
+        <div className="text-center" >
+        <button onClick={handleClaimItem}>Reivindicar Objeto</button>
+        </div>
         {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
     </div>
