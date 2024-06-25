@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { fetchLostItemById, fetchFoundItemById } from "./api";
 import "./ItemDetailsPage.css";
 
