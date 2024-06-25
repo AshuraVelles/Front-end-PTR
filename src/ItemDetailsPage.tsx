@@ -156,7 +156,7 @@ const ItemDetailsPage: React.FC = () => {
               <strong>ID Policia:</strong> {lostItem.utilizador_id}
             </p>
             <div className="button-container">
-              <DropdownButton id="dropdown-basic-button" title="Ação" className="dropdown-toggle">
+              <DropdownButton id="dropdown-basic-button" title="Ação" className="dropdown-action">
                 <Dropdown.Item href={`/addAuction/${lostItem.id}`}>
                   Adicionar Leilão
                 </Dropdown.Item>
@@ -231,7 +231,7 @@ const ItemDetailsPage: React.FC = () => {
               <strong>ID Policia:</strong> {foundItem.policial_id}
             </p>
             <div className="button-container">
-              <DropdownButton id="dropdown-basic-button" title="Ação" className="dropdown-toggle">
+              <DropdownButton id="dropdown-basic-button" title="Ação" className="dropdown-action">
                 <Dropdown.Item href={`/addAuction/${foundItem.id}`}>
                   Adicionar Leilão
                 </Dropdown.Item>

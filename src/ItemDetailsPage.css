@@ -253,3 +253,14 @@
 .dropdown-button-container:hover .dropdown-content {
   display: block;
 }
+.dropdown-action{
+  margin-bottom: 10px;
+  padding: 6px 15px;
+  border: 2px solid rgb(182, 117, 32);
+  border-radius: 22px;
+  cursor: pointer;
+  color: #b67520;
+  background-color: #fff;
+  font-size: 20px;
+  font-family: Bellota, system-ui;
+}
