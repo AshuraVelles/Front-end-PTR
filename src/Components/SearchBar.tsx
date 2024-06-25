@@ -18,14 +18,16 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="text-center">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for items..."
+        placeholder="Procurar Objetos..."
+        className="w-50"
       />
-      <button onClick={handleSearchClick}>Search</button>
+      <br />
+      <button onClick={handleSearchClick}>Pesquisar</button>
     </div>
   );
 };
