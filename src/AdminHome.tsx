@@ -4,7 +4,8 @@ import config from './apiconfig';
 import useAuthFetch from './hooks/useAuthFetch';
 
 interface Member {
-  id: number;
+  id:number;
+  utilizador_id: number;
   nome: string;
   posto_policia: number;
   morada: string;
@@ -83,7 +84,7 @@ const AdminHome: React.FC = () => {
         if (response.ok) {
           setSuccessMessage('Apagado com sucesso');
           if (type === 'members') {
-            setMembers(members.filter(member => member.id !== id));
+            setMembers(members.filter(member => member.utilizador_id !== id));
           } else {
             setPoliceStations(policeStations.filter(post => post.id !== id));
             setPostosPolicia(postosPolicia.filter(posto => posto.id !== id));
@@ -149,7 +150,7 @@ const AdminHome: React.FC = () => {
       });
       if (response.ok) {
         setSuccessMessage('Guardado com sucesso');
-        setMembers(members.map(member => (member.id === id ? updatedData : member)));
+        setMembers(members.map(member => (member.utilizador_id === id ? updatedData : member)));
         setEditingMemberId(null);
       } else {
         const result = await response;
@@ -268,39 +269,39 @@ const AdminHome: React.FC = () => {
           <div>Historico Anos</div>
           <div>Historico Comendas</div>
           <div>Editar</div>
-          <div>Ativar/Desativar</div>
+         
           <div>Remover</div>
         </div>
 
         {members.map((member) => (
-          <div key={member.id} className="grid-row">
-            {editingMemberId === member.id ? (
+          <div key={member.utilizador_id} className="grid-row">
+            {editingMemberId === member.utilizador_id ? (
               <>
-                <div><input type="text" defaultValue={member.nome} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, nome: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.nome} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, nome: e.target.value } : m))} /></div>
                 <div>
-                  <select defaultValue={member.posto_policia} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, posto_policia: Number(e.target.value) } : m))}>
+                  <select defaultValue={member.posto_policia} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, posto_policia: Number(e.target.value) } : m))}>
                     <option value="" disabled>Escolha o Posto</option>
                     {policeStations.map(post => (
                       <option key={post.id} value={post.id}>{post.morada}</option>
                     ))}
                   </select>
                 </div>
-                <div><input type="text" defaultValue={member.morada} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, morada: e.target.value } : m))} /></div>
-                <div><input type="text" defaultValue={member.telemovel} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, telemovel: e.target.value } : m))} /></div>
-                <div><input type="text" defaultValue={member.email} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, email: e.target.value } : m))} /></div>
-                <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, data_nasc: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.morada} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, morada: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.telemovel} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, telemovel: e.target.value } : m))} /></div>
+                <div><input type="text" defaultValue={member.email} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, email: e.target.value } : m))} /></div>
+                <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, data_nasc: e.target.value } : m))} /></div>
                 <div>
-                  <select defaultValue={member.genero} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, genero: e.target.value } : m))}>
+                  <select defaultValue={member.genero} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, genero: e.target.value } : m))}>
                     <option value="" disabled>Escolha o Genero</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Feminino">Feminino</option>
                     <option value="Outro">Outro</option>
                   </select>
                 </div>
-                <div><input type="text" defaultValue={member.historico_policia.yearsService} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, yearsService: Number(e.target.value), commendations: m.historico_policia.commendations || [] } } : m))} /></div>
-                <div><input type="text" defaultValue={Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : String(member.historico_policia.commendations)} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, historico_policia: { ...m.historico_policia, commendations: e.target.value.split(', ') } } : m))} /></div>
-                <div><button onClick={() => { handleSaveMember(member.id, member); setEditingMemberId(null); }}>Apply</button></div>
-                <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
+                <div><input type="text" defaultValue={member.historico_policia.yearsService} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, historico_policia: { ...m.historico_policia, yearsService: Number(e.target.value), commendations: m.historico_policia.commendations || [] } } : m))} /></div>
+                <div><input type="text" defaultValue={Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : String(member.historico_policia.commendations)} onChange={(e) => setMembers(members.map(m => member.utilizador_id === member.utilizador_id ? { ...m, historico_policia: { ...m.historico_policia, commendations: e.target.value.split(', ') } } : m))} /></div>
+                <div><button onClick={() => { handleSaveMember(member.utilizador_id, member); setEditingMemberId(null); }}>Apply</button></div>
+                <div><button onClick={() => handleRemove(member.utilizador_id, 'members')}>Remover</button></div>
               </>
             ) : (
               <>
@@ -315,9 +316,9 @@ const AdminHome: React.FC = () => {
                 <div>{member.genero}</div> {/* Displaying genero */}
                 <div>{member.historico_policia.yearsService}</div>
                 <div>{Array.isArray(member.historico_policia.commendations) ? member.historico_policia.commendations.join(', ') : String(member.historico_policia.commendations)}</div> {/* Displaying commendations */}
-                <div><button onClick={() => handleEditMember(member.id)}>Editar</button></div>
-                <div><button>Ativar/Desativar</button></div>
-                <div><button onClick={() => handleRemove(member.id, 'members')}>Remover</button></div>
+                <div><button onClick={() => handleEditMember(member.utilizador_id)}>Editar</button></div>
+               
+                <div><button onClick={() => handleRemove(member.utilizador_id, 'members')}>Remover</button></div>
               </>
             )}
           </div>
@@ -404,7 +405,7 @@ const AdminHome: React.FC = () => {
           <div>Email</div>
           <div>Username</div>
           <div>Ativo</div>
-          <div>Ativar/Desativar</div>
+         
         </div>
 
           <div  className="grid-row">
@@ -414,7 +415,7 @@ const AdminHome: React.FC = () => {
                 <div>smth@smth.com</div>
                 <div>Username</div>
                 <div>True</div>
-                <div><button>Ativar/Desativar</button></div>
+           
               </>
  
           </div>
