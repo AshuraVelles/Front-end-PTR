@@ -119,10 +119,11 @@ const ClaimItemPage: React.FC = () => {
           <p className={`status ${item.ativo ? "" : "inactive"}`}><strong>Estado:</strong> {item.ativo ? "Ativo" : "Desativo"}</p>
           <p><strong>Dono Atual:</strong> {item.claimant_id ? users.find(user => user.firebase_uid === item.claimant_id)?.nome || "Desconhecido" : "Não tem dono"}</p>
         </div>
-      ) : (
-        <div>Loading...</div>
+      ) : ( !error ?
+       <div className='text-center mt-5 pt-5 h4'>Não existem Objetos</div>
+       : null
       )}
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="error-message text-center mt-5 pt-5 h4">{error}</div>}
       {item ? (
       <div className="claim-section">
         <label htmlFor="user-select">Escolha o Utilizador para Reivindicar Objeto:</label>

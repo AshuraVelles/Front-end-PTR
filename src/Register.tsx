@@ -81,15 +81,15 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage('Registration successful! Redirecting to login...');
+        setSuccessMessage('Registo com sucesso! Redirecionando para o login...');
         setTimeout(() => navigate('/login'), 1500);
       } else {
-        const errorMessage = data.errors ? data.errors.map((err: any) => err.msg).join('\n') : data.message || 'Registration failed';
+        const errorMessage = data.errors ? data.errors.map((err: any) => err.msg).join('\n') : data.message || 'Registo falhou';
         alert(errorMessage); // Display error in an alert
-        console.error('Registration failed:', errorMessage);
+        console.error('Registo falhou:', errorMessage);
       }
     } catch (error) {
-      alert('An error occurred during registration');
+      alert('Um erro ocorreu durante o registo');
       console.error('Error occurred:', error);
     }
   };

@@ -98,11 +98,11 @@ const AddLostItems = () => {
   const validateForm = () => {
     const newErrors: Errors = {};
 
-    if (!titulo) newErrors.titulo = "This field can't be empty";
+    if (!titulo) newErrors.titulo = "Este campo não pode ser vazio";
     if (!descricaoCurta)
-      newErrors.descricao_curta = "This field can't be empty";
-    if (!descricao) newErrors.descricao = "This field can't be empty";
-    if (!dataPerdido) newErrors.data_perdido = "This field can't be empty";
+      newErrors.descricao_curta = "Este campo não pode ser vazio";
+    if (!descricao) newErrors.descricao = "Este campo não pode ser vazio";
+    if (!dataPerdido) newErrors.data_perdido = "Este campo não pode ser vazio";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -141,7 +141,7 @@ const AddLostItems = () => {
 
       const itemId = response.itemId;
       console.log("Lost item registered successfully with ID:", itemId);
-      setSuccessMessage("Item added successfully");
+      setSuccessMessage("Objeto adicionado com sucesso");
       setErrorMessage("");
       setTitulo("");
       setDescricaoCurta("");
@@ -156,13 +156,13 @@ const AddLostItems = () => {
       navigate(`/lost/${itemId}`);
     } catch (error) {
       console.error("Error registering lost item:", error);
-      setErrorMessage("Failed to add item. Please try again.");
+      setErrorMessage("Falha ao adicionar objeto. Tente novamente.");
     }
   };
 
   return (
     <div className="add-item-page mt-3">
-      <h1>Add Item</h1>
+      <h1>Adicionar Objeto</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Titulo:
@@ -201,12 +201,12 @@ const AddLostItems = () => {
         <label>
           Categoria:
           <select value={categoria} onChange={handleCategoriaChange}>
-            <option value="Personal Items">Personal Items</option>
-            <option value="Bags">Bags</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Others">Others</option>
+            <option value="Personal Items">Objetos Pessoais</option>
+            <option value="Bags">Malas</option>
+            <option value="Electronics">Eletronica</option>
+            <option value="Clothing">Roupa</option>
+            <option value="Accessories">Acessorios</option>
+            <option value="Others">Outros</option>
           </select>
         </label>
         <label>
@@ -215,7 +215,7 @@ const AddLostItems = () => {
         </label>
         <label>Latitude: {latitude}</label>
         <label>Longitude: {longitude}</label>
-        <button type="submit">Add Item</button>
+        <button type="submit">Adicionar Objeto</button>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>

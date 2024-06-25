@@ -225,7 +225,7 @@ const AdminHome: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
   }
 
   console.log("Members state: ", members);
