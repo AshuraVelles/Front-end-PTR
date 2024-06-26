@@ -26,8 +26,8 @@ import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
 import ResetPasswordEmail from "./ResetPasswordEmail";
 import SavedInfo from "./AllSavedStuffUser";
-
-
+import Reports from "./Reports";
+import AuctionHistoryPage from "./AuctionHistoryPage";
 
 function App() {
   return (
@@ -49,8 +49,7 @@ function App() {
           <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/addLost" element={<AddLostItems />} />
           <Route path="/addFound" element={<AddFoundItems />} />
-          <Route path="/addAuction/:id" element={<AddAuction />} />{" "}
-          {/* Pass the item ID */}
+          <Route path="/addAuction/:id" element={<AddAuction />} /> {/* Pass the item ID */}
           <Route path="/claim/:itemId" element={<ClaimItemPage />} />
           <Route path="/lost/:id" element={<ItemDetailsPage />} />
           <Route path="/found/:id" element={<ItemDetailsPage />} />
@@ -64,6 +63,8 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/reset-password-email" element={<ResetPasswordEmail />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/auction-history" element={<AuctionHistoryPage />} />
         </Routes>
       </Router>
     </AuthProvider>

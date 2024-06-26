@@ -31,6 +31,7 @@ interface FoundItem {
 interface AuctionItem {
     id: number;
     objeto_achado_id: string;
+    titulo: string; // Added to store object title
     localizacao: string;
     data_inicio: string;
     data_fim: string;
@@ -56,30 +57,39 @@ const SavedInfo: React.FC = () => {
         if (!dataFetched) {
             const fetchData = async () => {
                 try {
-                    const [lostItemsData, foundItemsData, auctionItemsData] = await Promise.all([
-                        authFetch(`${apiUrl}/users/mylostitems`),
-                        authFetch(`${apiUrl}/police/items/found`),
-                        authFetch(`${apiUrl}/auctions/auctions`)
-                    ]);
-
+                    const lostItemsData = await authFetch(`${apiUrl}/users/mylostitems`);
                     setLostItems(lostItemsData);
-                    setFoundItems(foundItemsData);
-                    setAuctionItems(auctionItemsData);
                     setLoadingLostItems(false);
-                    setLoadingFoundItems(false);
-                    setLoadingAuctionItems(false);
-                    setDataFetched(true);
                 } catch (error) {
-                    console.error('Failed to fetch data:', error);
+                    console.error('Failed to fetch lost items:', error);
                     setLoadingLostItems(false);
+                }
+    
+                try {
+                    const foundItemsData = await authFetch(`${apiUrl}/police/items/found`);
+                    setFoundItems(foundItemsData);
                     setLoadingFoundItems(false);
+                } catch (error) {
+                    console.error('Failed to fetch found items:', error);
+                    setLoadingFoundItems(false);
+                }
+    
+                try {
+                    const auctionItemsData = await authFetch(`${apiUrl}/auctions/auctions`);
+                    setAuctionItems(auctionItemsData);
+                    setLoadingAuctionItems(false);
+                } catch (error) {
+                    console.error('Failed to fetch auction items:', error);
                     setLoadingAuctionItems(false);
                 }
+    
+                setDataFetched(true);
             };
-
+    
             fetchData();
         }
     }, [authFetch, dataFetched]);
+    
 
     const handleEditLostItem = (id: number) => {
         setEditingLostItemId(id);
@@ -133,9 +143,9 @@ const SavedInfo: React.FC = () => {
         if (window.confirm('Are you sure you want to delete this Auction?')) {
             try {
                 const response = await authFetch(`${apiUrl}/auctions/auctions/${id}`, { method: 'DELETE' });
-                if (response.message) {
+                if (response.ok) {
                     setAuctionItems(auctionItems.filter(item => item.id !== id));
-                    setMessage(response.message);
+                    setMessage('Auction removed successfully');
                 } else {
                     console.error('Failed to delete auction item');
                     setMessage('Failed to delete auction item');
@@ -193,16 +203,22 @@ const SavedInfo: React.FC = () => {
         }
     };
 
-    const handleSaveAuctionItem = async (id: number, newData: AuctionItem) => {
+    const handleSaveAuctionItem = async (id: number, item: AuctionItem) => {
         try {
+            const sanitizedData = {
+                ativo: item.ativo,
+                localizacao: item.localizacao.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+                dataInicio: item.data_inicio,
+                dataFim: item.data_fim
+            };
             const response = await authFetch(`${apiUrl}/auctions/auctions/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newData),
+                body: JSON.stringify(sanitizedData),
             });
             if (response.message) {
                 setAuctionItems(prevAuctionItems =>
-                    prevAuctionItems.map(item => (item.id === id ? { ...item, ...newData } : item))
+                    prevAuctionItems.map(i => (i.id === id ? { ...i, ...sanitizedData } : i))
                 );
                 setEditingAuctionItemId(null);
                 setMessage(response.message);
@@ -223,7 +239,7 @@ const SavedInfo: React.FC = () => {
     return (
         <div className="SavedInfoPage">
             {message && <div className="message">{message}</div>}
-            <h1>Objetos Perdidos Ativos</h1>
+            <h1>Objetos Perdidos</h1>
             <div className='ActiveLostItemTable'>
                 <div className='grid-header'>
                     <div>Título</div>
@@ -233,42 +249,41 @@ const SavedInfo: React.FC = () => {
                     <div>Data de quando foi perdido</div>
                     <div>Localização (Latitude)</div>
                     <div>Localização (Longitude)</div>
+                    <div>Ativo</div>
                     <div>Editar</div>
                     <div>Remover</div>
                 </div>
-                {lostItems.filter(item => item.ativo).length === 0 ? (
-                    <div className='grid-row'>Nenhum objeto perdido ativo encontrado.</div>
-                ) : (
-                    lostItems.filter(item => item.ativo).map(item => (
-                        <div key={item.id} className='grid-row'>
-                            {editingLostItemId === item.id ? (
-                                <>
-                                    <div><input type="text" defaultValue={item.titulo} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, titulo: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.descricao_curta} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, descricao_curta: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.descricao} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, descricao: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.categoria} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, categoria: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_perdido} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, data_perdido: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.localizacao_perdido.latitude} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, localizacao_perdido: { ...i.localizacao_perdido, latitude: e.target.value } } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.localizacao_perdido.longitude} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, localizacao_perdido: { ...i.localizacao_perdido, longitude: e.target.value } } : i))} /></div>
-                                    <div><button onClick={() => handleSaveLostItem(item.id, item)}>Salvar</button></div>
-                                    <div><button onClick={() => handleRemoveLostItem(item.id)}>Remover</button></div>
-                                </>
-                            ) : (
-                                <>
-                                    <div>{item.titulo}</div>
-                                    <div>{item.descricao_curta}</div>
-                                    <div>{item.descricao}</div>
-                                    <div>{item.categoria}</div>
-                                    <div>{item.data_perdido}</div>
-                                    <div>{item.localizacao_perdido.latitude}</div>
-                                    <div>{item.localizacao_perdido.longitude}</div>
-                                    <div><button onClick={() => handleEditLostItem(item.id)}>Editar</button></div>
-                                    <div><button onClick={() => handleRemoveLostItem(item.id)}>Remover</button></div>
-                                </>
-                            )}
-                        </div>
-                    ))
-                )}
+                {lostItems.map(item => (
+                    <div key={item.id} className='grid-row'>
+                        {editingLostItemId === item.id ? (
+                            <>
+                                <div><input type="text" defaultValue={item.titulo} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, titulo: e.target.value } : i))} /></div>
+                                <div><input type="text" defaultValue={item.descricao_curta} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, descricao_curta: e.target.value } : i))} /></div>
+                                <div><input type="text" defaultValue={item.descricao} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, descricao: e.target.value } : i))} /></div>
+                                <div><input type="text" defaultValue={item.categoria} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, categoria: e.target.value } : i))} /></div>
+                                <div><input type="date" defaultValue={item.data_perdido} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, data_perdido: e.target.value } : i))} /></div>
+                                <div><input type="text" defaultValue={item.localizacao_perdido.latitude} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, localizacao_perdido: { ...i.localizacao_perdido, latitude: e.target.value } } : i))} /></div>
+                                <div><input type="text" defaultValue={item.localizacao_perdido.longitude} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, localizacao_perdido: { ...i.localizacao_perdido, longitude: e.target.value } } : i))} /></div>
+                                <div><input type="checkbox" checked={item.ativo} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, ativo: e.target.checked } : i))} /></div>
+                                <div><button onClick={() => handleSaveLostItem(item.id, item)}>Salvar</button></div>
+                                <div><button onClick={() => handleRemoveLostItem(item.id)}>Remover</button></div>
+                            </>
+                        ) : (
+                            <>
+                                <div>{item.titulo}</div>
+                                <div>{item.descricao_curta}</div>
+                                <div>{item.descricao}</div>
+                                <div>{item.categoria}</div>
+                                <div>{item.data_perdido}</div>
+                                <div>{item.localizacao_perdido.latitude}</div>
+                                <div>{item.localizacao_perdido.longitude}</div>
+                                <div><input type="checkbox" checked={item.ativo} readOnly /></div>
+                                <div><button onClick={() => handleEditLostItem(item.id)}>Editar</button></div>
+                                <div><button onClick={() => handleRemoveLostItem(item.id)}>Remover</button></div>
+                            </>
+                        )}
+                    </div>
+                ))}
             </div>
             <h1>Objetos Achados Ativos</h1>
             <div className='ActiveFoundItemTable'>
@@ -286,10 +301,10 @@ const SavedInfo: React.FC = () => {
                     <div>Editar</div>
                     <div>Remover</div>
                 </div>
-                {foundItems.filter(item => item.ativo).length === 0 ? (
+                {foundItems.filter(item => item.ativo || item.id === editingFoundItemId).length === 0 ? (
                     <div className='grid-row'>Nenhum objeto achado ativo encontrado.</div>
                 ) : (
-                    foundItems.filter(item => item.ativo).map(item => (
+                    foundItems.filter(item => item.ativo || item.id === editingFoundItemId).map(item => (
                         <div key={item.id} className='grid-row'>
                             {editingFoundItemId === item.id ? (
                                 <>
@@ -334,156 +349,36 @@ const SavedInfo: React.FC = () => {
                     <div>Data de inicio</div>
                     <div>Data de fim</div>
                     <div>Valor inicial</div>
-                    <div>Detalhes</div>
+                    <div>Ativo</div>
                     <div>Editar</div>
                     <div>Remover</div>
                 </div>
-                {auctionItems.filter(item => item.ativo).length === 0 ? (
+                {auctionItems.filter(item => item.ativo || item.id === editingAuctionItemId).length === 0 ? (
                     <div className='grid-row'>Nenhum leilão ativo encontrado.</div>
                 ) : (
-                    auctionItems.filter(item => item.ativo).map(item => (
+                    auctionItems.filter(item => item.ativo || item.id === editingAuctionItemId).map(item => (
                         <div key={item.id} className='grid-row'>
                             {editingAuctionItemId === item.id ? (
                                 <>
-                                    <div><input type="text" defaultValue={item.objeto_achado_id} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, objeto_achado_id: e.target.value } : i))} /></div>
+                                    <div>{item.titulo}</div>
                                     <div><input type="text" defaultValue={item.localizacao} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, localizacao: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_inicio} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_inicio: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_fim} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_fim: e.target.value } : i))} /></div>
+                                    <div><input type="date" defaultValue={item.data_inicio.split('T')[0]} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_inicio: e.target.value } : i))} /></div>
+                                    <div><input type="date" defaultValue={item.data_fim.split('T')[0]} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_fim: e.target.value } : i))} /></div>
                                     <div><input type="text" defaultValue={item.valor_base} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, valor_base: e.target.value } : i))} /></div>
-                                    <div><button>Detalhes</button></div>
+                                    <div><input type="checkbox" checked={item.ativo} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, ativo: e.target.checked } : i))} /></div>
                                     <div><button onClick={() => handleSaveAuctionItem(item.id, item)}>Salvar</button></div>
                                     <div><button onClick={() => handleRemoveAuction(item.id)}>Remover</button></div>
                                 </>
                             ) : (
                                 <>
-                                    <div>{item.objeto_achado_id}</div>
+                                    <div>{item.titulo}</div>
                                     <div>{item.localizacao}</div>
-                                    <div>{item.data_inicio}</div>
-                                    <div>{item.data_fim}</div>
+                                    <div>{item.data_inicio.split('T')[0]}</div>
+                                    <div>{item.data_fim.split('T')[0]}</div>
                                     <div>{item.valor_base}</div>
-                                    <div><button>Detalhes</button></div>
+                                    <div><input type="checkbox" checked={item.ativo} readOnly /></div>
                                     <div><button onClick={() => handleEditAuctionItem(item.id)}>Editar</button></div>
                                     <div><button onClick={() => handleRemoveAuction(item.id)}>Remover</button></div>
-                                </>
-                            )}
-                        </div>
-                    ))
-                )}
-            </div>
-            {/* Repeat similar structure for Inactive Items */}
-            <h1>Objetos Perdidos Inativos</h1>
-            <div className='InactiveLostItemTable'>
-                <div className='grid-header'>
-                    <div>Nome/Descrição curta</div>
-                    <div>Categoria</div>
-                    <div>Data de quando foi perdido</div>
-                    <div>Descrição</div>
-                    <div>Localização (Latitude)</div>
-                    <div>Localização (Longitude)</div>
-                    <div>Detalhes</div>
-                </div>
-                {lostItems.filter(item => !item.ativo).length === 0 ? (
-                    <div className='grid-row'>Nenhum objeto perdido inativo encontrado.</div>
-                ) : (
-                    lostItems.filter(item => !item.ativo).map(item => (
-                        <div key={item.id} className='grid-row'>
-                            {editingLostItemId === item.id ? (
-                                <>
-                                    <div><input type="text" defaultValue={item.titulo} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, titulo: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.descricao_curta} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, descricao_curta: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.categoria} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, categoria: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_perdido} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, data_perdido: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.descricao} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, descricao: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.localizacao_perdido.latitude} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, localizacao_perdido: { ...i.localizacao_perdido, latitude: e.target.value } } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.localizacao_perdido.longitude} onChange={e => setLostItems(lostItems.map(i => i.id === item.id ? { ...i, localizacao_perdido: { ...i.localizacao_perdido, longitude: e.target.value } } : i))} /></div>
-                                    <div><button>Detalhes</button></div>
-                                </>
-                            ) : (
-                                <>
-                                    <div>{item.titulo}</div>
-                                    <div>{item.descricao_curta}</div>
-                                    <div>{item.categoria}</div>
-                                    <div>{item.data_perdido}</div>
-                                    <div>{item.descricao}</div>
-                                    <div>{item.localizacao_perdido.latitude}</div>
-                                    <div>{item.localizacao_perdido.longitude}</div>
-                                    <div><button>Detalhes</button></div>
-                                </>
-                            )}
-                        </div>
-                    ))
-                )}
-            </div>
-            <h1>Objetos Achados Inativos</h1>
-            <div className='InactiveFoundItemTable'>
-                <div className='grid-header'>
-                    <div>Nome/Descrição curta</div>
-                    <div>Categoria</div>
-                    <div>Data de quando foi encontrado</div>
-                    <div>Deadline</div>
-                    <div>Valor</div>
-                    <div>Detalhes</div>
-                </div>
-                {foundItems.filter(item => !item.ativo).length === 0 ? (
-                    <div className='grid-row'>Nenhum objeto achado inativo encontrado.</div>
-                ) : (
-                    foundItems.filter(item => !item.ativo).map(item => (
-                        <div key={item.id} className='grid-row'>
-                            {editingFoundItemId === item.id ? (
-                                <>
-                                    <div><input type="text" defaultValue={item.titulo} onChange={e => setFoundItems(foundItems.map(i => i.id === item.id ? { ...i, titulo: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.descricao_curta} onChange={e => setFoundItems(foundItems.map(i => i.id === item.id ? { ...i, descricao_curta: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_achado} onChange={e => setFoundItems(foundItems.map(i => i.id === item.id ? { ...i, data_achado: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_limite} onChange={e => setFoundItems(foundItems.map(i => i.id === item.id ? { ...i, data_limite: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.valor_monetario} onChange={e => setFoundItems(foundItems.map(i => i.id === item.id ? { ...i, valor_monetario: e.target.value } : i))} /></div>
-                                    <div><button>Detalhes</button></div>
-                                </>
-                            ) : (
-                                <>
-                                    <div>{item.titulo}</div>
-                                    <div>{item.descricao_curta}</div>
-                                    <div>{item.data_achado}</div>
-                                    <div>{item.data_limite}</div>
-                                    <div>{item.valor_monetario}</div>
-                                    <div><button>Detalhes</button></div>
-                                </>
-                            )}
-                        </div>
-                    ))
-                )}
-            </div>
-            <h1>Leilões Inativos</h1>
-            <div className='InactiveAuctionTable'>
-                <div className='grid-header'>
-                    <div>ID do objeto em leilão</div>
-                    <div>Localização</div>
-                    <div>Data de inicio</div>
-                    <div>Data de fim</div>
-                    <div>Valor inicial</div>
-                    <div>Detalhes</div>
-                </div>
-                {auctionItems.filter(item => !item.ativo).length === 0 ? (
-                    <div className='grid-row'>Nenhum leilão inativo encontrado.</div>
-                ) : (
-                    auctionItems.filter(item => !item.ativo).map(item => (
-                        <div key={item.id} className='grid-row'>
-                            {editingAuctionItemId === item.id ? (
-                                <>
-                                    <div><input type="text" defaultValue={item.objeto_achado_id} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, objeto_achado_id: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.localizacao} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, localizacao: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_inicio} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_inicio: e.target.value } : i))} /></div>
-                                    <div><input type="date" defaultValue={item.data_fim} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_fim: e.target.value } : i))} /></div>
-                                    <div><input type="text" defaultValue={item.valor_base} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, valor_base: e.target.value } : i))} /></div>
-                                    <div><button>Detalhes</button></div>
-                                </>
-                            ) : (
-                                <>
-                                    <div>{item.objeto_achado_id}</div>
-                                    <div>{item.localizacao}</div>
-                                    <div>{item.data_inicio}</div>
-                                    <div>{item.data_fim}</div>
-                                    <div>{item.valor_base}</div>
-                                    <div><button>Detalhes</button></div>
                                 </>
                             )}
                         </div>

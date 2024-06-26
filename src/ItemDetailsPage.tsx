@@ -3,6 +3,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { fetchLostItemById, fetchFoundItemById } from "./api";
 import "./ItemDetailsPage.css";
+import useAuthFetch from "./hooks/useAuthFetch"; // Import your custom hook
 
 interface Location {
   latitude: number;
@@ -58,7 +59,7 @@ const renderMap = (latitude: number, longitude: number) => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        Open in Google Maps
+        Abrir no Google Maps
       </a>
     </p>
   </div>
@@ -72,6 +73,7 @@ const ItemDetailsPage: React.FC = () => {
   );
   const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const authFetch = useAuthFetch(); // Use your custom hook here
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -79,18 +81,18 @@ const ItemDetailsPage: React.FC = () => {
         const type = location.pathname.includes("/lost") ? "lost" : "found";
         const response =
           type === "lost"
-            ? await fetchLostItemById(id!)
-            : await fetchFoundItemById(id!);
+            ? await fetchLostItemById(id!) // Pass authFetch as a parameter
+            : await fetchFoundItemById(id!, authFetch); // Pass authFetch as a parameter
         setItem(response);
       } catch (err) {
-        setError("Failed to fetch item details");
+        setError("Falha ao carregar os detalhes do objeto");
         console.error(err);
       }
       setLoading(false);
     };
 
     fetchItemDetails();
-  }, [id, location.pathname]);
+  }, [id, location.pathname, authFetch]); // Include authFetch in the dependency array
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -101,9 +103,9 @@ const ItemDetailsPage: React.FC = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-  if (!item) return <div>Item not found</div>;
+  if (isLoading) return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
+  if (error) return <div className='text-center mt-5 pt-5 h4'>{error}</div>;
+  if (!item) return <div className='text-center mt-5 pt-5 h4'>Objeto não encontrado</div>;
 
   if ("data_perdido" in item) {
     const lostItem = item as LostItemDetails;
@@ -114,16 +116,16 @@ const ItemDetailsPage: React.FC = () => {
           <div className="item-details">
             <div className="item-info">
               <p>
-                <strong>Short Description:</strong> {lostItem.descricao_curta}
+                <strong>Pequena Descrição:</strong> {lostItem.descricao_curta}
               </p>
               <p>
-                <strong>Description:</strong> {lostItem.descricao}
+                <strong>Descrição:</strong> {lostItem.descricao}
               </p>
               <p>
-                <strong>Category:</strong> {lostItem.categoria}
+                <strong>Categoria:</strong> {lostItem.categoria}
               </p>
               <p>
-                <strong>Date Lost:</strong> {formatDate(lostItem.data_perdido)}
+                <strong>Data em que foi perdido:</strong> {formatDate(lostItem.data_perdido)}
               </p>
               <div className="item-location">
                 <span>
@@ -135,11 +137,11 @@ const ItemDetailsPage: React.FC = () => {
               </div>
               <br></br>
               <p className={`status ${lostItem.ativo ? "" : "inactive"}`}>
-                <strong>Status:</strong>{" "}
+                <strong>Estado:</strong>{" "}
                 {lostItem.ativo ? "Active" : "Inactive"}
               </p>
               <p>
-                <strong>User ID:</strong> {lostItem.utilizador_id}
+                <strong>ID Utilizador:</strong> {lostItem.utilizador_id}
               </p>
             </div>
             {renderMap(
@@ -153,18 +155,16 @@ const ItemDetailsPage: React.FC = () => {
               alt="Officer Badge"
             />
             <p>
-              <strong>Officer ID:</strong> {lostItem.utilizador_id}
+              <strong>ID Policia:</strong> {lostItem.utilizador_id}
             </p>
             <div className="button-container">
-              <DropdownButton id="dropdown-basic-button" title="Take Action">
+            
+              <DropdownButton id="dropdown-basic-button" title="Ação">
                 <Dropdown.Item href={`/addAuction/${lostItem.id}`}>
-                  Add Auction
+                  Adicionar Leilão
                 </Dropdown.Item>
                 <Dropdown.Item href={`/claim/${lostItem.id}`}>
-                  Claim
-                </Dropdown.Item>
-                <Dropdown.Item href={`/check/${lostItem.id}`}>
-                  Check
+                  Reivindicar
                 </Dropdown.Item>
               </DropdownButton>
             </div>
@@ -189,16 +189,16 @@ const ItemDetailsPage: React.FC = () => {
             />
             <div className="item-info">
               <p>
-                <strong>Short Description:</strong> {foundItem.descricao_curta}
+                <strong>Pequena Descrição:</strong> {foundItem.descricao_curta}
               </p>
               <p>
-                <strong>Description:</strong> {foundItem.descricao}
+                <strong>Descrição:</strong> {foundItem.descricao}
               </p>
               <p>
-                <strong>Category:</strong> {foundItem.categoria}
+                <strong>Categoria:</strong> {foundItem.categoria}
               </p>
               <p>
-                <strong>Date Found:</strong> {formatDate(foundItem.data_achado)}
+                <strong>Data em que foi achado:</strong> {formatDate(foundItem.data_achado)}
               </p>
               <div className="item-location">
                 <span>
@@ -210,14 +210,14 @@ const ItemDetailsPage: React.FC = () => {
               </div>
               <br></br>
               <p>
-                <strong>Deadline:</strong> {formatDate(foundItem.data_limite)}
+                <strong>Data Limite:</strong> {formatDate(foundItem.data_limite)}
               </p>
               <p className={`status ${foundItem.ativo ? "" : "inactive"}`}>
-                <strong>Status:</strong>{" "}
+                <strong>Estado:</strong>{" "}
                 {foundItem.ativo ? "Active" : "Inactive"}
               </p>
               <p>
-                <strong>Value:</strong> {formattedValue}
+                <strong>Valor:</strong> {formattedValue}
               </p>
             </div>
             {renderMap(
@@ -231,18 +231,16 @@ const ItemDetailsPage: React.FC = () => {
               alt="Officer Badge"
             />
             <p>
-              <strong>Officer ID:</strong> {foundItem.policial_id}
+              <strong>ID Policia:</strong> {foundItem.policial_id}
             </p>
             <div className="button-container">
-              <DropdownButton id="dropdown-basic-button" title="Take Action">
+            
+              <DropdownButton id="dropdown-basic-button" title="Ação">
                 <Dropdown.Item href={`/addAuction/${foundItem.id}`}>
-                  Add Auction
+                  Adicionar Leilão
                 </Dropdown.Item>
                 <Dropdown.Item href={`/claim/${foundItem.id}`}>
-                  Claim
-                </Dropdown.Item>
-                <Dropdown.Item href={`/check/${foundItem.id}`}>
-                  Check
+                  Reivindicar
                 </Dropdown.Item>
               </DropdownButton>
             </div>

@@ -29,12 +29,11 @@ export const fetchFoundItems = async () => {
   }
 };
 
-export const fetchFoundItemById = async (id: string) => {
+export const fetchFoundItemById = async (id: string, authFetch: any) => {
   try {
-    const response = await axios.get(
-      `${config.API_BASE_URL}/items/found/${id}`
-    );
-    return response.data;
+    const fetchedItems = await authFetch(`${config.API_BASE_URL}/items/found/${id}`);
+    console.log("Fetched item details:", fetchedItems);
+    return fetchedItems;
   } catch (error) {
     console.error("Failed to fetch item details:", error);
     throw error;

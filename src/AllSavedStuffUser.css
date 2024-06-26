@@ -1,44 +1,36 @@
 .SavedInfoPage {
-    padding: 20px;
+  padding: 20px;
 }
 
 .ActiveLostItemTable,
-.InactiveLostItemTable,
 .ActiveFoundItemTable,
-.InactiveFoundItemTable,
-.ActiveAuctionTable,
-.InactiveAuctionTable {
-    margin: 10px;
-    margin-top: 50px;
-    display: grid;
-    gap: 10px;
-    margin-bottom: 100px;
+.ActiveAuctionTable {
+  margin: 10px;
+  margin-top: 50px;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 100px;
 }
 
-.ActiveLostItemTable { grid-template-columns: repeat(9, 1fr); }
-.InactiveLostItemTable { grid-template-columns: repeat(9, 1fr); }
+.ActiveLostItemTable { grid-template-columns: repeat(10, 1fr); }
 .ActiveFoundItemTable { grid-template-columns: repeat(12, 1fr); }
-.InactiveFoundItemTable { grid-template-columns: repeat(6, 1fr); }
 .ActiveAuctionTable { grid-template-columns: repeat(8, 1fr); }
-.InactiveAuctionTable { grid-template-columns: repeat(6, 1fr); }
 
 .grid-header,
 .grid-row {
-  display: contents;
+display: contents;
 }
 
 .grid-header > div,
 .grid-row > div {
-  padding: 10px;
-  border: 1px solid #ccc;
+padding: 10px;
+border: 1px solid #ccc;
 }
 
 .grid-header > div {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 button {
-    padding: 5px 10px;
+  padding: 5px 10px;
 }
-
-  

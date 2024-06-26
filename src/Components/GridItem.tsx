@@ -15,14 +15,18 @@ const GridItem: React.FC<GridItemProps> = ({ id, title, isSelected, imageurl, it
   
   return (
     <div className={itemStyle+' m-1'}>
-      <div className="content-area mx-auto d-block" style={{ maxWidth: '300px' }}>
+      <div className="content-area mx-auto d-block text-center" style={{ maxWidth: '300px' }}>
       {itemLink ? (
           imageurl ? (
           <a href={itemLink}>
             <img src={imageurl} height={110} alt={title} />
           </a>
           ) : (
-            <a href={itemLink}></a>
+            <a href={itemLink}>
+              <button>
+                Ir para Objeto
+              </button>
+            </a>
           )
         ) : (
           imageurl ? (
@@ -31,6 +35,9 @@ const GridItem: React.FC<GridItemProps> = ({ id, title, isSelected, imageurl, it
           </Link>
             ) : (
               <Link to={`/${itemType}/${id}`}>
+                <button>
+                Ir para Objeto
+                </button>
               </Link>
             )
           

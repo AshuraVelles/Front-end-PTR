@@ -8,8 +8,10 @@ import "./Grid.css"; // Import the CSS file
 const FindItemsContent: React.FC = () => {
   const { items, isLoading, error } = useItems();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading)
+    return <div className="text-center mt-5 pt-5 h4">Loading...</div>;
+  if (error)
+    return <div className="text-danger text-center mt-5 pt-5 h4">{error}</div>;
 
   return (
     <div>

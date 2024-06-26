@@ -6,11 +6,11 @@ const UserLostItems: React.FC = () => {
   const { items, isLoading, error } = useItems();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className='text-center mt-5 pt-5 h4'>Error: {error}</div>;
   }
 
   return (

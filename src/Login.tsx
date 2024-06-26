@@ -11,6 +11,7 @@ const Login: React.FC = () => {
   const [hasErrors, setHasErrors] = useState(false);
   const { login } = useContext(AuthContext)!;
   const navigate = useNavigate();
+  
   const handleForgotPassword = () => {
     navigate('/reset-password-email');
   };
@@ -45,11 +46,23 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
-        console.log('Received accessToken:', data.user.stsTokenManager.accessToken);
-        console.log('Received auth0Token:', data.accessToken);
         login(data.user, data.accessToken); // Pass both user and accessToken
+
+        if(data.userType === undefined) {
+          console.error('User type not found in response:', data);
+          setErrors({ general: 'Tipo de utilizador não encontrado na resposta do servidor.' });
+        }
+        localStorage.setItem('isCop', data.userType.iscop); // Store user type in localStorage
+        localStorage.setItem('isAdmin', data.userType.isadmin); // Store user type in localStorage
         console.log('User and access token set in context and localStorage');
-        navigate('/profile');
+        console.log('User type:', data.userType);
+        if (data.userType.isadmin) {
+          navigate('/admin');
+        } else if (data.userType.iscop) {
+          navigate('/policiahome');
+        } else {
+          navigate('/profile');
+        }
       } else {
         console.error('Login failed:', data.message || data);
         setErrors({ general: data.message || 'Login falhou, verifique as suas credenciais.' });
