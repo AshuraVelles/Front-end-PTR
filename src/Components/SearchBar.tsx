@@ -3,31 +3,88 @@ import { useItems } from "./ItemsProvider";
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState("");
-  const { setSearchTerm } = useItems();
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const { setSearchTerms } = useItems();
+
+  const fillEmptyFields = (
+    title: string,
+    category: string,
+    description: string
+  ) => {
+    const filledCategory = category || title || description;
+    const filledDescription = description || title || category;
+    const filledTitle = title || category || description;
+
+    return { filledTitle, filledCategory, filledDescription };
+  };
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      setSearchTerm(query);
-    }, 1000);
+    if (!showAdvanced) {
+      const delayDebounceFn = setTimeout(() => {
+        const { filledTitle, filledCategory, filledDescription } =
+          fillEmptyFields(query, category, description);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [query, setSearchTerm]);
+        setSearchTerms({
+          title: filledTitle,
+          category: filledCategory,
+          description: filledDescription,
+        });
+      }, 2000);
+
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [query, category, description, setSearchTerms, showAdvanced]);
 
   const handleSearchClick = () => {
-    setSearchTerm(query);
+    const { filledTitle, filledCategory, filledDescription } = fillEmptyFields(
+      query,
+      category,
+      description
+    );
+
+    setSearchTerms({
+      title: filledTitle,
+      category: filledCategory,
+      description: filledDescription,
+    });
   };
 
   return (
-    <div className="text-center">
+    <div>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Procurar Objetos..."
-        className="w-50"
+        placeholder="Search by title..."
       />
-      <br />
-      <button onClick={handleSearchClick}>Pesquisar</button>
+      <button onClick={handleSearchClick}>Search</button>
+      <button onClick={() => setShowAdvanced(!showAdvanced)}>
+        {showAdvanced ? "Hide Advanced" : "Show Advanced"}
+      </button>
+      {showAdvanced && (
+        <div>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            <option value="Personal Items">Objetos Pessoais</option>
+            <option value="Bags">Malas</option>
+            <option value="Electronics">Eletronica</option>
+            <option value="Clothing">Roupa</option>
+            <option value="Accessories">Acessorios</option>
+            <option value="Others">Outros</option>
+          </select>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Search by description..."
+          />
+        </div>
+      )}
     </div>
   );
 };
