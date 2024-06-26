@@ -32,6 +32,7 @@ interface ItemsContextType {
   >;
   isLoading: boolean;
   error: string | null;
+  refreshItems: () => void;
 }
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
@@ -96,48 +97,49 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch initial items
-  useEffect(() => {
-    const fetchItems = async () => {
-      setIsLoading(true);
-      setError(null);
+  const fetchItems = async (terms: {
+    title: string;
+    category: string;
+    description: string;
+  }) => {
+    setIsLoading(true);
+    setError(null);
 
-      try {
+    try {
+      if (terms.title || terms.category || terms.description) {
+        const data = await searchItems({ type, searchTerms: terms });
+        setItems(data || []);
+      } else {
         const data = await fetchInitialItems(type);
         setItems(data || []);
-      } catch (error: any) {
-        setError(`Error fetching initial ${type} items`);
-        console.error(`Error fetching initial ${type} items:`, error);
-      } finally {
-        setIsLoading(false);
       }
-    };
+    } catch (error: any) {
+      setError(`Error fetching ${type} items`);
+      console.error(`Error fetching ${type} items:`, error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchItems();
+  useEffect(() => {
+    fetchItems(searchTerms);
   }, [type]);
 
-  // Search items based on the search terms
   useEffect(() => {
-    if (!searchTerms.title && !searchTerms.category && !searchTerms.description)
-      return;
+    if (searchTerms.title || searchTerms.category || searchTerms.description) {
+      fetchItems(searchTerms);
+    }
+  }, [searchTerms]);
 
-    const fetchItems = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const data = await searchItems({ type, searchTerms });
-        setItems(data || []);
-      } catch (error: any) {
-        setError(`Error fetching ${type} items`);
-        console.error(`Error fetching ${type} items:`, error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchItems();
-  }, [searchTerms, type]);
+  const refreshItems = async () => {
+    setSearchTerms({
+      title: "",
+      category: "",
+      description: "",
+    });
+    const data = await fetchInitialItems(type);
+    setItems(data || []);
+  };
 
   const filteredItems = items.map((item) => ({
     ...item,
@@ -154,6 +156,7 @@ export const ItemsProvider: React.FC<ProviderProps> = ({ children, type }) => {
         setSearchTerms,
         isLoading,
         error,
+        refreshItems,
       }}
     >
       {children}

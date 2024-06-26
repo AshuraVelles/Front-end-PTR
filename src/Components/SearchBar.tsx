@@ -6,7 +6,7 @@ const SearchBar: React.FC = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const { setSearchTerms } = useItems();
+  const { setSearchTerms, refreshItems } = useItems();
 
   const fillEmptyFields = (
     title: string,
@@ -51,6 +51,13 @@ const SearchBar: React.FC = () => {
     });
   };
 
+  const handleRefreshClick = () => {
+    setQuery("");
+    setCategory("");
+    setDescription("");
+    refreshItems();
+  };
+
   return (
     <div>
       <input
@@ -60,6 +67,7 @@ const SearchBar: React.FC = () => {
         placeholder="Search by title..."
       />
       <button onClick={handleSearchClick}>Search</button>
+      <button onClick={handleRefreshClick}>Refresh</button>
       <button onClick={() => setShowAdvanced(!showAdvanced)}>
         {showAdvanced ? "Hide Advanced" : "Show Advanced"}
       </button>
