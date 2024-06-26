@@ -34,7 +34,7 @@ const HomeUtilizador: React.FC = () => {
     }, [authFetch]);
 
     if (loadingItems) {
-        return <div>Loading...</div>;
+        return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
     }
 
     return (

@@ -45,7 +45,7 @@ const ResetPasswordEmail: React.FC = () => {
     <div className="reset-container">
       <header className="header">
       </header>
-      <div className="reset-box">
+      <div className="reset-box w-100">
         <h2 className="reset-title">Recuperação de palavra-passe</h2>
         <form onSubmit={handleResetPassword} className="reset-form">
           <div className="reset-input-container">

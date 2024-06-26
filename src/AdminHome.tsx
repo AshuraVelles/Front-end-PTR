@@ -76,12 +76,12 @@ const AdminHome: React.FC = () => {
   };
 
   const handleRemove = async (id: number, type: 'members' | 'posts') => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
+    if (window.confirm('Tem a certeza que quer eliminar este objeto?')) {
       try {
         const response = await authFetch(`${config.API_BASE_URL}/police/${type}/${id}`, { method: 'DELETE' });
         const result = await response;
         if (response.ok) {
-          setSuccessMessage('Successfully deleted');
+          setSuccessMessage('Apagado com sucesso');
           if (type === 'members') {
             setMembers(members.filter(member => member.id !== id));
           } else {
@@ -89,11 +89,11 @@ const AdminHome: React.FC = () => {
             setPostosPolicia(postosPolicia.filter(posto => posto.id !== id));
           }
         } else {
-          setError(result.message || 'Failed to delete');
+          setError(result.message || 'Falha ao apagar');
         }
       } catch (error) {
         console.error("Error deleting data:", error);
-        setError('Failed to delete');
+        setError('Falha ao apagar');
       }
     }
   };
@@ -108,16 +108,16 @@ const AdminHome: React.FC = () => {
         body: JSON.stringify(data)
       });
       if (response.ok) {
-        setSuccessMessage('Successfully updated');
+        setSuccessMessage('Guardado com sucesso');
         setPostosPolicia(postosPolicia.map(posto => (posto.id === id ? data : posto)));
         setEditingPostoId(null);
       } else {
         const result = await response;
-        setError(result.message || 'Failed to update');
+        setError(result.message || 'Falha a guardar');
       }
     } catch (error) {
       console.error("Error updating data:", error);
-      setError('Failed to update');
+      setError('Falha a guardar');
     }
   };
 
@@ -148,16 +148,16 @@ const AdminHome: React.FC = () => {
         body: JSON.stringify(updatedData)
       });
       if (response.ok) {
-        setSuccessMessage('Successfully updated');
+        setSuccessMessage('Guardado com sucesso');
         setMembers(members.map(member => (member.id === id ? updatedData : member)));
         setEditingMemberId(null);
       } else {
         const result = await response;
-        setError(result.message || 'Failed to update');
+        setError(result.message || 'Falha a guardar');
       }
     } catch (error) {
       console.error("Error updating data:", error);
-      setError('Failed to update');
+      setError('Falha a guardar');
     }
   };
   
@@ -181,16 +181,16 @@ const AdminHome: React.FC = () => {
       });
       if (response.ok) {
         const newData = await response;
-        setSuccessMessage('Successfully added');
+        setSuccessMessage('Adicionado com sucesso');
         setMembers([...members, newData]);
         setNewMember(null);
       } else {
         const result = await response;
-        setError(result.message || 'Failed to add');
+        setError(result.message || 'Falha ao adicionar');
       }
     } catch (error) {
       console.error("Error adding data:", error);
-      setError('Failed to add');
+      setError('Falha ao adicionar');
     }
   };
   
@@ -204,15 +204,15 @@ const AdminHome: React.FC = () => {
       });
       const result = await response;
       if (response.ok) {
-        setSuccessMessage('Successfully added');
+        setSuccessMessage('Adicionado com sucesso');
         setPostosPolicia([...postosPolicia, result]);
         setNewPosto(null);
       } else {
-        setError(result.message || 'Failed to add');
+        setError(result.message || 'Falha ao adicionar');
       }
     } catch (error) {
       console.error("Error adding data:", error);
-      setError('Failed to add');
+      setError('Falha ao adicionar');
     }
   };
 
@@ -225,7 +225,7 @@ const AdminHome: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
   }
 
   console.log("Members state: ", members);
@@ -252,7 +252,7 @@ const AdminHome: React.FC = () => {
       )}
 
       <div className='DivHeader-Policias'>
-        <h1>Policias</h1>
+        <h1 className='mt-5'>Policias</h1>
         <button onClick={handleAddMember}>Adicionar</button>
       </div>
 
@@ -279,7 +279,7 @@ const AdminHome: React.FC = () => {
                 <div><input type="text" defaultValue={member.nome} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, nome: e.target.value } : m))} /></div>
                 <div>
                   <select defaultValue={member.posto_policia} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, posto_policia: Number(e.target.value) } : m))}>
-                    <option value="" disabled>Select Posto</option>
+                    <option value="" disabled>Escolha o Posto</option>
                     {policeStations.map(post => (
                       <option key={post.id} value={post.id}>{post.morada}</option>
                     ))}
@@ -291,7 +291,7 @@ const AdminHome: React.FC = () => {
                 <div><input type="date" defaultValue={member.data_nasc?.split('T')[0]} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, data_nasc: e.target.value } : m))} /></div>
                 <div>
                   <select defaultValue={member.genero} onChange={(e) => setMembers(members.map(m => m.id === member.id ? { ...m, genero: e.target.value } : m))}>
-                    <option value="" disabled>Select Genero</option>
+                    <option value="" disabled>Escolha o Genero</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Feminino">Feminino</option>
                     <option value="Outro">Outro</option>
@@ -328,7 +328,7 @@ const AdminHome: React.FC = () => {
             <div><input type="text" placeholder="Nome" value={newMember.nome || ''} onChange={e => setNewMember({...newMember, nome: e.target.value})} /></div>
             <div>
               <select value={newMember.posto_policia || ''} onChange={e => setNewMember({...newMember, posto_policia: Number(e.target.value)})}>
-                <option value="" disabled>Select Posto</option>
+                <option value="" disabled>Escolha o Posto</option>
                 {policeStations.map(post => (
                   <option key={post.id} value={post.id}>{post.morada}</option>
                 ))}
@@ -340,7 +340,7 @@ const AdminHome: React.FC = () => {
             <div><input type="date" placeholder="Data Nascimento" value={newMember.data_nasc || ''} onChange={e => setNewMember({...newMember, data_nasc: e.target.value})} /></div>
             <div>
               <select value={newMember.genero || ''} onChange={e => setNewMember({...newMember, genero: e.target.value})}>
-                <option value="" disabled>Select Genero</option>
+                <option value="" disabled>Escolha o Genero</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
                 <option value="Outro">Outro</option>
@@ -356,7 +356,7 @@ const AdminHome: React.FC = () => {
       </div>
 
       <div className='DivHeader-PostosPolicia'>
-        <h1>Postos de Policia</h1>
+        <h1 className='mt-5'>Postos de Policia</h1>
         <button onClick={handleAddPosto}>Adicionar</button>
       </div>
 
@@ -394,7 +394,7 @@ const AdminHome: React.FC = () => {
       </div>
 
       <div className='DivHeader-Utilizadores'>
-        <h1>Utilizadores</h1>
+        <h1 className='mt-5'>Utilizadores</h1>
         <button>Adicionar</button>
       </div>
 

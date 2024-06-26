@@ -54,9 +54,9 @@ function EditPostoPolicia() {
   return (
     <div className="login-container">
       <div className={`login-box ${hasErrors ? 'error-active' : ''}`}>
-        <div className="login-title">Editar Posto de Polícia</div>
-        <div className="input-container">
-          <div className="left">
+        <div className="login-title text-center">Editar Posto de Polícia</div>
+        <div className="input-container mb-5 pb-5">
+          <div className="left w-100">
             <label>Morada</label>
             <input
               type="text"

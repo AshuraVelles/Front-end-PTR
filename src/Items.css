@@ -61,20 +61,29 @@
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 22px;
   font-size: 1rem;
   width: 100%;
 }
 
 .add-item-page button {
-  padding: 10px 20px;
+  /* padding: 10px 20px;
   font-size: 1.2rem;
   color: #fff;
   background-color: #007bff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; */
+  margin-bottom: 10px;
+    padding: 10px 20px;
+    border: 2px solid rgb(182, 117, 32);
+    border-radius: 22px;
+    cursor: pointer;
+    color: #b67520;
+    background-color: #fff;
+    font-size: 36px;
+    font-family: Bellota, system-ui;
 }
 
 .add-item-page button:hover {
@@ -82,7 +91,7 @@
 }
 .error {
   color: red;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   margin-left: 10px;
 }
 

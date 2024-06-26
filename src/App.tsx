@@ -26,6 +26,7 @@ import Failure from "./Failure";
 import ClaimItemPage from "./ClaimItemPage";
 import ResetPasswordEmail from "./ResetPasswordEmail";
 import SavedInfo from "./AllSavedStuffUser";
+import Reports from "./Reports";
 import AuctionHistoryPage from "./AuctionHistoryPage";
 
 function App() {
@@ -62,7 +63,6 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/reset-password-email" element={<ResetPasswordEmail />} />
-          <Route path="/auction-history" element={<AuctionHistoryPage />} /> 
         </Routes>
       </Router>
     </AuthProvider>

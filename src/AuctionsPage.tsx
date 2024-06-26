@@ -146,7 +146,7 @@ const AuctionsPage: React.FC = () => {
       );
 
       console.log("Bid response:", response);
-      setSuccessMessage("Bid placed successfully");
+      setSuccessMessage("Licitação com sucesso");
       setSelectedAuctionId(auctionId); // To refresh the auction and possibly highest bidder information
     } catch (error) {
       console.error("Failed to place bid:", error);

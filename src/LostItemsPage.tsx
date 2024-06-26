@@ -11,7 +11,7 @@ const LostItemsPage: React.FC = () => {
         <FindItemsContent />
         <button>
         <Link to="/addLost" className="">
-          Add Lost Item
+          Adicionar Objeto Perdido
         </Link>
         </button>
       </LostItemsProvider>

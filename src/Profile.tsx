@@ -93,15 +93,15 @@ const Profile: React.FC = () => {
         const updatedProfile = await response.json();
         setProfile(updatedProfile);
         setEditingProfile(null);
-        setSuccessMessage('Successfully updated');
+        setSuccessMessage('Guardado com sucesso');
         setError(null); // Clear any previous errors
       } else {
         const result = await response.json();
-        setError(result.message || 'Failed to update');
+        setError(result.message || 'Falha ao guardar');
         setSuccessMessage(''); // Clear success message
       }
     } catch (error) {
-      console.error('Failed to update profile:', error);
+      console.error('Falha ao guardar profile:', error);
       //setError('Failed to update');
       window.location.reload()
       setSuccessMessage(''); // Clear success message
@@ -117,15 +117,15 @@ const Profile: React.FC = () => {
   };
 
   if (loading || loadingItems) {
-    return <div>Loading...</div>;
+    return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
   }
 
   if (!profile) {
-    return <div>Failed to load profile.</div>;
+    return <div className='text-center mt-5 pt-5 h4'>Erro a carregar o Perfil.</div>;
   }
 
   return (
-    <div className="Page-container">
+    <div className="Page-container mt-3 overflow-auto">
       {successMessage && (
         <div className="popup">
           <div className="popup-content">
@@ -169,7 +169,7 @@ const Profile: React.FC = () => {
                 value={editingProfile.genero || ''}
                 onChange={(e) => setEditingProfile({ ...editingProfile, genero: e.target.value })}
               >
-                <option value="" disabled>Select Género</option>
+                <option value="" disabled>Escolha o Género</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
                 <option value="Outro">Outro</option>
