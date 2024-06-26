@@ -1,0 +1,19 @@
+.auction-history-container {
+    padding: 20px;
+  }
+  
+  .auction-history-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .auction-history-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .error {
+    color: red;
+  }
+  
