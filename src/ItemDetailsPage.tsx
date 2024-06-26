@@ -3,6 +3,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { fetchLostItemById, fetchFoundItemById } from "./api";
 import "./ItemDetailsPage.css";
+import useAuthFetch from "./hooks/useAuthFetch"; // Import your custom hook
 
 interface Location {
   latitude: number;
@@ -72,6 +73,7 @@ const ItemDetailsPage: React.FC = () => {
   );
   const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const authFetch = useAuthFetch(); // Use your custom hook here
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -79,8 +81,8 @@ const ItemDetailsPage: React.FC = () => {
         const type = location.pathname.includes("/lost") ? "lost" : "found";
         const response =
           type === "lost"
-            ? await fetchLostItemById(id!)
-            : await fetchFoundItemById(id!);
+            ? await fetchLostItemById(id!) // Pass authFetch as a parameter
+            : await fetchFoundItemById(id!, authFetch); // Pass authFetch as a parameter
         setItem(response);
       } catch (err) {
         setError("Falha ao carregar os detalhes do objeto");
@@ -90,7 +92,7 @@ const ItemDetailsPage: React.FC = () => {
     };
 
     fetchItemDetails();
-  }, [id, location.pathname]);
+  }, [id, location.pathname, authFetch]); // Include authFetch in the dependency array
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
