@@ -117,14 +117,13 @@ const AddFoundItems = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!validateForm()) {
       return;
     }
-
+  
     try {
       const payload = {
         titulo,
@@ -138,10 +137,10 @@ const AddFoundItems = () => {
         }),
         data_limite: dataAchado, // assuming you want to use the same date as `data_achado`
         valor_monetario: parseFloat(cost),
-        imageurl: pictureLink,
+        imageURL: pictureLink, // Ensure this matches the expected case
         ativo: true,
       };
-
+  
       const response = await authFetch(
         `${config.API_BASE_URL}/police/items/found/register`,
         {
@@ -150,7 +149,7 @@ const AddFoundItems = () => {
           body: JSON.stringify(payload),
         }
       );
-
+  
       if (response && response.id) {
         const itemId = response.id;
         setSuccessMessage("Objeto adicionado com sucesso");
@@ -165,7 +164,7 @@ const AddFoundItems = () => {
         setPictureLink("");
         setCost("");
         setAddress(""); // Reset address
-
+  
         navigate(`/found/${itemId}`);
       } else {
         setErrorMessage("Falha ao adicionar objeto. Tente novamente.");
@@ -174,6 +173,7 @@ const AddFoundItems = () => {
       setErrorMessage("Falha ao adicionar objeto. Tente novamente.");
     }
   };
+  
 
   return (
     <div className="add-item-page mt-3">
