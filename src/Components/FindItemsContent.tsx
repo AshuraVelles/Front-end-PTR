@@ -24,7 +24,6 @@ const FindItemsContent: React.FC = () => {
             id={item.id}
             title={item.title}
             isSelected={item.isSelected}
-            imageurl={item.imageurl}
             itemType="lost"
           />
         ))}
