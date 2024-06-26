@@ -63,6 +63,8 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/reset-password-email" element={<ResetPasswordEmail />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/auction-history" element={<AuctionHistoryPage />} />
         </Routes>
       </Router>
     </AuthProvider>
