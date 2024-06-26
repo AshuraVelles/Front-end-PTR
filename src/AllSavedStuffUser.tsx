@@ -57,30 +57,39 @@ const SavedInfo: React.FC = () => {
         if (!dataFetched) {
             const fetchData = async () => {
                 try {
-                    const [lostItemsData, foundItemsData, auctionItemsData] = await Promise.all([
-                        authFetch(`${apiUrl}/users/mylostitems`),
-                        authFetch(`${apiUrl}/police/items/found`),
-                        authFetch(`${apiUrl}/auctions/auctions`)
-                    ]);
-
+                    const lostItemsData = await authFetch(`${apiUrl}/users/mylostitems`);
                     setLostItems(lostItemsData);
-                    setFoundItems(foundItemsData);
-                    setAuctionItems(auctionItemsData);
                     setLoadingLostItems(false);
-                    setLoadingFoundItems(false);
-                    setLoadingAuctionItems(false);
-                    setDataFetched(true);
                 } catch (error) {
-                    console.error('Failed to fetch data:', error);
+                    console.error('Failed to fetch lost items:', error);
                     setLoadingLostItems(false);
+                }
+    
+                try {
+                    const foundItemsData = await authFetch(`${apiUrl}/police/items/found`);
+                    setFoundItems(foundItemsData);
                     setLoadingFoundItems(false);
+                } catch (error) {
+                    console.error('Failed to fetch found items:', error);
+                    setLoadingFoundItems(false);
+                }
+    
+                try {
+                    const auctionItemsData = await authFetch(`${apiUrl}/auctions/auctions`);
+                    setAuctionItems(auctionItemsData);
+                    setLoadingAuctionItems(false);
+                } catch (error) {
+                    console.error('Failed to fetch auction items:', error);
                     setLoadingAuctionItems(false);
                 }
+    
+                setDataFetched(true);
             };
-
+    
             fetchData();
         }
     }, [authFetch, dataFetched]);
+    
 
     const handleEditLostItem = (id: number) => {
         setEditingLostItemId(id);
@@ -222,7 +231,6 @@ const SavedInfo: React.FC = () => {
             setMessage('Failed to save auction item');
         }
     };
-    
 
     if (loadingLostItems || loadingFoundItems || loadingAuctionItems) {
         return <div className='text-center mt-5 pt-5 h4'>A carregar...</div>;
@@ -293,10 +301,10 @@ const SavedInfo: React.FC = () => {
                     <div>Editar</div>
                     <div>Remover</div>
                 </div>
-                {foundItems.filter(item => item.ativo).length === 0 ? (
+                {foundItems.filter(item => item.ativo || item.id === editingFoundItemId).length === 0 ? (
                     <div className='grid-row'>Nenhum objeto achado ativo encontrado.</div>
                 ) : (
-                    foundItems.filter(item => item.ativo).map(item => (
+                    foundItems.filter(item => item.ativo || item.id === editingFoundItemId).map(item => (
                         <div key={item.id} className='grid-row'>
                             {editingFoundItemId === item.id ? (
                                 <>
@@ -334,52 +342,49 @@ const SavedInfo: React.FC = () => {
                 )}
             </div>
             <h1>Leilões Ativos</h1>
-<div className='ActiveAuctionTable'>
-    <div className='grid-header'>
-        <div>Nome do Objeto</div>
-        <div>Localização</div>
-        <div>Data de inicio</div>
-        <div>Data de fim</div>
-        <div>Valor inicial</div>
-        <div>Ativo</div>
-        <div>Editar</div>
-        <div>Remover</div>
-    </div>
-    {auctionItems.filter(item => item.ativo || item.id === editingAuctionItemId).length === 0 ? (
-        <div className='grid-row'>Nenhum leilão ativo encontrado.</div>
-    ) : (
-        auctionItems.filter(item => item.ativo || item.id === editingAuctionItemId).map(item => (
-            <div key={item.id} className='grid-row'>
-                {editingAuctionItemId === item.id ? (
-                    <>
-                        <div>{item.titulo}</div>
-                        <div><input type="text" defaultValue={item.localizacao} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, localizacao: e.target.value } : i))} /></div>
-                        <div><input type="date" defaultValue={item.data_inicio.split('T')[0]} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_inicio: e.target.value } : i))} /></div>
-                        <div><input type="date" defaultValue={item.data_fim.split('T')[0]} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_fim: e.target.value } : i))} /></div>
-                        <div><input type="text" defaultValue={item.valor_base} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, valor_base: e.target.value } : i))} /></div>
-                        <div><input type="checkbox" checked={item.ativo} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, ativo: e.target.checked } : i))} /></div>
-                        <div><button onClick={() => handleSaveAuctionItem(item.id, item)}>Salvar</button></div>
-                        <div><button onClick={() => handleRemoveAuction(item.id)}>Remover</button></div>
-                    </>
+            <div className='ActiveAuctionTable'>
+                <div className='grid-header'>
+                    <div>Nome do Objeto</div>
+                    <div>Localização</div>
+                    <div>Data de inicio</div>
+                    <div>Data de fim</div>
+                    <div>Valor inicial</div>
+                    <div>Ativo</div>
+                    <div>Editar</div>
+                    <div>Remover</div>
+                </div>
+                {auctionItems.filter(item => item.ativo || item.id === editingAuctionItemId).length === 0 ? (
+                    <div className='grid-row'>Nenhum leilão ativo encontrado.</div>
                 ) : (
-                    <>
-                        <div>{item.titulo}</div>
-                        <div>{item.localizacao}</div>
-                        <div>{item.data_inicio.split('T')[0]}</div>
-                        <div>{item.data_fim.split('T')[0]}</div>
-                        <div>{item.valor_base}</div>
-                        <div><input type="checkbox" checked={item.ativo} readOnly /></div>
-                        <div><button onClick={() => handleEditAuctionItem(item.id)}>Editar</button></div>
-                        <div><button onClick={() => handleRemoveAuction(item.id)}>Remover</button></div>
-                    </>
+                    auctionItems.filter(item => item.ativo || item.id === editingAuctionItemId).map(item => (
+                        <div key={item.id} className='grid-row'>
+                            {editingAuctionItemId === item.id ? (
+                                <>
+                                    <div>{item.titulo}</div>
+                                    <div><input type="text" defaultValue={item.localizacao} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, localizacao: e.target.value } : i))} /></div>
+                                    <div><input type="date" defaultValue={item.data_inicio.split('T')[0]} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_inicio: e.target.value } : i))} /></div>
+                                    <div><input type="date" defaultValue={item.data_fim.split('T')[0]} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, data_fim: e.target.value } : i))} /></div>
+                                    <div><input type="text" defaultValue={item.valor_base} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, valor_base: e.target.value } : i))} /></div>
+                                    <div><input type="checkbox" checked={item.ativo} onChange={e => setAuctionItems(auctionItems.map(i => i.id === item.id ? { ...i, ativo: e.target.checked } : i))} /></div>
+                                    <div><button onClick={() => handleSaveAuctionItem(item.id, item)}>Salvar</button></div>
+                                    <div><button onClick={() => handleRemoveAuction(item.id)}>Remover</button></div>
+                                </>
+                            ) : (
+                                <>
+                                    <div>{item.titulo}</div>
+                                    <div>{item.localizacao}</div>
+                                    <div>{item.data_inicio.split('T')[0]}</div>
+                                    <div>{item.data_fim.split('T')[0]}</div>
+                                    <div>{item.valor_base}</div>
+                                    <div><input type="checkbox" checked={item.ativo} readOnly /></div>
+                                    <div><button onClick={() => handleEditAuctionItem(item.id)}>Editar</button></div>
+                                    <div><button onClick={() => handleRemoveAuction(item.id)}>Remover</button></div>
+                                </>
+                            )}
+                        </div>
+                    ))
                 )}
             </div>
-        ))
-    )}
-</div>
-
-
-
         </div>
     );
 };
